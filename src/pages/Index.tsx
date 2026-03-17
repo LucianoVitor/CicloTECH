@@ -4,9 +4,6 @@ import {
   Weight,
   Users,
   RefreshCcw,
-  ArrowUpRight,
-  Menu,
-} from "lucide-react";
 
 import heroCpu from "@/assets/hero-cpu.png";
 import catCpu from "@/assets/cat-cpu.png";
