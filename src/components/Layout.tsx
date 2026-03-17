@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { useState } from "react";
-import ctLogo from "@/assets/ct-logo.png";
 
 const navLinks = [
   { label: "Início", path: "/" },
@@ -27,11 +26,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <img
-              src={ctLogo}
-              alt="Ciclo Tech logo"
-              className="w-10 h-10 object-contain drop-shadow-[0_0_8px_hsl(217_91%_60%/0.5)]"
-            />
             <span className="font-data font-bold tracking-tighter text-primary-foreground text-lg">
               CICLO TECH
             </span>
@@ -98,7 +92,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <img src={ctLogo} alt="CT" className="w-8 h-8 object-contain opacity-60" />
                 <span className="font-data font-bold tracking-tighter text-primary-foreground">
                   CICLO TECH
                 </span>

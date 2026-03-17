@@ -53,13 +53,7 @@ export default function Index() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: BEZIER }}
           >
-            <div className="inline-flex items-center gap-4 px-4 py-2 bg-surface border border-border mb-8">
-              <span className="text-[10px] font-data text-muted-foreground uppercase tracking-widest">Partners:</span>
-              <span className="text-[10px] font-data text-accent font-bold uppercase">Fatec Zona Leste</span>
-              <div className="w-px h-3 bg-border" />
-              <span className="text-[10px] font-data text-accent font-bold uppercase">Shopee - Apoio Social</span>
-            </div>
-
+            
             <h1 className="text-5xl lg:text-7xl font-bold text-primary-foreground leading-[0.9] tracking-tighter mb-8 font-data">
               RECONECTANDO<br />FUTUROS:<br />
               <span className="text-primary glow-text">DOE SEU HARDWARE</span>
