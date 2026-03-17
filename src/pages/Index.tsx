@@ -1,10 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import {
-  Weight,
-  Users,
-  RefreshCcw,
-
+import { Weight, Users, RefreshCcw } from "lucide-react";
 import heroCpu from "@/assets/hero-cpu.png";
 import catCpu from "@/assets/cat-cpu.png";
 import catRam from "@/assets/cat-ram.png";
