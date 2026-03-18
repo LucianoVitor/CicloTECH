@@ -1,3 +1,3 @@
-# Welcome to your Lovable project
+# Bem Vindo ao Ciclo TECH
 
 TODO: Document your project here
