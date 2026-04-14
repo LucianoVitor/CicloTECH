@@ -39,7 +39,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className={`text-xs font-data uppercase tracking-widest transition-colors duration-200 ${
                   location.pathname === link.path
                     ? "text-accent"
-                    : "text-muted-foreground hover:text-accent"
+                    /* ALTERAÇÃO: text-muted-foreground -> text-white/70 */
+                    : "text-white/70 hover:text-accent"
                 }`}
               >
                 {link.label}
@@ -55,7 +56,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               Entrar / Cadastro
             </Link>
             <button
-              className="xl:hidden text-muted-foreground"
+              /* ALTERAÇÃO: text-muted-foreground -> text-white */
+              className="xl:hidden text-white"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
               {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -74,7 +76,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className={`text-xs font-data uppercase tracking-widest py-2 ${
                   location.pathname === link.path
                     ? "text-accent"
-                    : "text-muted-foreground"
+                    /* ALTERAÇÃO: text-muted-foreground -> text-white */
+                    : "text-white"
                 }`}
               >
                 {link.label}
@@ -96,7 +99,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   CICLO TECH
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
+              {/* ALTERAÇÃO: text-muted-foreground -> text-slate-200 */}
+              <p className="text-xs text-slate-200 leading-relaxed">
                 Tecnologia Circular para a Zona Leste. Transformando e-waste em oportunidade.
               </p>
             </div>
@@ -107,7 +111,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className="text-xs font-data text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider"
+                    /* ALTERAÇÃO: text-muted-foreground -> text-white/80 */
+                    className="text-xs font-data text-white/80 hover:text-accent transition-colors uppercase tracking-wider"
                   >
                     {link.label}
                   </Link>
@@ -117,23 +122,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="text-xs font-data uppercase tracking-widest text-accent mb-4">Ações</h4>
               <div className="flex flex-col gap-2">
-                <Link to="/doar" className="text-xs font-data text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
+                {/* ALTERAÇÃO: text-muted-foreground -> text-white/80 em todos abaixo */}
+                <Link to="/doar" className="text-xs font-data text-white/80 hover:text-accent transition-colors uppercase tracking-wider">
                   Quero Doar
                 </Link>
-                <Link to="/solicitar" className="text-xs font-data text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/solicitar" className="text-xs font-data text-white/80 hover:text-accent transition-colors uppercase tracking-wider">
                   Solicitar Hardware
                 </Link>
-                <Link to="/auth" className="text-xs font-data text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/auth" className="text-xs font-data text-white/80 hover:text-accent transition-colors uppercase tracking-wider">
                   Entrar / Cadastro
                 </Link>
               </div>
             </div>
           </div>
           <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-[10px] font-data text-muted-foreground uppercase tracking-widest">
+            {/* ALTERAÇÃO: text-muted-foreground -> text-white/60 */}
+            <div className="text-[10px] font-data text-white/60 uppercase tracking-widest">
               © 2024 Ciclo Tech — Tecnologia Circular para a Zona Leste
             </div>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+            {/* ALTERAÇÃO: text-muted-foreground -> text-white */}
+            <a href="#" className="text-white hover:text-primary transition-colors">
               <ArrowUpRight className="w-5 h-5" />
             </a>
           </div>

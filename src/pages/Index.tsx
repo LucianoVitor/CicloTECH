@@ -59,7 +59,7 @@ export default function Index() {
               <span className="text-primary glow-text">DOE SEU HARDWARE</span>
             </h1>
 
-            <p className="text-lg text-muted-foreground max-w-lg mb-12 leading-relaxed">
+            <p className="text-lg text-white max-w-lg mb-12 leading-relaxed">
               Transforme lixo eletrônico em oportunidade para estudantes da Zona Leste. Tecnologia circular e inclusiva.
             </p>
 
@@ -98,8 +98,8 @@ export default function Index() {
               <h2 className="text-4xl font-bold text-primary-foreground font-data tracking-tighter uppercase">Nosso Impacto</h2>
             </div>
             <div className="text-right hidden md:block">
-              <p className="text-muted-foreground font-data text-[10px] uppercase">Data Refresh: 24.05.2024</p>
-              <p className="text-muted-foreground font-data text-[10px] uppercase">Source: ODS Global Report</p>
+              <p className="text-white/60 font-data text-[10px] uppercase">Data Refresh: 24.05.2026</p>
+              <p className="text-white/60 font-data text-[10px] uppercase">Source: ODS Global Report</p>
             </div>
           </div>
 
@@ -110,7 +110,7 @@ export default function Index() {
                 <item.icon className="w-6 h-6 text-primary mb-6" />
                 <div className="text-4xl font-bold font-data text-primary-foreground mb-2 tabular-nums tracking-tighter">{item.value}</div>
                 <div className="text-xs font-data uppercase text-accent tracking-widest mb-4">{item.label}</div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.subtext}</p>
+                <p className="text-sm text-slate-200 leading-relaxed">{item.subtext}</p>
               </div>
             ))}
           </div>
@@ -133,13 +133,15 @@ export default function Index() {
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-base font-bold text-primary-foreground font-data tracking-tight">{cat.title}</h3>
-                  <span className="text-[10px] font-data text-muted-foreground uppercase tracking-widest">{cat.count} itens disponíveis</span>
+                  {/* ALTERAÇÃO: text-muted-foreground -> text-white/80 */}
+                  <span className="text-[10px] font-data text-white/80 uppercase tracking-widest">{cat.count} itens disponíveis</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <Link to="/doar" className="py-2 text-center text-[10px] font-data uppercase border border-border text-accent hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all">
                     Doar
                   </Link>
-                  <Link to="/solicitar" className="py-2 text-center text-[10px] font-data uppercase border border-border text-muted-foreground hover:bg-secondary hover:text-secondary-foreground transition-all">
+                  {/* ALTERAÇÃO: text-muted-foreground -> text-white */}
+                  <Link to="/solicitar" className="py-2 text-center text-[10px] font-data uppercase border border-border text-white hover:bg-secondary hover:text-secondary-foreground transition-all">
                     Solicitar
                   </Link>
                 </div>
