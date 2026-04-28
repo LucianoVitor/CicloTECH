@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, User as UserIcon, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
   { label: "Início", path: "/" },
@@ -13,6 +14,7 @@ const navLinks = [
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { user, isAdmin } = useAuth();
 
   return (
     <div className="min-h-screen bg-background text-foreground font-display">
@@ -48,15 +50,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             ))}
           </div>
 
-          <div className="flex items-center gap-4">
-            <Link
-              to="/auth"
-              className="px-6 py-2 text-xs font-data uppercase tracking-tighter bg-primary border border-accent text-primary-foreground glow-sm hover:glow-md transition-all duration-300"
-            >
-              Entrar / Cadastro
-            </Link>
+          <div className="flex items-center gap-3">
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-[10px] font-data uppercase tracking-widest border border-primary text-primary hover:bg-primary hover:text-white transition-all"
+              >
+                <ShieldCheck className="w-3 h-3" /> Admin
+              </Link>
+            )}
+            {user ? (
+              <Link
+                to="/perfil"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-data uppercase tracking-tighter bg-primary border border-accent text-primary-foreground glow-sm hover:glow-md transition-all duration-300"
+              >
+                <UserIcon className="w-3.5 h-3.5" /> Perfil
+              </Link>
+            ) : (
+              <Link
+                to="/auth"
+                className="px-6 py-2 text-xs font-data uppercase tracking-tighter bg-primary border border-accent text-primary-foreground glow-sm hover:glow-md transition-all duration-300"
+              >
+                Entrar / Cadastro
+              </Link>
+            )}
             <button
-              /* ALTERAÇÃO: text-muted-foreground -> text-white */
               className="xl:hidden text-white"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
