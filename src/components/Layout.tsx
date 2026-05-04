@@ -191,6 +191,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+
+      {/* VLibras Accessibility Widget */}
+      <div vw="true" className="enabled">
+        <div vw-access-button="true" className="active"></div>
+        <div vw-plugin-wrapper="true">
+          <div className="vw-plugin-top-wrapper"></div>
+        </div>
+      </div>
     </div>
   );
 }
