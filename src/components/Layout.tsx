@@ -1,12 +1,17 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ArrowUpRight, User as UserIcon, ShieldCheck } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, ArrowUpRight, User as UserIcon, ShieldCheck, Instagram } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 
 const navLinks = [
   { label: "Início", path: "/" },
   { label: "Como Doar", path: "/como-doar" },
   { label: "Solicitar Hardware", path: "/solicitar" },
+  { label: "Trocas", path: "/trocas" },
+];
+
+const footerLinks = [
+  ...navLinks,
   { label: "Impacto ODS", path: "/impacto" },
   { label: "Sobre Nós", path: "/sobre" },
 ];
@@ -15,6 +20,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const { user, isAdmin } = useAuth();
+
+  // VLibras accessibility widget
+  useEffect(() => {
+    if (document.getElementById("vlibras-script")) return;
+    const script = document.createElement("script");
+    script.id = "vlibras-script";
+    script.src = "https://vlibras.gov.br/app/vlibras-plugin.js";
+    script.async = true;
+    script.onload = () => {
+      // @ts-expect-error VLibras global from external script
+      if (window.VLibras) new window.VLibras.Widget("https://vlibras.gov.br/app");
+    };
+    document.body.appendChild(script);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground font-display">
@@ -125,7 +144,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="text-xs font-data uppercase tracking-widest text-accent mb-4">Links Rápidos</h4>
               <div className="flex flex-col gap-2">
-                {navLinks.map((link) => (
+                {footerLinks.map((link) => (
                   <Link
                     key={link.path}
                     to={link.path}
@@ -154,17 +173,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            {/* ALTERAÇÃO: text-muted-foreground -> text-white/60 */}
             <div className="text-[10px] font-data text-white/60 uppercase tracking-widest">
-              © 2024 Ciclo Tech — Tecnologia Circular para a Zona Leste
+              © 2026 Ciclo Tech — Tecnologia Circular para a Zona Leste
             </div>
-            {/* ALTERAÇÃO: text-muted-foreground -> text-white */}
-            <a href="#" className="text-white hover:text-primary transition-colors">
-              <ArrowUpRight className="w-5 h-5" />
-            </a>
+            <div className="flex items-center gap-4">
+              <a
+                href="#"
+                aria-label="Instagram do Ciclo Tech"
+                className="text-white hover:text-primary transition-colors"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
+              <a href="#" aria-label="Voltar ao topo" className="text-white hover:text-primary transition-colors">
+                <ArrowUpRight className="w-5 h-5" />
+              </a>
+            </div>
           </div>
         </div>
       </footer>
+
+      {/* VLibras Accessibility Widget */}
+      <div {...({ vw: "true" } as any)} className="enabled">
+        <div {...({ "vw-access-button": "true" } as any)} className="active"></div>
+        <div {...({ "vw-plugin-wrapper": "true" } as any)}>
+          <div className="vw-plugin-top-wrapper"></div>
+        </div>
+      </div>
     </div>
   );
 }

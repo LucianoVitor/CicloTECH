@@ -15,6 +15,7 @@ import ResetPassword from "./pages/ResetPassword";
 import DoarEquipamento from "./pages/DoarEquipamento";
 import Perfil from "./pages/Perfil";
 import Admin from "./pages/Admin";
+import Trocas from "./pages/Trocas";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/doar" element={<DoarEquipamento />} />
               <Route path="/perfil" element={<Perfil />} />
               <Route path="/admin" element={<Admin />} />
+              <Route path="/trocas" element={<Trocas />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Layout>

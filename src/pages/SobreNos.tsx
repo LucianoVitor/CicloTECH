@@ -58,7 +58,7 @@ export default function SobreNos() {
         <h2 className="text-2xl font-bold font-data text-primary-foreground tracking-tighter uppercase mb-6">
           Nossa Origem
         </h2>
-        <div className="space-y-4 text-muted-foreground leading-relaxed max-w-3xl">
+        <div className="space-y-4 text-white/80 leading-relaxed max-w-3xl">
           <p>
             O <span className="text-accent font-semibold">Ciclo Tech</span> nasceu como projeto acadêmico na{" "}
             <span className="text-accent font-semibold">Fatec Zona Leste</span>, motivado por uma realidade
@@ -69,10 +69,6 @@ export default function SobreNos() {
             A proposta é simples e poderosa: conectar doadores de hardware usado a estudantes que precisam,
             criando um ciclo virtuoso de tecnologia circular. Cada peça doada é avaliada, certificada e
             direcionada para quem mais precisa.
-          </p>
-          <p>
-            Com o apoio da comunidade acadêmica e parceiros como a Shopee — Apoio Social, o projeto já impactou
-            centenas de vidas e evitou mais de uma tonelada de lixo eletrônico nos aterros da região.
           </p>
         </div>
       </motion.div>
@@ -99,7 +95,7 @@ export default function SobreNos() {
               <h3 className="text-sm font-bold font-data text-accent uppercase tracking-wider mb-3">
                 {pillar.title}
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-sm text-white/80 leading-relaxed">
                 {pillar.description}
               </p>
             </motion.div>
@@ -117,9 +113,9 @@ export default function SobreNos() {
         <h2 className="text-2xl font-bold font-data text-primary-foreground tracking-tighter uppercase mb-4">
           Equipe
         </h2>
-        <p className="text-muted-foreground text-sm max-w-lg mx-auto">
-          Um time de estudantes e professores da Fatec Zona Leste, unidos pela missão de democratizar
-          o acesso à tecnologia na periferia de São Paulo.
+        <p className="text-white/80 text-sm max-w-2xl mx-auto leading-relaxed">
+          Luciano Vitor e Matheus Gobbi, uma dupla de estudantes da Fatec Zona Leste, unidos pela
+          missão de democratizar o acesso à tecnologia às pessoas de maior fragilidade de São Paulo.
         </p>
       </motion.div>
     </section>
