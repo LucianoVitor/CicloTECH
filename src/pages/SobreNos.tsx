@@ -71,10 +71,10 @@ export default function SobreNos() {
             direcionada para quem mais precisa.
           </p>
           <p>
-            Com o apoio da comunidade acadêmica e parceiros como a Shopee — Apoio Social, o projeto já impactou
-            centenas de vidas e evitou mais de uma tonelada de lixo eletrônico nos aterros da região.
+            A proposta é simples e poderosa: conectar doadores de hardware usado a estudantes que precisam,
+            criando um ciclo virtuoso de tecnologia circular. Cada peça doada é avaliada, certificada e
+            direcionada para quem mais precisa.
           </p>
-        </div>
       </motion.div>
 
       {/* Mission pillars */}
