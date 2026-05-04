@@ -58,7 +58,7 @@ export default function SobreNos() {
         <h2 className="text-2xl font-bold font-data text-primary-foreground tracking-tighter uppercase mb-6">
           Nossa Origem
         </h2>
-        <div className="space-y-4 text-muted-foreground leading-relaxed max-w-3xl">
+        <div className="space-y-4 text-white/80 leading-relaxed max-w-3xl">
           <p>
             O <span className="text-accent font-semibold">Ciclo Tech</span> nasceu como projeto acadêmico na{" "}
             <span className="text-accent font-semibold">Fatec Zona Leste</span>, motivado por uma realidade
@@ -70,11 +70,7 @@ export default function SobreNos() {
             criando um ciclo virtuoso de tecnologia circular. Cada peça doada é avaliada, certificada e
             direcionada para quem mais precisa.
           </p>
-          <p>
-            A proposta é simples e poderosa: conectar doadores de hardware usado a estudantes que precisam,
-            criando um ciclo virtuoso de tecnologia circular. Cada peça doada é avaliada, certificada e
-            direcionada para quem mais precisa.
-          </p>
+        </div>
       </motion.div>
 
       {/* Mission pillars */}
