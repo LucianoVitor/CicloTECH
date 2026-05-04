@@ -1,6 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Weight, Users, RefreshCcw } from "lucide-react";
+import { useRef, type ReactNode } from "react";
 
 import heroCpu from "@/assets/hero-cpu.png";
 import catCpu from "@/assets/cat-cpu.png";
