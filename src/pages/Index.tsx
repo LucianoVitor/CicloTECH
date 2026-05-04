@@ -90,67 +90,88 @@ export default function Index() {
         </div>
       </section>
 
-      {/* Impact Section */}
-      <section className="py-24 bg-surface border-y border-border">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-end justify-between mb-16">
-            <div>
-              <div className="text-primary font-data text-xs uppercase tracking-[0.4em] mb-4">Metric Analysis</div>
-              <h2 className="text-4xl font-bold text-primary-foreground font-data tracking-tighter uppercase">Nosso Impacto</h2>
-            </div>
-            <div className="text-right hidden md:block">
-              <p className="text-white/60 font-data text-[10px] uppercase">Data Refresh: 24.05.2026</p>
-              <p className="text-white/60 font-data text-[10px] uppercase">Source: ODS Global Report</p>
-            </div>
+      {/* Categories Section (moved up) */}
+      <Reveal>
+        <section className="py-32 px-6 max-w-7xl mx-auto">
+          <div className="mb-16">
+            <h2 className="text-4xl font-bold text-primary-foreground font-data tracking-tighter uppercase mb-4">Categorias de Doação</h2>
+            <div className="h-1 w-24 bg-primary" />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-px bg-border border border-border">
-            {impactData.map((item) => (
-              <div key={item.label} className="p-8 bg-surface relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-1 h-full bg-primary scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
-                <item.icon className="w-6 h-6 text-primary mb-6" />
-                <div className="text-4xl font-bold font-data text-primary-foreground mb-2 tabular-nums tracking-tighter">{item.value}</div>
-                <div className="text-xs font-data uppercase text-accent tracking-widest mb-4">{item.label}</div>
-                <p className="text-sm text-slate-200 leading-relaxed">{item.subtext}</p>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((cat, i) => (
+              <Reveal key={cat.title} delay={i * 0.06}>
+                <div className="border border-border bg-background hover:border-primary/50 transition-all group overflow-hidden">
+                  <div className="h-40 overflow-hidden">
+                    <img src={cat.image} alt={cat.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className="text-base font-bold text-primary-foreground font-data tracking-tight">{cat.title}</h3>
+                      <span className="text-[10px] font-data text-white/80 uppercase tracking-widest">{cat.count} itens disponíveis</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link to="/doar" className="py-2 text-center text-[10px] font-data uppercase border border-border text-accent hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all">
+                        Doar
+                      </Link>
+                      <Link to="/solicitar" className="py-2 text-center text-[10px] font-data uppercase border border-border text-white hover:bg-secondary hover:text-secondary-foreground transition-all">
+                        Solicitar
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      </Reveal>
 
-      {/* Categories Section */}
-      <section className="py-32 px-6 max-w-7xl mx-auto">
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-primary-foreground font-data tracking-tighter uppercase mb-4">Categorias de Doação</h2>
-          <div className="h-1 w-24 bg-primary" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((cat) => (
-            <div key={cat.title} className="border border-border bg-background hover:border-primary/50 transition-all group overflow-hidden">
-              <div className="h-40 overflow-hidden">
-                <img src={cat.image} alt={cat.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      {/* Impact Section (now above footer) */}
+      <Reveal>
+        <section className="py-24 bg-surface border-y border-border">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex items-end justify-between mb-16">
+              <div>
+                <div className="text-primary font-data text-xs uppercase tracking-[0.4em] mb-4">Metric Analysis</div>
+                <h2 className="text-4xl font-bold text-primary-foreground font-data tracking-tighter uppercase">Nosso Impacto</h2>
               </div>
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-base font-bold text-primary-foreground font-data tracking-tight">{cat.title}</h3>
-                  {/* ALTERAÇÃO: text-muted-foreground -> text-white/80 */}
-                  <span className="text-[10px] font-data text-white/80 uppercase tracking-widest">{cat.count} itens disponíveis</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <Link to="/doar" className="py-2 text-center text-[10px] font-data uppercase border border-border text-accent hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all">
-                    Doar
-                  </Link>
-                  {/* ALTERAÇÃO: text-muted-foreground -> text-white */}
-                  <Link to="/solicitar" className="py-2 text-center text-[10px] font-data uppercase border border-border text-white hover:bg-secondary hover:text-secondary-foreground transition-all">
-                    Solicitar
-                  </Link>
-                </div>
+              <div className="text-right hidden md:block">
+                <p className="text-white/60 font-data text-[10px] uppercase">Data Refresh: 24.05.2026</p>
+                <p className="text-white/60 font-data text-[10px] uppercase">Source: ODS Global Report</p>
               </div>
             </div>
-          ))}
-        </div>
-      </section>
+
+            <div className="grid md:grid-cols-3 gap-px bg-border border border-border">
+              {impactData.map((item, i) => (
+                <Reveal key={item.label} delay={i * 0.1}>
+                  <div className="p-8 bg-surface relative overflow-hidden group h-full">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-primary scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-top" />
+                    <item.icon className="w-6 h-6 text-primary mb-6" />
+                    <div className="text-4xl font-bold font-data text-primary-foreground mb-2 tabular-nums tracking-tighter">{item.value}</div>
+                    <div className="text-xs font-data uppercase text-accent tracking-widest mb-4">{item.label}</div>
+                    <p className="text-sm text-slate-200 leading-relaxed">{item.subtext}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      </Reveal>
     </>
+  );
+}
+
+function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay, ease: BEZIER }}
+    >
+      {children}
+    </motion.div>
   );
 }
