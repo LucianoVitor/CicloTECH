@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ArrowUpRight, User as UserIcon, ShieldCheck, Instagram } from "lucide-react";
+import { Menu, X, ArrowUpRight, User as UserIcon, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 
