@@ -21,6 +21,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const { user, isAdmin } = useAuth();
 
+  // VLibras accessibility widget
+  useEffect(() => {
+    if (document.getElementById("vlibras-script")) return;
+    const script = document.createElement("script");
+    script.id = "vlibras-script";
+    script.src = "https://vlibras.gov.br/app/vlibras-plugin.js";
+    script.async = true;
+    script.onload = () => {
+      // @ts-expect-error VLibras global from external script
+      if (window.VLibras) new window.VLibras.Widget("https://vlibras.gov.br/app");
+    };
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground font-display">
       {/* Background Grid & Glow */}
