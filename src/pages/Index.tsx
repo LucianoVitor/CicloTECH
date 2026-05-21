@@ -10,6 +10,7 @@ import catStorage from "@/assets/cat-storage.png";
 import catGpu from "@/assets/cat-gpu.png";
 import catMonitor from "@/assets/cat-monitor.png";
 import catPeripherals from "@/assets/cat-peripherals.png";
+import RotatingPart from "@/components/RotatingPart";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
