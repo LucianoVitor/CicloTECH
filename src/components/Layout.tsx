@@ -50,7 +50,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <span className="font-data font-bold tracking-tighter text-primary-foreground text-lg">
+            <span className="font-data font-bold tracking-tighter text-foreground text-lg">
               CICLO TECH
             </span>
           </Link>
@@ -63,8 +63,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 className={`text-xs font-data uppercase tracking-widest transition-colors duration-200 ${
                   location.pathname === link.path
                     ? "text-accent"
-                    /* ALTERAÇÃO: text-muted-foreground -> text-white/70 */
-                    : "text-white/70 hover:text-accent"
+                    /* ALTERAÇÃO: text-muted-foreground -> text-muted-foreground */
+                    : "text-muted-foreground hover:text-accent"
                 }`}
               >
                 {link.label}
@@ -104,7 +104,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             )}
             <button
-              className="xl:hidden text-white"
+              className="xl:hidden text-foreground"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
               {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -124,7 +124,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   location.pathname === link.path
                     ? "text-accent"
                     /* ALTERAÇÃO: text-muted-foreground -> text-white */
-                    : "text-white"
+                    : "text-foreground"
                 }`}
               >
                 {link.label}
@@ -142,12 +142,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <span className="font-data font-bold tracking-tighter text-primary-foreground">
+                <span className="font-data font-bold tracking-tighter text-foreground">
                   CICLO TECH
                 </span>
               </div>
-              {/* ALTERAÇÃO: text-muted-foreground -> text-slate-200 */}
-              <p className="text-xs text-slate-200 leading-relaxed">
+              {/* ALTERAÇÃO: text-muted-foreground -> text-muted-foreground */}
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 Tecnologia Circular para a Zona Leste. Transformando e-waste em oportunidade.
               </p>
             </div>
@@ -158,8 +158,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <Link
                     key={link.path}
                     to={link.path}
-                    /* ALTERAÇÃO: text-muted-foreground -> text-white/80 */
-                    className="text-xs font-data text-white/80 hover:text-accent transition-colors uppercase tracking-wider"
+                    /* ALTERAÇÃO: text-muted-foreground -> text-muted-foreground */
+                    className="text-xs font-data text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider"
                   >
                     {link.label}
                   </Link>
@@ -169,21 +169,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div>
               <h4 className="text-xs font-data uppercase tracking-widest text-accent mb-4">Ações</h4>
               <div className="flex flex-col gap-2">
-                {/* ALTERAÇÃO: text-muted-foreground -> text-white/80 em todos abaixo */}
-                <Link to="/doar" className="text-xs font-data text-white/80 hover:text-accent transition-colors uppercase tracking-wider">
+                {/* ALTERAÇÃO: text-muted-foreground -> text-muted-foreground em todos abaixo */}
+                <Link to="/doar" className="text-xs font-data text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Quero Doar
                 </Link>
-                <Link to="/solicitar" className="text-xs font-data text-white/80 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/solicitar" className="text-xs font-data text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Solicitar Hardware
                 </Link>
-                <Link to="/auth" className="text-xs font-data text-white/80 hover:text-accent transition-colors uppercase tracking-wider">
+                <Link to="/auth" className="text-xs font-data text-muted-foreground hover:text-accent transition-colors uppercase tracking-wider">
                   Entrar / Cadastro
                 </Link>
               </div>
             </div>
           </div>
           <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-[10px] font-data text-white/60 uppercase tracking-widest">
+            <div className="text-[10px] font-data text-muted-foreground uppercase tracking-widest">
               © 2026 Ciclo Tech — Tecnologia Circular para a Zona Leste
             </div>
             <ul className="social-list-animated">
@@ -215,7 +215,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div className="tooltip">Instagram</div>
               </li>
             </ul>
-            <a href="#" aria-label="Voltar ao topo" className="text-white hover:text-primary transition-colors">
+            <a href="#" aria-label="Voltar ao topo" className="text-foreground hover:text-primary transition-colors">
               <ArrowUpRight className="w-5 h-5" />
             </a>
           </div>
