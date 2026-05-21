@@ -10,6 +10,7 @@ import catStorage from "@/assets/cat-storage.png";
 import catGpu from "@/assets/cat-gpu.png";
 import catMonitor from "@/assets/cat-monitor.png";
 import catPeripherals from "@/assets/cat-peripherals.png";
+import RotatingPart from "@/components/RotatingPart";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -92,7 +93,9 @@ export default function Index() {
 
       {/* Categories Section (moved up) */}
       <Reveal>
-        <section className="py-32 px-6 max-w-7xl mx-auto">
+        <section className="relative py-32 px-6 max-w-7xl mx-auto overflow-hidden">
+          <RotatingPart src={catGpu} size={420} className="-right-32 top-10" reverse />
+          <RotatingPart src={catRam} size={280} className="-left-20 bottom-20" />
           <div className="mb-16">
             <h2 className="text-4xl font-bold text-primary-foreground font-data tracking-tighter uppercase mb-4">Categorias de Doação</h2>
             <div className="h-1 w-24 bg-primary" />
@@ -128,7 +131,8 @@ export default function Index() {
 
       {/* Impact Section (now above footer) */}
       <Reveal>
-        <section className="py-24 bg-surface border-y border-border">
+        <section className="relative py-24 bg-surface border-y border-border overflow-hidden">
+          <RotatingPart src={catCpu} size={520} className="left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" />
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex items-end justify-between mb-16">
               <div>

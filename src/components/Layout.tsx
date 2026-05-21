@@ -1,13 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ArrowUpRight, User as UserIcon, ShieldCheck } from "lucide-react";
+import { Menu, X, ArrowUpRight, User as UserIcon, ShieldCheck, Sun, Moon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useTheme } from "@/hooks/useTheme";
 
 const navLinks = [
   { label: "Início", path: "/" },
   { label: "Como Doar", path: "/como-doar" },
   { label: "Solicitar Hardware", path: "/solicitar" },
   { label: "Trocas", path: "/trocas" },
+  { label: "FAQ", path: "/faq" },
 ];
 
 const footerLinks = [
@@ -20,6 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const { user, isAdmin } = useAuth();
+  const { theme, toggle } = useTheme();
 
   // VLibras accessibility widget
   useEffect(() => {
@@ -70,10 +73,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={toggle}
+              aria-label={theme === "dark" ? "Ativar tema claro" : "Ativar tema escuro"}
+              className="w-10 h-10 flex items-center justify-center border border-border text-foreground hover:text-accent hover:border-accent transition-all"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
             {isAdmin && (
               <Link
                 to="/admin"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-[10px] font-data uppercase tracking-widest border border-primary text-primary hover:bg-primary hover:text-white transition-all"
+                className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-[10px] font-data uppercase tracking-widest border border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
               >
                 <ShieldCheck className="w-3 h-3" /> Admin
               </Link>
