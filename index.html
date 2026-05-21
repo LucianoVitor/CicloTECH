@@ -24,6 +24,15 @@
   </head>
 
   <body>
+    <script>
+      // Prevent theme flash: apply saved theme before React mounts
+      (function () {
+        try {
+          var t = localStorage.getItem('ciclo-theme');
+          if (t === 'light') document.documentElement.classList.add('light');
+        } catch (e) {}
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
