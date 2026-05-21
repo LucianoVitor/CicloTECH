@@ -93,7 +93,9 @@ export default function Index() {
 
       {/* Categories Section (moved up) */}
       <Reveal>
-        <section className="py-32 px-6 max-w-7xl mx-auto">
+        <section className="relative py-32 px-6 max-w-7xl mx-auto overflow-hidden">
+          <RotatingPart src={catGpu} size={420} className="-right-32 top-10" reverse />
+          <RotatingPart src={catRam} size={280} className="-left-20 bottom-20" />
           <div className="mb-16">
             <h2 className="text-4xl font-bold text-primary-foreground font-data tracking-tighter uppercase mb-4">Categorias de Doação</h2>
             <div className="h-1 w-24 bg-primary" />
