@@ -131,7 +131,8 @@ export default function Index() {
 
       {/* Impact Section (now above footer) */}
       <Reveal>
-        <section className="py-24 bg-surface border-y border-border">
+        <section className="relative py-24 bg-surface border-y border-border overflow-hidden">
+          <RotatingPart src={catCpu} size={520} className="left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2" />
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex items-end justify-between mb-16">
               <div>
