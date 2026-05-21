@@ -124,7 +124,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   location.pathname === link.path
                     ? "text-accent"
                     /* ALTERAÇÃO: text-muted-foreground -> text-white */
-                    : "text-white"
+                    : "text-foreground"
                 }`}
               >
                 {link.label}
@@ -142,7 +142,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <span className="font-data font-bold tracking-tighter text-primary-foreground">
+                <span className="font-data font-bold tracking-tighter text-foreground">
                   CICLO TECH
                 </span>
               </div>
