@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Lock, User, Building2, GraduationCap, Loader2 } from "lucide-react";
+import { Mail, Lock, User, Loader2 } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, DEV_ADMIN_EMAIL, DEV_ADMIN_PASSWORD } from "@/hooks/useAuth";
@@ -22,7 +22,7 @@ function GlowInput({
       <Icon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 group-focus-within:text-primary transition-colors" />
       <input
         {...props}
-        className="w-full bg-background border border-border py-3 pl-12 pr-4 text-sm font-data text-white placeholder:text-white/50 focus:outline-none focus:border-primary focus:glow-sm transition-all"
+        className="w-full bg-background border border-border py-3 pl-12 pr-4 text-sm font-data text-foreground placeholder:text-white/50 focus:outline-none focus:border-primary focus:glow-sm transition-all"
       />
     </div>
   );
@@ -32,10 +32,8 @@ export default function Auth() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [tab, setTab] = useState<"login" | "register" | "forgot">("login");
-  const [userType, setUserType] = useState<"donor" | "student">("student");
   const [busy, setBusy] = useState(false);
 
-  // form state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -70,10 +68,6 @@ export default function Auth() {
       nameSchema.parse(fullName);
       emailSchema.parse(email);
       passwordSchema.parse(password);
-      if (userType === "student" && !/\.(edu|sp\.gov\.br)/i.test(email)) {
-        toast.error("Email institucional inválido (.edu ou @fatec.sp.gov.br)");
-        return;
-      }
     } catch (err: any) {
       toast.error(err.errors?.[0]?.message ?? "Dados inválidos");
       return;
@@ -85,7 +79,7 @@ export default function Auth() {
       password,
       options: {
         emailRedirectTo: redirectUrl,
-        data: { full_name: fullName, user_type: userType },
+        data: { full_name: fullName, user_type: "donor" },
       },
     });
     setBusy(false);
@@ -148,7 +142,7 @@ export default function Auth() {
         <div className="bg-surface/60 backdrop-blur-xl border border-border/60 p-8 relative overflow-hidden">
           <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-60 h-40 bg-primary/15 blur-[60px] rounded-full pointer-events-none" />
 
-          <h1 className="text-2xl font-bold font-data text-white tracking-tighter uppercase text-center mb-8 relative">
+          <h1 className="text-2xl font-bold font-data text-primary-foreground tracking-tighter uppercase text-center mb-8 relative">
             {tab === "login" ? "Entrar" : tab === "register" ? "Criar Conta" : "Recuperar Senha"}
           </h1>
 
@@ -157,7 +151,7 @@ export default function Auth() {
               <button
                 onClick={() => setTab("login")}
                 className={`flex-1 py-3 text-xs font-data uppercase tracking-widest transition-all ${
-                  tab === "login" ? "bg-primary text-primary-foreground" : "text-white/70 hover:text-accent"
+                  tab === "login" ? "bg-primary text-primary-foreground" : "text-foreground/70 hover:text-accent"
                 }`}
               >
                 Login
@@ -165,7 +159,7 @@ export default function Auth() {
               <button
                 onClick={() => setTab("register")}
                 className={`flex-1 py-3 text-xs font-data uppercase tracking-widest transition-all ${
-                  tab === "register" ? "bg-primary text-primary-foreground" : "text-white/70 hover:text-accent"
+                  tab === "register" ? "bg-primary text-primary-foreground" : "text-foreground/70 hover:text-accent"
                 }`}
               >
                 Cadastro
@@ -185,7 +179,7 @@ export default function Auth() {
                 {busy && <Loader2 className="w-4 h-4 animate-spin" />}
                 Entrar
               </button>
-              <p className="text-center text-[10px] font-data text-white/70 uppercase">
+              <p className="text-center text-[10px] font-data text-foreground/70 uppercase">
                 <button type="button" onClick={() => setTab("forgot")} className="text-accent hover:underline">
                   Esqueceu a senha?
                 </button>
@@ -196,7 +190,7 @@ export default function Auth() {
                   type="button"
                   onClick={handleQuickAdmin}
                   disabled={busy}
-                  className="w-full py-2 text-[10px] font-data uppercase tracking-widest text-white/70 border border-white/20 hover:border-accent hover:text-accent transition-all"
+                  className="w-full py-2 text-[10px] font-data uppercase tracking-widest text-foreground/70 border border-border hover:border-accent hover:text-accent transition-all"
                 >
                   ⚡ Login Rápido Admin (Dev)
                 </button>
@@ -206,45 +200,9 @@ export default function Auth() {
 
           {tab === "register" && (
             <form className="space-y-4" onSubmit={handleRegister}>
-              <div className="flex gap-2 mb-2">
-                <button
-                  type="button"
-                  onClick={() => setUserType("donor")}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 text-[10px] font-data uppercase tracking-widest border transition-all ${
-                    userType === "donor" ? "border-primary text-accent glow-sm" : "border-border text-white/70"
-                  }`}
-                >
-                  <Building2 className="w-3.5 h-3.5" /> Sou Doador
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setUserType("student")}
-                  className={`flex-1 flex items-center justify-center gap-2 py-3 text-[10px] font-data uppercase tracking-widest border transition-all ${
-                    userType === "student" ? "border-primary text-accent glow-sm" : "border-border text-white/70"
-                  }`}
-                >
-                  <GraduationCap className="w-3.5 h-3.5" /> Sou Estudante
-                </button>
-              </div>
-
               <GlowInput icon={User} type="text" placeholder="Nome completo" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-              <GlowInput
-                icon={Mail}
-                type="email"
-                placeholder={userType === "student" ? "Email institucional (.edu)" : "Email"}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <GlowInput icon={Mail} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
               <GlowInput icon={Lock} type="password" placeholder="Senha (mín. 8 caracteres)" value={password} onChange={(e) => setPassword(e.target.value)} required />
-
-              {userType === "student" && (
-                <div className="bg-background border border-border p-3">
-                  <p className="text-[10px] font-data text-white/80 uppercase tracking-wider">
-                    ⚡ Use seu email institucional (@fatec.sp.gov.br) para validação automática
-                  </p>
-                </div>
-              )}
 
               <button
                 type="submit"
@@ -259,7 +217,7 @@ export default function Auth() {
 
           {tab === "forgot" && (
             <form className="space-y-4" onSubmit={handleForgot}>
-              <p className="text-xs text-white/80 font-data uppercase tracking-wider mb-4">
+              <p className="text-xs text-foreground/80 font-data uppercase tracking-wider mb-4">
                 Informe seu email para receber o link de recuperação
               </p>
               <GlowInput icon={Mail} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
