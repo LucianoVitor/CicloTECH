@@ -56,8 +56,8 @@ export default function FAQ() {
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from("feedback")
+    const { data, error } = await (supabase as any)
+      .from("public_feedback")
       .select("*")
       .order("created_at", { ascending: false })
       .limit(20);
