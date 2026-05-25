@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Mail, Lock, User, Loader2 } from "lucide-react";
+import { Mail, Lock, User, Loader2, Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth, DEV_ADMIN_EMAIL, DEV_ADMIN_PASSWORD } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -24,6 +24,39 @@ function GlowInput({
         {...props}
         className="w-full bg-background border border-border py-3 pl-12 pr-4 text-sm font-data text-foreground placeholder:text-white/50 focus:outline-none focus:border-primary focus:glow-sm transition-all"
       />
+    </div>
+  );
+}
+
+function PasswordInput({
+  value,
+  onChange,
+  placeholder = "Senha",
+}: {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+}) {
+  const [show, setShow] = useState(false);
+  return (
+    <div className="relative group">
+      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 group-focus-within:text-primary transition-colors" />
+      <input
+        type={show ? "text" : "password"}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        required
+        className="w-full bg-background border border-border py-3 pl-12 pr-12 text-sm font-data text-foreground placeholder:text-white/50 focus:outline-none focus:border-primary focus:glow-sm transition-all"
+      />
+      <button
+        type="button"
+        onClick={() => setShow((s) => !s)}
+        aria-label={show ? "Ocultar senha" : "Mostrar senha"}
+        className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-white/60 hover:text-accent transition-colors"
+      >
+        {show ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+      </button>
     </div>
   );
 }
@@ -112,25 +145,6 @@ export default function Auth() {
     setTab("login");
   };
 
-  const handleQuickAdmin = async () => {
-    setBusy(true);
-    setEmail(DEV_ADMIN_EMAIL);
-    setPassword(DEV_ADMIN_PASSWORD);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: DEV_ADMIN_EMAIL,
-      password: DEV_ADMIN_PASSWORD,
-    });
-    setBusy(false);
-    if (error) {
-      toast.error("Admin dev ainda não criado. Use 'Cadastro' com este email para gerá-lo.");
-      setTab("register");
-      setFullName("Admin Dev");
-      return;
-    }
-    toast.success("Admin autenticado");
-    navigate("/admin");
-  };
-
   return (
     <section className="py-24 px-6 flex items-center justify-center min-h-[80vh]">
       <motion.div
@@ -170,7 +184,7 @@ export default function Auth() {
           {tab === "login" && (
             <form className="space-y-4" onSubmit={handleLogin}>
               <GlowInput icon={Mail} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              <GlowInput icon={Lock} type="password" placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
               <button
                 type="submit"
                 disabled={busy}
@@ -184,17 +198,6 @@ export default function Auth() {
                   Esqueceu a senha?
                 </button>
               </p>
-
-              <div className="pt-4 mt-4 border-t border-border/40">
-                <button
-                  type="button"
-                  onClick={handleQuickAdmin}
-                  disabled={busy}
-                  className="w-full py-2 text-[10px] font-data uppercase tracking-widest text-foreground/70 border border-border hover:border-accent hover:text-accent transition-all"
-                >
-                  ⚡ Login Rápido Admin (Dev)
-                </button>
-              </div>
             </form>
           )}
 
@@ -202,7 +205,7 @@ export default function Auth() {
             <form className="space-y-4" onSubmit={handleRegister}>
               <GlowInput icon={User} type="text" placeholder="Nome completo" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
               <GlowInput icon={Mail} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              <GlowInput icon={Lock} type="password" placeholder="Senha (mín. 8 caracteres)" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha (mín. 8 caracteres)" />
 
               <button
                 type="submit"
