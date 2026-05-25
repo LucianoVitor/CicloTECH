@@ -97,7 +97,30 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      public_feedback: {
+        Row: {
+          author_name: string | null
+          created_at: string | null
+          id: string | null
+          message: string | null
+          rating: number | null
+        }
+        Insert: {
+          author_name?: never
+          created_at?: string | null
+          id?: string | null
+          message?: string | null
+          rating?: number | null
+        }
+        Update: {
+          author_name?: never
+          created_at?: string | null
+          id?: string | null
+          message?: string | null
+          rating?: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
