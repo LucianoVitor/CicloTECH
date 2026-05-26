@@ -160,7 +160,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <a
                   data-social="linkedin"
                   aria-label="LinkedIn — Luciano Vitor"
-                  href="#"
+                  href="https://www.linkedin.com/in/matheus-fernandes-gobbi-0797b2318/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
