@@ -181,7 +181,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <a
                   data-social="linkedin"
                   aria-label="LinkedIn — Matheus Gobbi"
-                  href="#"
+                  href="https://www.linkedin.com/in/lucianovitor/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
