@@ -180,8 +180,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li className="icon-content">
                 <a
                   data-social="linkedin"
-                  aria-label="LinkedIn — Matheus Gobbi"
-                  href="https://www.linkedin.com/in/matheus-fernandes-gobbi-0797b2318/"
+                  aria-label="LinkedIn — Luciano Vitor"
+                  href="https://github.com/LucianoVitor/CicloTECH.git"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -202,7 +202,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <a
                   data-social="github"
                   aria-label="GitHub"
-                  href="https://github.com/LucianoVitor/CicloTECH.git"
+                  href="https://www.linkedin.com/in/matheus-fernandes-gobbi-0797b2318/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -220,7 +220,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div className="tooltip">GitHub</div>
               </li>
               <li className="icon-content">
-                <a data-social="instagram" aria-label="Instagram" href="#" target="_blank" rel="noopener noreferrer">
+                <a
+                  data-social="instagram"
+                  aria-label="GitHub"
+                  href="https://github.com/LucianoVitor/CicloTECH"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <div className="filled"></div>
                   <svg
                     viewBox="0 0 16 16"
