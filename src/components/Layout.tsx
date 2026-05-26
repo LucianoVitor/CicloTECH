@@ -180,7 +180,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li className="icon-content">
                 <a
                   data-social="linkedin"
-                  aria-label="LinkedIn — Luciano Vitor"
+                  aria-label="LinkedIn — Matheus Gobbi"
                   href="https://www.linkedin.com/in/matheus-fernandes-gobbi-0797b2318/"
                   target="_blank"
                   rel="noopener noreferrer"
