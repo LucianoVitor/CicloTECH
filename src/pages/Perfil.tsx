@@ -22,6 +22,7 @@ const mockTrocas = [
 export default function Perfil() {
   const navigate = useNavigate();
   const { user, loading, isAdmin, signOut } = useAuth();
+  const { favorites, toggleFavorite } = useAppStore();
   const [tab, setTab] = useState<Tab>("solicitacoes");
   const [profile, setProfile] = useState<any>(null);
   const [editing, setEditing] = useState(false);
@@ -218,14 +219,36 @@ export default function Perfil() {
               />
             )}
             {tab === "favoritos" && (
-              <ListBlock
-                title="Meus Favoritos"
-                empty="Nenhum item favoritado"
-                items={mockFavoritos.map((f) => ({
-                  primary: f.item,
-                  secondary: f.category,
-                }))}
-              />
+              <div>
+                <h3 className="text-sm font-data uppercase tracking-widest text-white mb-6">Meus Favoritos</h3>
+                {favorites.length === 0 ? (
+                  <p className="text-white/60 font-data text-xs uppercase text-center py-12">Nenhum item favoritado</p>
+                ) : (
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {favorites.map((f) => (
+                      <div key={f.id} className="flex items-center gap-3 p-3 bg-background border border-border hover:border-primary/40 transition-all">
+                        {f.image && <img src={f.image} alt="" className="w-14 h-14 object-cover border border-border" />}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-data text-white truncate">{f.title}</p>
+                          <p className="text-[10px] font-data text-white/60 uppercase mt-1">
+                            {f.type === "donation" ? "Doação" : "Troca"} • {f.category}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            toggleFavorite(f);
+                            toast.success("Removido dos favoritos");
+                          }}
+                          className="p-2 border border-border text-white/60 hover:text-destructive hover:border-destructive transition"
+                          aria-label="Remover"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         </div>
