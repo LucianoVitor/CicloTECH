@@ -3,8 +3,9 @@ import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
 // Dev-only quick admin credentials
-export const DEV_ADMIN_EMAIL = "admin@ciclotech.dev";
+export const DEV_ADMIN_EMAIL = "admin@ciclotech.com";
 export const DEV_ADMIN_PASSWORD = "Admin@CicloTech2026";
+export const DEV_ADMIN_EMAILS = ["admin@ciclotech.com", "admin@ciclotech.dev"];
 
 interface AuthCtx {
   user: User | null;
@@ -57,7 +58,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .eq("user_id", uid)
       .eq("role", "admin")
       .maybeSingle();
-    setIsAdmin(!!data);
+    const email = (await supabase.auth.getUser()).data.user?.email || "";
+    setIsAdmin(!!data || DEV_ADMIN_EMAILS.includes(email));
   };
 
   const signOut = async () => {

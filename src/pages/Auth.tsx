@@ -63,7 +63,7 @@ function PasswordInput({
 
 export default function Auth() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [tab, setTab] = useState<"login" | "register" | "forgot">("login");
   const [busy, setBusy] = useState(false);
 
@@ -72,8 +72,8 @@ export default function Auth() {
   const [fullName, setFullName] = useState("");
 
   useEffect(() => {
-    if (user) navigate("/perfil", { replace: true });
-  }, [user, navigate]);
+    if (user) navigate(isAdmin ? "/admin" : "/perfil", { replace: true });
+  }, [user, isAdmin, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,7 +92,7 @@ export default function Auth() {
       return;
     }
     toast.success("Bem-vindo ao Ciclo Tech");
-    navigate("/perfil");
+    // useEffect handles redirect based on isAdmin
   };
 
   const handleRegister = async (e: React.FormEvent) => {

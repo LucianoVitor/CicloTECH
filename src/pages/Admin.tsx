@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppStore } from "@/store/AppStore";
 import { toast } from "sonner";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
@@ -30,13 +31,28 @@ const mockTrades = [
 export default function Admin() {
   const navigate = useNavigate();
   const { user, loading, isAdmin } = useAuth();
+  const { donations, trades, reports, removeDonation, removeTrade, resolveReport } = useAppStore();
   const [tab, setTab] = useState<TabId>("overview");
   const [users, setUsers] = useState<any[]>([]);
   const [feedback, setFeedback] = useState<any[]>([]);
-  const [ads, setAds] = useState(mockAds);
-  const [trades, setTrades] = useState(mockTrades);
   const [query, setQuery] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+
+  // Merge live store donations with mock seeds for moderation view
+  const allAds = useMemo(() => {
+    const live = donations.map((d) => ({
+      id: d.id, title: d.title, owner: d.ownerEmail, status: d.status || "Ativo",
+      category: d.category, date: new Date(d.createdAt).toISOString().slice(0, 10), isLive: true,
+    }));
+    return [...live, ...mockAds.map((a) => ({ ...a, id: String(a.id), isLive: false }))];
+  }, [donations]);
+
+  const allTrades = useMemo(() => {
+    const live = trades.map((t) => ({
+      id: t.id, item: t.title, from: t.ownerEmail, to: "—", status: t.status || "Ativo", isLive: true,
+    }));
+    return [...live, ...mockTrades.map((t) => ({ ...t, id: String(t.id), isLive: false }))];
+  }, [trades]);
 
   useEffect(() => {
     if (loading) return;
@@ -64,25 +80,29 @@ export default function Admin() {
     const avg = feedback.length ? feedback.reduce((s, f) => s + (f.rating || 0), 0) / feedback.length : 0;
     return {
       users: users.length,
-      ads: ads.filter(a => a.status === "Ativo").length,
-      trades: trades.length,
+      ads: allAds.filter(a => a.status === "Ativo").length,
+      trades: allTrades.length,
       feedback: feedback.length,
       avgRating: avg.toFixed(1),
       donors: users.filter(u => u.user_type === "donor").length,
       students: users.filter(u => u.user_type === "student").length,
+      reports: reports.length,
     };
-  }, [users, ads, trades, feedback]);
+  }, [users, allAds, allTrades, feedback, reports]);
 
   const filteredUsers = users.filter(u =>
     !query || (u.full_name || "").toLowerCase().includes(query.toLowerCase()) ||
     (u.phone || "").includes(query)
   );
 
-  const deleteAd = (id: number) => { setAds(ads.filter(a => a.id !== id)); toast.success("Anúncio removido"); };
-  const editAd = (id: number) => toast.info(`Editar anúncio #${id} (mock)`);
-  const cancelTrade = (id: number) => {
-    setTrades(trades.map(t => t.id === id ? { ...t, status: "Cancelada" } : t));
-    toast.success("Troca cancelada por irregularidade");
+  const deleteAd = (id: string, isLive: boolean) => {
+    if (isLive) removeDonation(id);
+    toast.success("Anúncio removido");
+  };
+  const editAd = (id: string) => toast.info(`Editar anúncio #${id}`);
+  const cancelTrade = (id: string, isLive: boolean) => {
+    if (isLive) removeTrade(id);
+    toast.success("Troca cancelada");
   };
   const deleteFeedback = async (id: string) => {
     const { error } = await supabase.from("feedback").delete().eq("id", id);
@@ -188,8 +208,8 @@ export default function Admin() {
               <div className="space-y-4">
                 <h3 className="text-xs font-data uppercase tracking-widest text-primary">Atividade</h3>
                 <Metric icon={TrendingUp} label="Total de feedbacks" value={stats.feedback} />
-                <Metric icon={Package} label="Anúncios cadastrados" value={ads.length} />
-                <Metric icon={Ban} label="Trocas reportadas" value={trades.filter(t => t.status === "Reportado").length} />
+                <Metric icon={Package} label="Anúncios cadastrados" value={allAds.length} />
+                <Metric icon={Flag} label="Denúncias pendentes" value={stats.reports} />
               </div>
             </div>
           )}
@@ -248,7 +268,7 @@ export default function Admin() {
 
           {tab === "ads" && (
             <div className="space-y-3">
-              {ads.map(ad => (
+              {allAds.map(ad => (
                 <div key={ad.id} className="flex items-center justify-between p-4 bg-background border border-border hover:border-primary/40 transition-all">
                   <div>
                     <p className="text-sm font-data text-foreground">{ad.title}</p>
@@ -259,11 +279,11 @@ export default function Admin() {
                   <div className="flex items-center gap-2">
                     <span className={`px-2 py-0.5 text-[10px] font-data uppercase border ${
                       ad.status === "Ativo" ? "border-accent/50 text-accent" : "border-foreground/30 text-foreground/60"
-                    }`}>{ad.status}</span>
+                    }`}>{ad.status}{ad.isLive && " ★"}</span>
                     <button onClick={() => editAd(ad.id)} className="p-2 border border-border hover:border-accent text-foreground/70 hover:text-accent transition">
                       <Edit className="w-3.5 h-3.5" />
                     </button>
-                    <button onClick={() => deleteAd(ad.id)} className="p-2 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition">
+                    <button onClick={() => deleteAd(ad.id, ad.isLive)} className="p-2 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -274,7 +294,7 @@ export default function Admin() {
 
           {tab === "trades" && (
             <div className="space-y-3">
-              {trades.map(t => (
+              {allTrades.map(t => (
                 <div key={t.id} className="flex items-center justify-between p-4 bg-background border border-border">
                   <div>
                     <p className="text-sm font-data text-foreground">{t.item}</p>
@@ -283,14 +303,46 @@ export default function Admin() {
                   <div className="flex items-center gap-2">
                     <span className={`px-2 py-0.5 text-[10px] font-data uppercase border ${
                       t.status === "Cancelada" ? "border-destructive/60 text-destructive" :
-                      t.status === "Reportado" ? "border-yellow-500/60 text-yellow-500" :
                       "border-accent/50 text-accent"
-                    }`}>{t.status}</span>
+                    }`}>{t.status}{t.isLive && " ★"}</span>
                     {t.status !== "Cancelada" && (
-                      <button onClick={() => cancelTrade(t.id)} className="flex items-center gap-1 p-2 px-3 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition text-[10px] font-data uppercase">
+                      <button onClick={() => cancelTrade(t.id, t.isLive)} className="flex items-center gap-1 p-2 px-3 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition text-[10px] font-data uppercase">
                         <Ban className="w-3 h-3" /> Cancelar
                       </button>
                     )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {tab === "reports" && (
+            <div className="space-y-3">
+              {reports.length === 0 ? (
+                <p className="py-8 text-center text-foreground/60 font-data text-xs uppercase tracking-widest">Nenhuma denúncia pendente</p>
+              ) : reports.map(r => (
+                <div key={r.id} className="flex items-center justify-between p-4 bg-background border border-yellow-500/40">
+                  <div>
+                    <p className="text-sm font-data text-foreground flex items-center gap-2">
+                      <Flag className="w-3.5 h-3.5 text-yellow-500" /> {r.itemTitle}
+                    </p>
+                    <p className="text-[11px] font-data text-foreground/60 uppercase mt-1">
+                      {r.itemType === "donation" ? "Doação" : "Troca"} • Reportado por {r.reportedBy} • {new Date(r.createdAt).toLocaleDateString("pt-BR")}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => { resolveReport(r.id, false); toast.success("Denúncia rejeitada"); }}
+                      className="flex items-center gap-1 p-2 px-3 border border-border hover:border-accent text-foreground/70 hover:text-accent transition text-[10px] font-data uppercase"
+                    >
+                      <Check className="w-3 h-3" /> Rejeitar
+                    </button>
+                    <button
+                      onClick={() => { resolveReport(r.id, true); toast.success("Anúncio excluído"); }}
+                      className="flex items-center gap-1 p-2 px-3 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition text-[10px] font-data uppercase"
+                    >
+                      <Trash2 className="w-3 h-3" /> Excluir anúncio
+                    </button>
                   </div>
                 </div>
               ))}

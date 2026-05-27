@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Upload, Package, FileText, Image as ImageIcon, X, CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useAppStore, fileToDataURL } from "@/store/AppStore";
+import { useAuth } from "@/hooks/useAuth";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -17,6 +20,9 @@ const categoryOptions = [
 const conditions = ["Novo", "Excelente", "Bom estado", "Funcional", "Para peças"];
 
 export default function DoarEquipamento() {
+  const navigate = useNavigate();
+  const { addDonation } = useAppStore();
+  const { user } = useAuth();
   const fileInput = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -56,11 +62,20 @@ export default function DoarEquipamento() {
       return;
     }
     setBusy(true);
-    await new Promise((r) => setTimeout(r, 900));
+    const image = await fileToDataURL(files[0]);
+    addDonation({
+      title: title.trim(),
+      category,
+      condition,
+      description: description.trim(),
+      image,
+      owner: user?.email?.split("@")[0] || "Doador anônimo",
+      ownerEmail: user?.email || "anon@ciclotech.com",
+    });
     setBusy(false);
     setSuccess(true);
-    toast.success("Doação enviada com sucesso!", {
-      description: "Nossa equipe entrará em contato em breve para retirada.",
+    toast.success("Doação publicada com sucesso!", {
+      description: "Seu item já está visível na página de Doações.",
     });
   };
 
@@ -72,6 +87,9 @@ export default function DoarEquipamento() {
     setFiles([]);
     setSuccess(false);
   };
+
+  const goToDonations = () => navigate("/doacoes");
+
 
   return (
     <section className="py-24 px-6 max-w-3xl mx-auto">
@@ -105,15 +123,22 @@ export default function DoarEquipamento() {
             Doação enviada com sucesso!
           </h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-            Recebemos seu equipamento <strong className="text-accent">{title}</strong>. Nossa equipe
-            avaliará as fotos e entrará em contato para combinar a retirada.
+            Seu equipamento <strong className="text-accent">{title}</strong> já está publicado na página de Doações e visível para outros usuários.
           </p>
-          <button
-            onClick={reset}
-            className="px-6 py-3 bg-primary text-primary-foreground font-data text-xs uppercase tracking-widest border border-accent glow-sm hover:glow-md transition-all"
-          >
-            Cadastrar outra doação
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={goToDonations}
+              className="px-6 py-3 bg-primary text-primary-foreground font-data text-xs uppercase tracking-widest border border-accent glow-sm hover:glow-md transition-all"
+            >
+              Ver em Doações
+            </button>
+            <button
+              onClick={reset}
+              className="px-6 py-3 border border-border text-foreground font-data text-xs uppercase tracking-widest hover:border-primary transition-all"
+            >
+              Cadastrar outra doação
+            </button>
+          </div>
         </motion.div>
       ) : (
         <motion.form

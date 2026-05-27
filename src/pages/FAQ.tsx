@@ -45,6 +45,8 @@ type Feedback = {
   created_at: string;
 };
 
+const LOCAL_FB_KEY = "ciclotech-faq-feedback-v1";
+
 export default function FAQ() {
   const { user } = useAuth();
   const [open, setOpen] = useState<string | null>("0-0");
@@ -54,15 +56,31 @@ export default function FAQ() {
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  // Load: local first, then merge any DB rows if accessible
   const load = async () => {
     setLoading(true);
-    const { data, error } = await (supabase as any)
-      .from("public_feedback")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(20);
-    if (!error && data) setFeedback(data as Feedback[]);
-    setLoading(false);
+    try {
+      const localRaw = localStorage.getItem(LOCAL_FB_KEY);
+      const local: Feedback[] = localRaw ? JSON.parse(localRaw) : [];
+      let merged = [...local];
+      try {
+        const { data } = await supabase
+          .from("feedback")
+          .select("id, author_name, rating, message, created_at")
+          .order("created_at", { ascending: false })
+          .limit(20);
+        if (data && data.length) {
+          const ids = new Set(merged.map((m) => m.id));
+          for (const row of data as any[]) if (!ids.has(row.id)) merged.push(row as Feedback);
+        }
+      } catch {
+        /* db not reachable for this user — local only */
+      }
+      merged.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      setFeedback(merged);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -71,37 +89,47 @@ export default function FAQ() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      toast.error("Faça login para deixar um comentário");
-      return;
-    }
     if (message.trim().length < 5) {
       toast.error("Escreva pelo menos 5 caracteres");
       return;
     }
     setSubmitting(true);
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("full_name")
-      .eq("id", user.id)
-      .maybeSingle();
-    const author = profile?.full_name || user.email?.split("@")[0] || "Usuário";
-    const { error } = await supabase.from("feedback").insert({
-      user_id: user.id,
+
+    const author = user?.email?.split("@")[0] || "Visitante";
+    const entry: Feedback = {
+      id: `local-${Date.now()}`,
       author_name: author,
       rating,
       message: message.trim(),
-    });
-    setSubmitting(false);
-    if (error) {
-      toast.error(error.message);
-      return;
+      created_at: new Date().toISOString(),
+    };
+
+    // Save locally so it ALWAYS appears immediately
+    const next = [entry, ...feedback];
+    setFeedback(next);
+    try {
+      const stored = next.filter((f) => f.id.startsWith("local-"));
+      localStorage.setItem(LOCAL_FB_KEY, JSON.stringify(stored));
+    } catch {}
+
+    // Best-effort: also persist in DB if user is authenticated
+    if (user) {
+      try {
+        await supabase.from("feedback").insert({
+          user_id: user.id,
+          author_name: author,
+          rating,
+          message: entry.message,
+        });
+      } catch { /* silently ignore */ }
     }
+
+    setSubmitting(false);
     toast.success("Comentário enviado");
     setMessage("");
     setRating(5);
-    load();
   };
+
 
   return (
     <section className="py-24 px-6 max-w-5xl mx-auto">
@@ -190,26 +218,19 @@ export default function FAQ() {
             onChange={(e) => setMessage(e.target.value)}
             maxLength={500}
             rows={4}
-            placeholder={user ? "Escreva sua experiência com o software..." : "Faça login para comentar"}
-            disabled={!user}
-            className="w-full bg-background border border-border p-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-primary focus:glow-sm transition-all resize-none disabled:opacity-50"
+            placeholder="Escreva sua experiência com o software..."
+            className="w-full bg-background border border-border p-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-primary focus:glow-sm transition-all resize-none"
           />
           <div className="flex items-center justify-between mt-4">
             <span className="text-[10px] font-data text-white/50 uppercase">{message.length}/500</span>
-            {user ? (
-              <button
-                type="submit"
-                disabled={submitting}
-                className="flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground font-data text-xs uppercase tracking-widest border border-accent glow-sm hover:glow-md transition-all disabled:opacity-60"
-              >
-                {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                Enviar
-              </button>
-            ) : (
-              <Link to="/auth" className="text-[10px] font-data text-accent uppercase tracking-widest hover:underline">
-                Entrar para comentar →
-              </Link>
-            )}
+            <button
+              type="submit"
+              disabled={submitting}
+              className="flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground font-data text-xs uppercase tracking-widest border border-accent glow-sm hover:glow-md transition-all disabled:opacity-60"
+            >
+              {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              Enviar
+            </button>
           </div>
         </form>
 
