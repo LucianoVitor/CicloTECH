@@ -1,26 +1,22 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { User, Heart, RefreshCw, ClipboardList, LogOut, Camera, Loader2, ShieldCheck } from "lucide-react";
+import { User, Heart, RefreshCw, ClipboardList, LogOut, Camera, Loader2, ShieldCheck, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useAppStore } from "@/store/AppStore";
 import { toast } from "sonner";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 type Tab = "solicitacoes" | "trocas" | "favoritos";
 
-// Mocked data — table structure not requested yet
 const mockSolicitacoes = [
   { id: 1, item: "Memória RAM 8GB DDR4", status: "Aguardando", date: "20/04/2026" },
   { id: 2, item: "SSD 240GB Kingston", status: "Aprovada", date: "15/04/2026" },
 ];
 const mockTrocas = [
   { id: 1, item: "Processador Intel i5-7400", with: "Carlos M.", date: "10/03/2026" },
-];
-const mockFavoritos = [
-  { id: 1, item: "GPU GTX 1050 Ti", category: "GPU" },
-  { id: 2, item: "Monitor LG 22'' Full HD", category: "Monitor" },
 ];
 
 export default function Perfil() {

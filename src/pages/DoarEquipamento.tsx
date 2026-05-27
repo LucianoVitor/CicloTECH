@@ -123,15 +123,22 @@ export default function DoarEquipamento() {
             Doação enviada com sucesso!
           </h2>
           <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-            Recebemos seu equipamento <strong className="text-accent">{title}</strong>. Nossa equipe
-            avaliará as fotos e entrará em contato para combinar a retirada.
+            Seu equipamento <strong className="text-accent">{title}</strong> já está publicado na página de Doações e visível para outros usuários.
           </p>
-          <button
-            onClick={reset}
-            className="px-6 py-3 bg-primary text-primary-foreground font-data text-xs uppercase tracking-widest border border-accent glow-sm hover:glow-md transition-all"
-          >
-            Cadastrar outra doação
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={goToDonations}
+              className="px-6 py-3 bg-primary text-primary-foreground font-data text-xs uppercase tracking-widest border border-accent glow-sm hover:glow-md transition-all"
+            >
+              Ver em Doações
+            </button>
+            <button
+              onClick={reset}
+              className="px-6 py-3 border border-border text-foreground font-data text-xs uppercase tracking-widest hover:border-primary transition-all"
+            >
+              Cadastrar outra doação
+            </button>
+          </div>
         </motion.div>
       ) : (
         <motion.form
