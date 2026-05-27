@@ -208,8 +208,8 @@ export default function Admin() {
               <div className="space-y-4">
                 <h3 className="text-xs font-data uppercase tracking-widest text-primary">Atividade</h3>
                 <Metric icon={TrendingUp} label="Total de feedbacks" value={stats.feedback} />
-                <Metric icon={Package} label="Anúncios cadastrados" value={ads.length} />
-                <Metric icon={Ban} label="Trocas reportadas" value={trades.filter(t => t.status === "Reportado").length} />
+                <Metric icon={Package} label="Anúncios cadastrados" value={allAds.length} />
+                <Metric icon={Flag} label="Denúncias pendentes" value={stats.reports} />
               </div>
             </div>
           )}
@@ -268,7 +268,7 @@ export default function Admin() {
 
           {tab === "ads" && (
             <div className="space-y-3">
-              {ads.map(ad => (
+              {allAds.map(ad => (
                 <div key={ad.id} className="flex items-center justify-between p-4 bg-background border border-border hover:border-primary/40 transition-all">
                   <div>
                     <p className="text-sm font-data text-foreground">{ad.title}</p>
@@ -279,11 +279,11 @@ export default function Admin() {
                   <div className="flex items-center gap-2">
                     <span className={`px-2 py-0.5 text-[10px] font-data uppercase border ${
                       ad.status === "Ativo" ? "border-accent/50 text-accent" : "border-foreground/30 text-foreground/60"
-                    }`}>{ad.status}</span>
+                    }`}>{ad.status}{ad.isLive && " ★"}</span>
                     <button onClick={() => editAd(ad.id)} className="p-2 border border-border hover:border-accent text-foreground/70 hover:text-accent transition">
                       <Edit className="w-3.5 h-3.5" />
                     </button>
-                    <button onClick={() => deleteAd(ad.id)} className="p-2 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition">
+                    <button onClick={() => deleteAd(ad.id, ad.isLive)} className="p-2 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -294,7 +294,7 @@ export default function Admin() {
 
           {tab === "trades" && (
             <div className="space-y-3">
-              {trades.map(t => (
+              {allTrades.map(t => (
                 <div key={t.id} className="flex items-center justify-between p-4 bg-background border border-border">
                   <div>
                     <p className="text-sm font-data text-foreground">{t.item}</p>
@@ -303,14 +303,46 @@ export default function Admin() {
                   <div className="flex items-center gap-2">
                     <span className={`px-2 py-0.5 text-[10px] font-data uppercase border ${
                       t.status === "Cancelada" ? "border-destructive/60 text-destructive" :
-                      t.status === "Reportado" ? "border-yellow-500/60 text-yellow-500" :
                       "border-accent/50 text-accent"
-                    }`}>{t.status}</span>
+                    }`}>{t.status}{t.isLive && " ★"}</span>
                     {t.status !== "Cancelada" && (
-                      <button onClick={() => cancelTrade(t.id)} className="flex items-center gap-1 p-2 px-3 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition text-[10px] font-data uppercase">
+                      <button onClick={() => cancelTrade(t.id, t.isLive)} className="flex items-center gap-1 p-2 px-3 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition text-[10px] font-data uppercase">
                         <Ban className="w-3 h-3" /> Cancelar
                       </button>
                     )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {tab === "reports" && (
+            <div className="space-y-3">
+              {reports.length === 0 ? (
+                <p className="py-8 text-center text-foreground/60 font-data text-xs uppercase tracking-widest">Nenhuma denúncia pendente</p>
+              ) : reports.map(r => (
+                <div key={r.id} className="flex items-center justify-between p-4 bg-background border border-yellow-500/40">
+                  <div>
+                    <p className="text-sm font-data text-foreground flex items-center gap-2">
+                      <Flag className="w-3.5 h-3.5 text-yellow-500" /> {r.itemTitle}
+                    </p>
+                    <p className="text-[11px] font-data text-foreground/60 uppercase mt-1">
+                      {r.itemType === "donation" ? "Doação" : "Troca"} • Reportado por {r.reportedBy} • {new Date(r.createdAt).toLocaleDateString("pt-BR")}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => { resolveReport(r.id, false); toast.success("Denúncia rejeitada"); }}
+                      className="flex items-center gap-1 p-2 px-3 border border-border hover:border-accent text-foreground/70 hover:text-accent transition text-[10px] font-data uppercase"
+                    >
+                      <Check className="w-3 h-3" /> Rejeitar
+                    </button>
+                    <button
+                      onClick={() => { resolveReport(r.id, true); toast.success("Anúncio excluído"); }}
+                      className="flex items-center gap-1 p-2 px-3 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition text-[10px] font-data uppercase"
+                    >
+                      <Trash2 className="w-3 h-3" /> Excluir anúncio
+                    </button>
                   </div>
                 </div>
               ))}
