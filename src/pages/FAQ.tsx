@@ -218,9 +218,8 @@ export default function FAQ() {
             onChange={(e) => setMessage(e.target.value)}
             maxLength={500}
             rows={4}
-            placeholder={user ? "Escreva sua experiência com o software..." : "Faça login para comentar"}
-            disabled={!user}
-            className="w-full bg-background border border-border p-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-primary focus:glow-sm transition-all resize-none disabled:opacity-50"
+            placeholder="Escreva sua experiência com o software..."
+            className="w-full bg-background border border-border p-4 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-primary focus:glow-sm transition-all resize-none"
           />
           <div className="flex items-center justify-between mt-4">
             <span className="text-[10px] font-data text-white/50 uppercase">{message.length}/500</span>
@@ -232,12 +231,6 @@ export default function FAQ() {
               {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
               Enviar
             </button>
-          </div>
-            ) : (
-              <Link to="/auth" className="text-[10px] font-data text-accent uppercase tracking-widest hover:underline">
-                Entrar para comentar →
-              </Link>
-            )}
           </div>
         </form>
 
