@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
+import { AppStoreProvider } from "@/store/AppStore";
 import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import ComoDoar from "./pages/ComoDoar";
@@ -30,23 +31,26 @@ const App = () => (
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/como-doar" element={<ComoDoar />} />
-                <Route path="/solicitar" element={<SolicitarHardware />} />
-                <Route path="/impacto" element={<ImpactoODS />} />
-                <Route path="/sobre" element={<SobreNos />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/doar" element={<DoarEquipamento />} />
-                <Route path="/perfil" element={<Perfil />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/trocas" element={<Trocas />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Layout>
+            <AppStoreProvider>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/como-doar" element={<ComoDoar />} />
+                  <Route path="/solicitar" element={<SolicitarHardware />} />
+                  <Route path="/doacoes" element={<SolicitarHardware />} />
+                  <Route path="/impacto" element={<ImpactoODS />} />
+                  <Route path="/sobre" element={<SobreNos />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/doar" element={<DoarEquipamento />} />
+                  <Route path="/perfil" element={<Perfil />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/trocas" element={<Trocas />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Layout>
+            </AppStoreProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
