@@ -30,13 +30,28 @@ const mockTrades = [
 export default function Admin() {
   const navigate = useNavigate();
   const { user, loading, isAdmin } = useAuth();
+  const { donations, trades, reports, removeDonation, removeTrade, resolveReport } = useAppStore();
   const [tab, setTab] = useState<TabId>("overview");
   const [users, setUsers] = useState<any[]>([]);
   const [feedback, setFeedback] = useState<any[]>([]);
-  const [ads, setAds] = useState(mockAds);
-  const [trades, setTrades] = useState(mockTrades);
   const [query, setQuery] = useState("");
   const [refreshing, setRefreshing] = useState(false);
+
+  // Merge live store donations with mock seeds for moderation view
+  const allAds = useMemo(() => {
+    const live = donations.map((d) => ({
+      id: d.id, title: d.title, owner: d.ownerEmail, status: d.status || "Ativo",
+      category: d.category, date: new Date(d.createdAt).toISOString().slice(0, 10), isLive: true,
+    }));
+    return [...live, ...mockAds.map((a) => ({ ...a, id: String(a.id), isLive: false }))];
+  }, [donations]);
+
+  const allTrades = useMemo(() => {
+    const live = trades.map((t) => ({
+      id: t.id, item: t.title, from: t.ownerEmail, to: "—", status: t.status || "Ativo", isLive: true,
+    }));
+    return [...live, ...mockTrades.map((t) => ({ ...t, id: String(t.id), isLive: false }))];
+  }, [trades]);
 
   useEffect(() => {
     if (loading) return;
@@ -64,25 +79,29 @@ export default function Admin() {
     const avg = feedback.length ? feedback.reduce((s, f) => s + (f.rating || 0), 0) / feedback.length : 0;
     return {
       users: users.length,
-      ads: ads.filter(a => a.status === "Ativo").length,
-      trades: trades.length,
+      ads: allAds.filter(a => a.status === "Ativo").length,
+      trades: allTrades.length,
       feedback: feedback.length,
       avgRating: avg.toFixed(1),
       donors: users.filter(u => u.user_type === "donor").length,
       students: users.filter(u => u.user_type === "student").length,
+      reports: reports.length,
     };
-  }, [users, ads, trades, feedback]);
+  }, [users, allAds, allTrades, feedback, reports]);
 
   const filteredUsers = users.filter(u =>
     !query || (u.full_name || "").toLowerCase().includes(query.toLowerCase()) ||
     (u.phone || "").includes(query)
   );
 
-  const deleteAd = (id: number) => { setAds(ads.filter(a => a.id !== id)); toast.success("Anúncio removido"); };
-  const editAd = (id: number) => toast.info(`Editar anúncio #${id} (mock)`);
-  const cancelTrade = (id: number) => {
-    setTrades(trades.map(t => t.id === id ? { ...t, status: "Cancelada" } : t));
-    toast.success("Troca cancelada por irregularidade");
+  const deleteAd = (id: string, isLive: boolean) => {
+    if (isLive) removeDonation(id);
+    toast.success("Anúncio removido");
+  };
+  const editAd = (id: string) => toast.info(`Editar anúncio #${id}`);
+  const cancelTrade = (id: string, isLive: boolean) => {
+    if (isLive) removeTrade(id);
+    toast.success("Troca cancelada");
   };
   const deleteFeedback = async (id: string) => {
     const { error } = await supabase.from("feedback").delete().eq("id", id);
