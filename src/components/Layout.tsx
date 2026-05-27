@@ -7,7 +7,7 @@ import { useTheme } from "@/hooks/useTheme";
 const navLinks = [
   { label: "Início", path: "/" },
   { label: "Como Doar", path: "/como-doar" },
-  { label: "Solicitar Hardware", path: "/solicitar" },
+  { label: "Doações", path: "/doacoes" },
   { label: "Trocas", path: "/trocas" },
 ];
 
@@ -160,9 +160,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <a
                   data-social="linkedin"
                   aria-label="LinkedIn — Luciano Vitor"
-                  href="https://www.linkedin.com/in/matheus-fernandes-gobbi-0797b2318/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#linkedin-luciano"
                 >
                   <div className="filled"></div>
                   <svg
@@ -181,9 +179,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <a
                   data-social="linkedin"
                   aria-label="LinkedIn — Matheus Gobbi"
-                  href="https://www.linkedin.com/in/matheus-fernandes-gobbi-0797b2318/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#linkedin-matheus"
                 >
                   <div className="filled"></div>
                   <svg
@@ -202,9 +198,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <a
                   data-social="github"
                   aria-label="GitHub"
-                  href="https://github.com/LucianoVitor/CicloTECH.git"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="#github"
                 >
                   <div className="filled"></div>
                   <svg
@@ -222,10 +216,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <li className="icon-content">
                 <a
                   data-social="instagram"
-                  aria-label="GitHub"
-                  href="https://github.com/LucianoVitor/CicloTECH"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  href="#instagram"
                 >
                   <div className="filled"></div>
                   <svg
