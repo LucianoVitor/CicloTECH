@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Upload, Package, FileText, Image as ImageIcon, X, CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useAppStore, fileToDataURL } from "@/store/AppStore";
+import { useAuth } from "@/hooks/useAuth";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -17,6 +20,9 @@ const categoryOptions = [
 const conditions = ["Novo", "Excelente", "Bom estado", "Funcional", "Para peças"];
 
 export default function DoarEquipamento() {
+  const navigate = useNavigate();
+  const { addDonation } = useAppStore();
+  const { user } = useAuth();
   const fileInput = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -56,11 +62,20 @@ export default function DoarEquipamento() {
       return;
     }
     setBusy(true);
-    await new Promise((r) => setTimeout(r, 900));
+    const image = await fileToDataURL(files[0]);
+    addDonation({
+      title: title.trim(),
+      category,
+      condition,
+      description: description.trim(),
+      image,
+      owner: user?.email?.split("@")[0] || "Doador anônimo",
+      ownerEmail: user?.email || "anon@ciclotech.com",
+    });
     setBusy(false);
     setSuccess(true);
-    toast.success("Doação enviada com sucesso!", {
-      description: "Nossa equipe entrará em contato em breve para retirada.",
+    toast.success("Doação publicada com sucesso!", {
+      description: "Seu item já está visível na página de Doações.",
     });
   };
 
@@ -72,6 +87,9 @@ export default function DoarEquipamento() {
     setFiles([]);
     setSuccess(false);
   };
+
+  const goToDonations = () => navigate("/doacoes");
+
 
   return (
     <section className="py-24 px-6 max-w-3xl mx-auto">
