@@ -13,7 +13,7 @@ import { toast } from "sonner";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-type TabId = "overview" | "users" | "ads" | "trades" | "feedback";
+type TabId = "overview" | "users" | "ads" | "trades" | "reports" | "feedback";
 
 const mockAds = [
   { id: 1, title: "Memória RAM 8GB DDR4 Corsair", owner: "joao@email.com", status: "Ativo", category: "RAM", date: "2026-05-10" },
