@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   ShieldCheck, Users, Package, RefreshCw, Trash2, Edit, Ban, Loader2,
   MessageSquare, Search, UserCog, Star, Activity, TrendingUp, Download,
+  Flag, Check,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -12,7 +13,7 @@ import { toast } from "sonner";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-type TabId = "overview" | "users" | "ads" | "trades" | "feedback";
+type TabId = "overview" | "users" | "ads" | "trades" | "reports" | "feedback";
 
 const mockAds = [
   { id: 1, title: "Memória RAM 8GB DDR4 Corsair", owner: "joao@email.com", status: "Ativo", category: "RAM", date: "2026-05-10" },
@@ -136,6 +137,7 @@ export default function Admin() {
     { id: "users", label: "Usuários", icon: Users },
     { id: "ads", label: "Anúncios", icon: Package },
     { id: "trades", label: "Trocas", icon: RefreshCw },
+    { id: "reports", label: "Denúncias", icon: Flag },
     { id: "feedback", label: "Feedback", icon: MessageSquare },
   ];
 
