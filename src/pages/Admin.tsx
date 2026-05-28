@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
   ShieldCheck, Users, Package, RefreshCw, Trash2, Edit, Ban, Loader2,
   MessageSquare, Search, UserCog, Star, Activity, TrendingUp, Download,
+  Flag, Check,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
