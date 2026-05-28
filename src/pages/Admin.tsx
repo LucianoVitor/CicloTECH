@@ -137,6 +137,7 @@ export default function Admin() {
     { id: "users", label: "Usuários", icon: Users },
     { id: "ads", label: "Anúncios", icon: Package },
     { id: "trades", label: "Trocas", icon: RefreshCw },
+    { id: "reports", label: "Denúncias", icon: Flag },
     { id: "feedback", label: "Feedback", icon: MessageSquare },
   ];
 
