@@ -11,18 +11,11 @@ const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 type Tab = "solicitacoes" | "trocas" | "favoritos";
 
-const mockSolicitacoes = [
-  { id: 1, item: "Memória RAM 8GB DDR4", status: "Aguardando", date: "20/04/2026" },
-  { id: 2, item: "SSD 240GB Kingston", status: "Aprovada", date: "15/04/2026" },
-];
-const mockTrocas = [
-  { id: 1, item: "Processador Intel i5-7400", with: "Carlos M.", date: "10/03/2026" },
-];
 
 export default function Perfil() {
   const navigate = useNavigate();
   const { user, loading, isAdmin, signOut } = useAuth();
-  const { favorites, toggleFavorite } = useAppStore();
+  const { favorites, toggleFavorite, donations, trades } = useAppStore();
   const [tab, setTab] = useState<Tab>("solicitacoes");
   const [profile, setProfile] = useState<any>(null);
   const [editing, setEditing] = useState(false);
@@ -198,24 +191,29 @@ export default function Perfil() {
             {tab === "solicitacoes" && (
               <ListBlock
                 title="Minhas Solicitações"
-                empty="Você ainda não fez nenhuma solicitação"
-                items={mockSolicitacoes.map((s) => ({
-                  primary: s.item,
-                  secondary: `Status: ${s.status}`,
-                  meta: s.date,
-                  badge: s.status,
-                }))}
+                empty="Nenhuma solicitação feita ainda"
+                items={donations
+                  .filter((d) => d.ownerEmail === user.email)
+                  .map((d) => ({
+                    primary: d.title,
+                    secondary: `Categoria: ${d.category}`,
+                    meta: new Date(d.createdAt).toLocaleDateString("pt-BR"),
+                    badge: d.status ?? "Ativo",
+                  }))}
               />
             )}
             {tab === "trocas" && (
               <ListBlock
                 title="Minhas Trocas"
-                empty="Nenhuma troca concluída ainda"
-                items={mockTrocas.map((t) => ({
-                  primary: t.item,
-                  secondary: `Trocado com ${t.with}`,
-                  meta: t.date,
-                }))}
+                empty="Nenhuma troca em andamento"
+                items={trades
+                  .filter((t) => t.ownerEmail === user.email)
+                  .map((t) => ({
+                    primary: t.title,
+                    secondary: `Quer trocar por: ${t.wants}`,
+                    meta: new Date(t.createdAt).toLocaleDateString("pt-BR"),
+                    badge: t.status ?? "Ativo",
+                  }))}
               />
             )}
             {tab === "favoritos" && (

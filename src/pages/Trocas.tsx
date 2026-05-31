@@ -66,8 +66,12 @@ export default function Trocas() {
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Notificação enviada!", {
-      description: `O publicador ${selected?.owner} recebeu um e-mail para dar continuidade à sua ação.`,
+    if (!selected) return;
+    console.log(
+      `[EMAIL SIMULADO]\nPara: ${selected.ownerEmail}, ${user?.email || form.contact}\nAssunto: CicloTECH — Proposta de troca para "${selected.title}"\n\nOlá,\n\nUma nova proposta de troca foi registrada:\n• Item desejado: ${selected.title} (de ${selected.owner})\n• Oferta: ${form.offer}\n• Mensagem: ${form.message}\n• Contato: ${form.contact}\n\nPróximo passo: combinem a troca por este e-mail.\n\nEquipe CicloTECH`
+    );
+    toast.success("Confirmação de troca enviada para o e-mail dos usuários com sucesso!", {
+      description: `${selected.owner} e você receberão os detalhes da proposta.`,
     });
     setSelected(null);
     setForm({ offer: "", message: "", contact: "" });
@@ -272,7 +276,7 @@ export default function Trocas() {
                 </div>
                 <button
                   onClick={() => setSelected(item)}
-                  className="w-full py-2.5 flex items-center justify-center gap-2 text-[10px] font-data uppercase tracking-widest border border-primary/50 text-accent hover:bg-primary hover:text-primary-foreground transition-all"
+                  className="w-full py-2.5 flex items-center justify-center gap-2 text-[10px] font-data uppercase tracking-widest bg-primary text-primary-foreground border border-accent hover:glow-md transition-all"
                 >
                   <ArrowLeftRight className="w-3 h-3" />
                   Fazer Proposta

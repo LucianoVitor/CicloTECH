@@ -66,8 +66,11 @@ export default function SolicitarHardware() {
       toast.info("Faça login para registrar interesse");
       return;
     }
-    toast.success("Notificação enviada!", {
-      description: `O publicador ${item.owner} recebeu um e-mail para dar continuidade à sua ação.`,
+    console.log(
+      `[EMAIL SIMULADO]\nPara: ${item.ownerEmail}, ${user.email}\nAssunto: CicloTECH — Confirmação de interesse em "${item.title}"\n\nOlá,\n\nO usuário ${user.email} demonstrou interesse na doação "${item.title}" (${item.category}) publicada por ${item.owner}.\n\nPróximo passo: entrem em contato por este e-mail para combinar a entrega do equipamento.\n\nObrigado por fazer parte do ciclo!\nEquipe CicloTECH`
+    );
+    toast.success("Confirmação de troca enviada para o e-mail dos usuários com sucesso!", {
+      description: `${item.owner} e você receberão os detalhes para combinar a entrega.`,
     });
   };
 
@@ -184,7 +187,7 @@ export default function SolicitarHardware() {
                 </div>
                 <button
                   onClick={() => handleInterest(item)}
-                  className="mt-auto block w-full py-2 text-center text-[10px] font-data uppercase tracking-widest border border-primary/50 text-accent hover:bg-primary hover:text-primary-foreground transition-all"
+                  className="mt-auto block w-full py-2 text-center text-[10px] font-data uppercase tracking-widest bg-primary text-primary-foreground border border-accent hover:glow-md transition-all"
                 >
                   Tenho Interesse
                 </button>
