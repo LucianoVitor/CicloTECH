@@ -191,24 +191,29 @@ export default function Perfil() {
             {tab === "solicitacoes" && (
               <ListBlock
                 title="Minhas Solicitações"
-                empty="Você ainda não fez nenhuma solicitação"
-                items={mockSolicitacoes.map((s) => ({
-                  primary: s.item,
-                  secondary: `Status: ${s.status}`,
-                  meta: s.date,
-                  badge: s.status,
-                }))}
+                empty="Nenhuma solicitação feita ainda"
+                items={donations
+                  .filter((d) => d.ownerEmail === user.email)
+                  .map((d) => ({
+                    primary: d.title,
+                    secondary: `Categoria: ${d.category}`,
+                    meta: new Date(d.createdAt).toLocaleDateString("pt-BR"),
+                    badge: d.status ?? "Ativo",
+                  }))}
               />
             )}
             {tab === "trocas" && (
               <ListBlock
                 title="Minhas Trocas"
-                empty="Nenhuma troca concluída ainda"
-                items={mockTrocas.map((t) => ({
-                  primary: t.item,
-                  secondary: `Trocado com ${t.with}`,
-                  meta: t.date,
-                }))}
+                empty="Nenhuma troca em andamento"
+                items={trades
+                  .filter((t) => t.ownerEmail === user.email)
+                  .map((t) => ({
+                    primary: t.title,
+                    secondary: `Quer trocar por: ${t.wants}`,
+                    meta: new Date(t.createdAt).toLocaleDateString("pt-BR"),
+                    badge: t.status ?? "Ativo",
+                  }))}
               />
             )}
             {tab === "favoritos" && (
