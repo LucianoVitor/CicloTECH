@@ -66,8 +66,11 @@ export default function SolicitarHardware() {
       toast.info("Faça login para registrar interesse");
       return;
     }
-    toast.success("Notificação enviada!", {
-      description: `O publicador ${item.owner} recebeu um e-mail para dar continuidade à sua ação.`,
+    console.log(
+      `[EMAIL SIMULADO]\nPara: ${item.ownerEmail}, ${user.email}\nAssunto: CicloTECH — Confirmação de interesse em "${item.title}"\n\nOlá,\n\nO usuário ${user.email} demonstrou interesse na doação "${item.title}" (${item.category}) publicada por ${item.owner}.\n\nPróximo passo: entrem em contato por este e-mail para combinar a entrega do equipamento.\n\nObrigado por fazer parte do ciclo!\nEquipe CicloTECH`
+    );
+    toast.success("Confirmação de troca enviada para o e-mail dos usuários com sucesso!", {
+      description: `${item.owner} e você receberão os detalhes para combinar a entrega.`,
     });
   };
 
