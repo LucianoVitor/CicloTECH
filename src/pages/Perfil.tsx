@@ -11,13 +11,6 @@ const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 type Tab = "solicitacoes" | "trocas" | "favoritos";
 
-const mockSolicitacoes = [
-  { id: 1, item: "Memória RAM 8GB DDR4", status: "Aguardando", date: "20/04/2026" },
-  { id: 2, item: "SSD 240GB Kingston", status: "Aprovada", date: "15/04/2026" },
-];
-const mockTrocas = [
-  { id: 1, item: "Processador Intel i5-7400", with: "Carlos M.", date: "10/03/2026" },
-];
 
 export default function Perfil() {
   const navigate = useNavigate();
