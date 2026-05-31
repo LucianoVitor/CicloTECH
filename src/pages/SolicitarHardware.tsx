@@ -187,7 +187,7 @@ export default function SolicitarHardware() {
                 </div>
                 <button
                   onClick={() => handleInterest(item)}
-                  className="mt-auto block w-full py-2 text-center text-[10px] font-data uppercase tracking-widest border border-primary/50 text-accent hover:bg-primary hover:text-primary-foreground transition-all"
+                  className="mt-auto block w-full py-2 text-center text-[10px] font-data uppercase tracking-widest bg-primary text-primary-foreground border border-accent hover:glow-md transition-all"
                 >
                   Tenho Interesse
                 </button>
