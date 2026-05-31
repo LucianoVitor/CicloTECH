@@ -15,7 +15,7 @@ type Tab = "solicitacoes" | "trocas" | "favoritos";
 export default function Perfil() {
   const navigate = useNavigate();
   const { user, loading, isAdmin, signOut } = useAuth();
-  const { favorites, toggleFavorite } = useAppStore();
+  const { favorites, toggleFavorite, donations, trades } = useAppStore();
   const [tab, setTab] = useState<Tab>("solicitacoes");
   const [profile, setProfile] = useState<any>(null);
   const [editing, setEditing] = useState(false);
