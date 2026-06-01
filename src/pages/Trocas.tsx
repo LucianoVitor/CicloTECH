@@ -50,7 +50,7 @@ export default function Trocas() {
 
   const items: Item[] = useMemo(() => {
     const fromStore: Item[] = trades
-      .filter((t) => t.status !== "Cancelada")
+      .filter((t) => t.status !== "Cancelada" && t.status !== "Concluída")
       .map((t) => ({
         id: t.id,
         title: t.title,
