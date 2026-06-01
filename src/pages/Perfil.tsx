@@ -151,6 +151,7 @@ export default function Perfil() {
             {[
               { id: "solicitacoes", label: "Minhas Solicitações", icon: ClipboardList },
               { id: "trocas", label: "Minhas Trocas", icon: RefreshCw },
+              { id: "chat", label: "Minhas Conversas", icon: MessageSquare },
               { id: "favoritos", label: "Meus Favoritos", icon: Heart },
             ].map((t) => (
               <button
