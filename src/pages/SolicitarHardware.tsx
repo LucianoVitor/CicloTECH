@@ -48,15 +48,17 @@ export default function SolicitarHardware() {
   const navigate = useNavigate();
 
   const allItems: Item[] = useMemo(() => {
-    const fromStore: Item[] = donations.map((d) => ({
-      id: d.id,
-      title: d.title,
-      category: d.category,
-      condition: d.condition,
-      image: d.image,
-      owner: d.owner,
-      ownerEmail: d.ownerEmail,
-    }));
+    const fromStore: Item[] = donations
+      .filter((d) => d.status !== "Concluído" && d.status !== "Removido")
+      .map((d) => ({
+        id: d.id,
+        title: d.title,
+        category: d.category,
+        condition: d.condition,
+        image: d.image,
+        owner: d.owner,
+        ownerEmail: d.ownerEmail,
+      }));
     return [...fromStore, ...seedHardware];
   }, [donations]);
 
