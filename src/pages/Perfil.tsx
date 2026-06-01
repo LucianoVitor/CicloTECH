@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { User, Heart, RefreshCw, ClipboardList, LogOut, Camera, Loader2, ShieldCheck, X } from "lucide-react";
+import { User, Heart, RefreshCw, ClipboardList, LogOut, Camera, Loader2, ShieldCheck, X, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useAppStore } from "@/store/AppStore";
 import { toast } from "sonner";
+import ChatPanel from "@/components/ChatPanel";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-type Tab = "solicitacoes" | "trocas" | "favoritos";
+type Tab = "solicitacoes" | "trocas" | "favoritos" | "chat";
 
 
 export default function Perfil() {
