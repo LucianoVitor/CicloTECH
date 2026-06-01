@@ -64,17 +64,29 @@ export default function Trocas() {
     return [...fromStore, ...seedItems];
   }, [trades]);
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selected) return;
-    console.log(
-      `[EMAIL SIMULADO]\nPara: ${selected.ownerEmail}, ${user?.email || form.contact}\nAssunto: CicloTECH — Proposta de troca para "${selected.title}"\n\nOlá,\n\nUma nova proposta de troca foi registrada:\n• Item desejado: ${selected.title} (de ${selected.owner})\n• Oferta: ${form.offer}\n• Mensagem: ${form.message}\n• Contato: ${form.contact}\n\nPróximo passo: combinem a troca por este e-mail.\n\nEquipe CicloTECH`
-    );
-    toast.success("Confirmação de troca enviada para o e-mail dos usuários com sucesso!", {
-      description: `${selected.owner} e você receberão os detalhes da proposta.`,
+  const handleProposal = (item: Item) => {
+    if (!user) {
+      toast.info("Faça login para iniciar uma conversa");
+      navigate("/auth");
+      return;
+    }
+    if (user.email === item.ownerEmail) {
+      toast.info("Esse anúncio é seu");
+      return;
+    }
+    const chat = startChat({
+      itemId: item.id,
+      itemType: "trade",
+      itemTitle: item.title,
+      itemImage: item.image,
+      ownerEmail: item.ownerEmail,
+      ownerName: item.owner,
+      interestedEmail: user.email!,
+      interestedName: user.email!.split("@")[0],
+      firstMessage: `Olá! Tenho interesse na sua troca de ${item.title}. Posso oferecer algo que combine com o que você procura (${item.wants}). Vamos conversar?`,
     });
-    setSelected(null);
-    setForm({ offer: "", message: "", contact: "" });
+    toast.success("Conversa iniciada com o anunciante!");
+    navigate(`/perfil?tab=chat&chatId=${chat.id}`);
   };
 
   const handleFile = async (file?: File | null) => {
