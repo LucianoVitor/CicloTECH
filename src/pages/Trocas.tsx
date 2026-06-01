@@ -35,10 +35,9 @@ const seedItems: Item[] = [
 ];
 
 export default function Trocas() {
-  const { trades, addTrade, toggleFavorite, isFavorite, reportItem } = useAppStore();
+  const { trades, addTrade, toggleFavorite, isFavorite, reportItem, startChat } = useAppStore();
   const { user } = useAuth();
-  const [selected, setSelected] = useState<Item | null>(null);
-  const [form, setForm] = useState({ offer: "", message: "", contact: "" });
+  const navigate = useNavigate();
 
   // New trade form
   const [showNew, setShowNew] = useState(false);
