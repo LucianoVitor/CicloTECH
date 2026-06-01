@@ -43,8 +43,9 @@ const categories = ["Todos", "Processadores (CPU)", "Memória RAM", "Armazenamen
 
 export default function SolicitarHardware() {
   const [filter, setFilter] = useState("Todos");
-  const { donations, toggleFavorite, isFavorite, reportItem } = useAppStore();
+  const { donations, toggleFavorite, isFavorite, reportItem, startChat } = useAppStore();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const allItems: Item[] = useMemo(() => {
     const fromStore: Item[] = donations.map((d) => ({
