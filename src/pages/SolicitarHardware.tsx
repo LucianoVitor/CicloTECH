@@ -64,15 +64,26 @@ export default function SolicitarHardware() {
 
   const handleInterest = (item: Item) => {
     if (!user) {
-      toast.info("Faça login para registrar interesse");
+      toast.info("Faça login para iniciar uma conversa");
+      navigate("/auth");
       return;
     }
-    console.log(
-      `[EMAIL SIMULADO]\nPara: ${item.ownerEmail}, ${user.email}\nAssunto: CicloTECH — Confirmação de interesse em "${item.title}"\n\nOlá,\n\nO usuário ${user.email} demonstrou interesse na doação "${item.title}" (${item.category}) publicada por ${item.owner}.\n\nPróximo passo: entrem em contato por este e-mail para combinar a entrega do equipamento.\n\nObrigado por fazer parte do ciclo!\nEquipe CicloTECH`
-    );
-    toast.success("Confirmação de troca enviada para o e-mail dos usuários com sucesso!", {
-      description: `${item.owner} e você receberão os detalhes para combinar a entrega.`,
+    if (user.email === item.ownerEmail) {
+      toast.info("Esse anúncio é seu");
+      return;
+    }
+    const chat = startChat({
+      itemId: item.id,
+      itemType: "donation",
+      itemTitle: item.title,
+      itemImage: item.image,
+      ownerEmail: item.ownerEmail,
+      ownerName: item.owner,
+      interestedEmail: user.email!,
+      interestedName: user.email!.split("@")[0],
     });
+    toast.success("Conversa iniciada com o doador!");
+    navigate(`/perfil?tab=chat&chatId=${chat.id}`);
   };
 
   const handleReport = (item: Item) => {
