@@ -226,6 +226,12 @@ export default function Perfil() {
                   }))}
               />
             )}
+            {tab === "chat" && (
+              <div>
+                <h3 className="text-sm font-data uppercase tracking-widest text-white mb-6">Minhas Conversas</h3>
+                <ChatPanel initialChatId={chatIdParam} />
+              </div>
+            )}
             {tab === "favoritos" && (
               <div>
                 <h3 className="text-sm font-data uppercase tracking-widest text-white mb-6">Meus Favoritos</h3>
