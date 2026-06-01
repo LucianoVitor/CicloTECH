@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useMemo, useRef } from "react";
-import { ArrowLeftRight, X, Send, Heart, Flag, Plus, Upload, Image as ImageIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeftRight, Heart, Flag, Plus, Upload } from "lucide-react";
 import { toast } from "sonner";
 import catCpu from "@/assets/cat-cpu.png";
 import catRam from "@/assets/cat-ram.png";
