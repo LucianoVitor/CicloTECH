@@ -15,9 +15,12 @@ type Tab = "solicitacoes" | "trocas" | "favoritos" | "chat";
 
 export default function Perfil() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, loading, isAdmin, signOut } = useAuth();
   const { favorites, toggleFavorite, donations, trades } = useAppStore();
-  const [tab, setTab] = useState<Tab>("solicitacoes");
+  const initialTab = (searchParams.get("tab") as Tab) || "solicitacoes";
+  const [tab, setTab] = useState<Tab>(initialTab);
+  const chatIdParam = searchParams.get("chatId") || undefined;
   const [profile, setProfile] = useState<any>(null);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
