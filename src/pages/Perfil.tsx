@@ -36,6 +36,11 @@ export default function Perfil() {
   }, [user, loading, navigate]);
 
   useEffect(() => {
+    const t = searchParams.get("tab") as Tab | null;
+    if (t) setTab(t);
+  }, [searchParams]);
+
+  useEffect(() => {
     if (!user) return;
     supabase.from("profiles").select("*").eq("id", user.id).maybeSingle().then(({ data }) => {
       if (data) {
