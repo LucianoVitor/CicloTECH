@@ -287,7 +287,7 @@ export default function Trocas() {
                   <div className="text-xs text-white/90">{item.wants}</div>
                 </div>
                 <button
-                  onClick={() => setSelected(item)}
+                  onClick={() => handleProposal(item)}
                   className="w-full py-2.5 flex items-center justify-center gap-2 text-[10px] font-data uppercase tracking-widest bg-primary text-primary-foreground border border-accent hover:glow-md transition-all"
                 >
                   <ArrowLeftRight className="w-3 h-3" />
