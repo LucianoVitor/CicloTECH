@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useMemo } from "react";
 import { Heart, Flag } from "lucide-react";
 import { toast } from "sonner";
@@ -43,19 +43,22 @@ const categories = ["Todos", "Processadores (CPU)", "Memória RAM", "Armazenamen
 
 export default function SolicitarHardware() {
   const [filter, setFilter] = useState("Todos");
-  const { donations, toggleFavorite, isFavorite, reportItem } = useAppStore();
+  const { donations, toggleFavorite, isFavorite, reportItem, startChat } = useAppStore();
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const allItems: Item[] = useMemo(() => {
-    const fromStore: Item[] = donations.map((d) => ({
-      id: d.id,
-      title: d.title,
-      category: d.category,
-      condition: d.condition,
-      image: d.image,
-      owner: d.owner,
-      ownerEmail: d.ownerEmail,
-    }));
+    const fromStore: Item[] = donations
+      .filter((d) => d.status !== "Concluído" && d.status !== "Removido")
+      .map((d) => ({
+        id: d.id,
+        title: d.title,
+        category: d.category,
+        condition: d.condition,
+        image: d.image,
+        owner: d.owner,
+        ownerEmail: d.ownerEmail,
+      }));
     return [...fromStore, ...seedHardware];
   }, [donations]);
 
@@ -63,15 +66,26 @@ export default function SolicitarHardware() {
 
   const handleInterest = (item: Item) => {
     if (!user) {
-      toast.info("Faça login para registrar interesse");
+      toast.info("Faça login para iniciar uma conversa");
+      navigate("/auth");
       return;
     }
-    console.log(
-      `[EMAIL SIMULADO]\nPara: ${item.ownerEmail}, ${user.email}\nAssunto: CicloTECH — Confirmação de interesse em "${item.title}"\n\nOlá,\n\nO usuário ${user.email} demonstrou interesse na doação "${item.title}" (${item.category}) publicada por ${item.owner}.\n\nPróximo passo: entrem em contato por este e-mail para combinar a entrega do equipamento.\n\nObrigado por fazer parte do ciclo!\nEquipe CicloTECH`
-    );
-    toast.success("Confirmação de troca enviada para o e-mail dos usuários com sucesso!", {
-      description: `${item.owner} e você receberão os detalhes para combinar a entrega.`,
+    if (user.email === item.ownerEmail) {
+      toast.info("Esse anúncio é seu");
+      return;
+    }
+    const chat = startChat({
+      itemId: item.id,
+      itemType: "donation",
+      itemTitle: item.title,
+      itemImage: item.image,
+      ownerEmail: item.ownerEmail,
+      ownerName: item.owner,
+      interestedEmail: user.email!,
+      interestedName: user.email!.split("@")[0],
     });
+    toast.success("Conversa iniciada com o doador!");
+    navigate(`/perfil?tab=chat&chatId=${chat.id}`);
   };
 
   const handleReport = (item: Item) => {

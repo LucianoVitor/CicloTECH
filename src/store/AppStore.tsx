@@ -10,7 +10,7 @@ export type Donation = {
   owner: string;
   ownerEmail: string;
   createdAt: number;
-  status?: "Ativo" | "Pausado" | "Removido";
+  status?: "Ativo" | "Pausado" | "Removido" | "Concluído";
 };
 
 export type Trade = {
@@ -45,11 +45,37 @@ export type Report = {
   resolved?: boolean;
 };
 
+export type ChatMessage = {
+  id: string;
+  chatId: string;
+  authorEmail: string; // or "system"
+  text: string;
+  createdAt: number;
+  system?: boolean;
+};
+
+export type Chat = {
+  id: string;
+  itemId: string;
+  itemType: "donation" | "trade";
+  itemTitle: string;
+  itemImage?: string;
+  ownerEmail: string;          // anunciante
+  ownerName: string;
+  interestedEmail: string;     // interessado
+  interestedName: string;
+  createdAt: number;
+  accepted?: boolean;
+  acceptedAt?: number;
+};
+
 type Ctx = {
   donations: Donation[];
   trades: Trade[];
   favorites: FavoriteItem[];
   reports: Report[];
+  chats: Chat[];
+  messages: ChatMessage[];
   addDonation: (d: Omit<Donation, "id" | "createdAt" | "status">) => Donation;
   addTrade: (t: Omit<Trade, "id" | "createdAt" | "status">) => Trade;
   removeDonation: (id: string) => void;
@@ -58,19 +84,30 @@ type Ctx = {
   isFavorite: (id: string) => boolean;
   reportItem: (r: Omit<Report, "id" | "createdAt" | "resolved">) => void;
   resolveReport: (id: string, deleteItem: boolean) => void;
+  startChat: (args: {
+    itemId: string;
+    itemType: "donation" | "trade";
+    itemTitle: string;
+    itemImage?: string;
+    ownerEmail: string;
+    ownerName: string;
+    interestedEmail: string;
+    interestedName: string;
+    firstMessage?: string;
+  }) => Chat;
+  sendMessage: (chatId: string, authorEmail: string, text: string, system?: boolean) => void;
+  acceptDeal: (chatId: string) => void;
+  getMessages: (chatId: string) => ChatMessage[];
 };
 
 const AppCtx = createContext<Ctx | null>(null);
-
 const KEY = "ciclotech-store-v1";
 
 function load<T>(k: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(`${KEY}:${k}`);
     return raw ? (JSON.parse(raw) as T) : fallback;
-  } catch {
-    return fallback;
-  }
+  } catch { return fallback; }
 }
 function save<T>(k: string, v: T) {
   try { localStorage.setItem(`${KEY}:${k}`, JSON.stringify(v)); } catch {}
@@ -81,11 +118,15 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [trades, setTrades] = useState<Trade[]>(() => load("trades", []));
   const [favorites, setFavorites] = useState<FavoriteItem[]>(() => load("favorites", []));
   const [reports, setReports] = useState<Report[]>(() => load("reports", []));
+  const [chats, setChats] = useState<Chat[]>(() => load("chats", []));
+  const [messages, setMessages] = useState<ChatMessage[]>(() => load("messages", []));
 
   useEffect(() => save("donations", donations), [donations]);
   useEffect(() => save("trades", trades), [trades]);
   useEffect(() => save("favorites", favorites), [favorites]);
   useEffect(() => save("reports", reports), [reports]);
+  useEffect(() => save("chats", chats), [chats]);
+  useEffect(() => save("messages", messages), [messages]);
 
   const addDonation: Ctx["addDonation"] = useCallback((d) => {
     const item: Donation = { ...d, id: `don-${Date.now()}`, createdAt: Date.now(), status: "Ativo" };
@@ -103,7 +144,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const removeTrade = useCallback((id: string) => setTrades((p) => p.filter((t) => t.id !== id)), []);
 
   const toggleFavorite = useCallback((item: FavoriteItem) => {
-    setFavorites((p) => (p.some((f) => f.id === item.id) ? p.filter((f) => f.id !== item.id) : [item, ...p]));
+    setFavorites((p) => (p.some((f) => f.id === item.id) ? p.filter((f) => f.id === item.id ? false : true) : [item, ...p]));
   }, []);
   const isFavorite = useCallback((id: string) => favorites.some((f) => f.id === id), [favorites]);
 
@@ -122,12 +163,89 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const pushMessage = useCallback((m: ChatMessage) => setMessages((p) => [...p, m]), []);
+
+  const startChat: Ctx["startChat"] = useCallback((args) => {
+    const existing = chats.find(
+      (c) => c.itemId === args.itemId && c.interestedEmail === args.interestedEmail,
+    );
+    if (existing) return existing;
+    const chat: Chat = {
+      id: `chat-${Date.now()}`,
+      itemId: args.itemId,
+      itemType: args.itemType,
+      itemTitle: args.itemTitle,
+      itemImage: args.itemImage,
+      ownerEmail: args.ownerEmail,
+      ownerName: args.ownerName,
+      interestedEmail: args.interestedEmail,
+      interestedName: args.interestedName,
+      createdAt: Date.now(),
+      accepted: false,
+    };
+    setChats((p) => [chat, ...p]);
+    const first = args.firstMessage ?? `Olá! Tenho interesse no seu anúncio de ${args.itemTitle}. Vamos combinar a entrega?`;
+    pushMessage({
+      id: `msg-${Date.now()}`,
+      chatId: chat.id,
+      authorEmail: args.interestedEmail,
+      text: first,
+      createdAt: Date.now(),
+    });
+    // simulate reply from owner after 2s
+    setTimeout(() => {
+      pushMessage({
+        id: `msg-${Date.now()}-r`,
+        chatId: chat.id,
+        authorEmail: args.ownerEmail,
+        text: "Olá! Perfeito, posso entregar na Fatec na próxima terça-feira.",
+        createdAt: Date.now(),
+      });
+    }, 2000);
+    return chat;
+  }, [chats, pushMessage]);
+
+  const sendMessage: Ctx["sendMessage"] = useCallback((chatId, authorEmail, text, system) => {
+    if (!text.trim()) return;
+    pushMessage({
+      id: `msg-${Date.now()}`,
+      chatId,
+      authorEmail: system ? "system" : authorEmail,
+      text: text.trim(),
+      createdAt: Date.now(),
+      system,
+    });
+  }, [pushMessage]);
+
+  const acceptDeal: Ctx["acceptDeal"] = useCallback((chatId) => {
+    setChats((prev) => prev.map((c) => (c.id === chatId ? { ...c, accepted: true, acceptedAt: Date.now() } : c)));
+    const chat = chats.find((c) => c.id === chatId);
+    if (chat) {
+      if (chat.itemType === "donation") {
+        setDonations((p) => p.map((d) => (d.id === chat.itemId ? { ...d, status: "Concluído" } : d)));
+      } else {
+        setTrades((p) => p.map((t) => (t.id === chat.itemId ? { ...t, status: "Concluída" } : t)));
+      }
+      pushMessage({
+        id: `msg-sys-${Date.now()}`,
+        chatId,
+        authorEmail: "system",
+        text: "Doação/Troca aceita pelo doador. Combinem os detalhes finais abaixo.",
+        createdAt: Date.now(),
+        system: true,
+      });
+    }
+  }, [chats, pushMessage]);
+
+  const getMessages = useCallback((chatId: string) => messages.filter((m) => m.chatId === chatId), [messages]);
+
   return (
     <AppCtx.Provider
       value={{
-        donations, trades, favorites, reports,
+        donations, trades, favorites, reports, chats, messages,
         addDonation, addTrade, removeDonation, removeTrade,
         toggleFavorite, isFavorite, reportItem, resolveReport,
+        startChat, sendMessage, acceptDeal, getMessages,
       }}
     >
       {children}

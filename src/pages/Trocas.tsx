@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useState, useMemo, useRef } from "react";
-import { ArrowLeftRight, X, Send, Heart, Flag, Plus, Upload, Image as ImageIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeftRight, Heart, Flag, Plus, Upload } from "lucide-react";
 import { toast } from "sonner";
 import catCpu from "@/assets/cat-cpu.png";
 import catRam from "@/assets/cat-ram.png";
@@ -34,10 +35,9 @@ const seedItems: Item[] = [
 ];
 
 export default function Trocas() {
-  const { trades, addTrade, toggleFavorite, isFavorite, reportItem } = useAppStore();
+  const { trades, addTrade, toggleFavorite, isFavorite, reportItem, startChat } = useAppStore();
   const { user } = useAuth();
-  const [selected, setSelected] = useState<Item | null>(null);
-  const [form, setForm] = useState({ offer: "", message: "", contact: "" });
+  const navigate = useNavigate();
 
   // New trade form
   const [showNew, setShowNew] = useState(false);
@@ -50,7 +50,7 @@ export default function Trocas() {
 
   const items: Item[] = useMemo(() => {
     const fromStore: Item[] = trades
-      .filter((t) => t.status !== "Cancelada")
+      .filter((t) => t.status !== "Cancelada" && t.status !== "Concluída")
       .map((t) => ({
         id: t.id,
         title: t.title,
@@ -64,17 +64,29 @@ export default function Trocas() {
     return [...fromStore, ...seedItems];
   }, [trades]);
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selected) return;
-    console.log(
-      `[EMAIL SIMULADO]\nPara: ${selected.ownerEmail}, ${user?.email || form.contact}\nAssunto: CicloTECH — Proposta de troca para "${selected.title}"\n\nOlá,\n\nUma nova proposta de troca foi registrada:\n• Item desejado: ${selected.title} (de ${selected.owner})\n• Oferta: ${form.offer}\n• Mensagem: ${form.message}\n• Contato: ${form.contact}\n\nPróximo passo: combinem a troca por este e-mail.\n\nEquipe CicloTECH`
-    );
-    toast.success("Confirmação de troca enviada para o e-mail dos usuários com sucesso!", {
-      description: `${selected.owner} e você receberão os detalhes da proposta.`,
+  const handleProposal = (item: Item) => {
+    if (!user) {
+      toast.info("Faça login para iniciar uma conversa");
+      navigate("/auth");
+      return;
+    }
+    if (user.email === item.ownerEmail) {
+      toast.info("Esse anúncio é seu");
+      return;
+    }
+    const chat = startChat({
+      itemId: item.id,
+      itemType: "trade",
+      itemTitle: item.title,
+      itemImage: item.image,
+      ownerEmail: item.ownerEmail,
+      ownerName: item.owner,
+      interestedEmail: user.email!,
+      interestedName: user.email!.split("@")[0],
+      firstMessage: `Olá! Tenho interesse na sua troca de ${item.title}. Posso oferecer algo que combine com o que você procura (${item.wants}). Vamos conversar?`,
     });
-    setSelected(null);
-    setForm({ offer: "", message: "", contact: "" });
+    toast.success("Conversa iniciada com o anunciante!");
+    navigate(`/perfil?tab=chat&chatId=${chat.id}`);
   };
 
   const handleFile = async (file?: File | null) => {
@@ -275,7 +287,7 @@ export default function Trocas() {
                   <div className="text-xs text-white/90">{item.wants}</div>
                 </div>
                 <button
-                  onClick={() => setSelected(item)}
+                  onClick={() => handleProposal(item)}
                   className="w-full py-2.5 flex items-center justify-center gap-2 text-[10px] font-data uppercase tracking-widest bg-primary text-primary-foreground border border-accent hover:glow-md transition-all"
                 >
                   <ArrowLeftRight className="w-3 h-3" />
@@ -287,85 +299,6 @@ export default function Trocas() {
         })}
       </div>
 
-      {selected && (
-        <div
-          className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setSelected(null)}
-        >
-          <motion.form
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: BEZIER }}
-            onClick={(e) => e.stopPropagation()}
-            onSubmit={submit}
-            className="bg-surface border border-primary/40 glow-md max-w-lg w-full p-8 relative"
-          >
-            <button
-              type="button"
-              onClick={() => setSelected(null)}
-              className="absolute top-4 right-4 text-white/60 hover:text-white"
-              aria-label="Fechar"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <div className="text-primary font-data text-[10px] uppercase tracking-[0.3em] mb-2">
-              Nova Proposta
-            </div>
-            <h2 className="text-xl font-bold font-data text-primary-foreground tracking-tighter uppercase mb-1">
-              {selected.title}
-            </h2>
-            <div className="text-xs text-white/60 font-data mb-6">Anúncio de {selected.owner}</div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="text-[10px] font-data text-accent uppercase tracking-widest mb-2 block">
-                  O que você oferece
-                </label>
-                <input
-                  required
-                  value={form.offer}
-                  onChange={(e) => setForm({ ...form, offer: e.target.value })}
-                  placeholder="Ex: SSD Crucial MX500 500GB"
-                  className="w-full bg-background border border-border focus:border-primary outline-none px-4 py-2.5 text-sm text-foreground"
-                />
-              </div>
-              <div>
-                <label className="text-[10px] font-data text-accent uppercase tracking-widest mb-2 block">
-                  Mensagem
-                </label>
-                <textarea
-                  required
-                  rows={4}
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  placeholder="Detalhes do item, estado de uso, ponto de encontro..."
-                  className="w-full bg-background border border-border focus:border-primary outline-none px-4 py-2.5 text-sm text-foreground resize-none"
-                />
-              </div>
-              <div>
-                <label className="text-[10px] font-data text-accent uppercase tracking-widest mb-2 block">
-                  Contato (email ou telefone)
-                </label>
-                <input
-                  required
-                  value={form.contact}
-                  onChange={(e) => setForm({ ...form, contact: e.target.value })}
-                  placeholder="seu@email.com"
-                  className="w-full bg-background border border-border focus:border-primary outline-none px-4 py-2.5 text-sm text-foreground"
-                />
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              className="mt-6 w-full py-3 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-data text-xs uppercase tracking-widest border border-accent glow-sm hover:glow-md transition-all"
-            >
-              <Send className="w-3.5 h-3.5" />
-              Enviar Proposta
-            </button>
-          </motion.form>
-        </div>
-      )}
     </section>
   );
 }

@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { User, Heart, RefreshCw, ClipboardList, LogOut, Camera, Loader2, ShieldCheck, X } from "lucide-react";
+import { User, Heart, RefreshCw, ClipboardList, LogOut, Camera, Loader2, ShieldCheck, X, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useAppStore } from "@/store/AppStore";
 import { toast } from "sonner";
+import ChatPanel from "@/components/ChatPanel";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-type Tab = "solicitacoes" | "trocas" | "favoritos";
+type Tab = "solicitacoes" | "trocas" | "favoritos" | "chat";
 
 
 export default function Perfil() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user, loading, isAdmin, signOut } = useAuth();
   const { favorites, toggleFavorite, donations, trades } = useAppStore();
-  const [tab, setTab] = useState<Tab>("solicitacoes");
+  const initialTab = (searchParams.get("tab") as Tab) || "solicitacoes";
+  const [tab, setTab] = useState<Tab>(initialTab);
+  const chatIdParam = searchParams.get("chatId") || undefined;
   const [profile, setProfile] = useState<any>(null);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -30,6 +34,11 @@ export default function Perfil() {
   useEffect(() => {
     if (!loading && !user) navigate("/auth", { replace: true });
   }, [user, loading, navigate]);
+
+  useEffect(() => {
+    const t = searchParams.get("tab") as Tab | null;
+    if (t) setTab(t);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!user) return;
@@ -142,6 +151,7 @@ export default function Perfil() {
             {[
               { id: "solicitacoes", label: "Minhas Solicitações", icon: ClipboardList },
               { id: "trocas", label: "Minhas Trocas", icon: RefreshCw },
+              { id: "chat", label: "Minhas Conversas", icon: MessageSquare },
               { id: "favoritos", label: "Meus Favoritos", icon: Heart },
             ].map((t) => (
               <button
@@ -215,6 +225,12 @@ export default function Perfil() {
                     badge: t.status ?? "Ativo",
                   }))}
               />
+            )}
+            {tab === "chat" && (
+              <div>
+                <h3 className="text-sm font-data uppercase tracking-widest text-white mb-6">Minhas Conversas</h3>
+                <ChatPanel initialChatId={chatIdParam} />
+              </div>
             )}
             {tab === "favoritos" && (
               <div>
