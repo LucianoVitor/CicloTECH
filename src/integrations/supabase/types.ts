@@ -14,6 +14,80 @@ export type Database = {
   }
   public: {
     Tables: {
+      doacoes: {
+        Row: {
+          created_at: string
+          equipamento_id: string
+          id: string
+          observacoes: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          equipamento_id: string
+          id?: string
+          observacoes?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          equipamento_id?: string
+          id?: string
+          observacoes?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "doacoes_equipamento_owner_fkey"
+            columns: ["equipamento_id", "user_id"]
+            isOneToOne: false
+            referencedRelation: "equipamentos"
+            referencedColumns: ["id", "user_id"]
+          },
+        ]
+      }
+      equipamentos: {
+        Row: {
+          categoria: string
+          condicao: string
+          created_at: string
+          descricao: string
+          id: string
+          imagem_url: string | null
+          titulo: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          categoria: string
+          condicao: string
+          created_at?: string
+          descricao?: string
+          id?: string
+          imagem_url?: string | null
+          titulo: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          categoria?: string
+          condicao?: string
+          created_at?: string
+          descricao?: string
+          id?: string
+          imagem_url?: string | null
+          titulo?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       feedback: {
         Row: {
           author_name: string
