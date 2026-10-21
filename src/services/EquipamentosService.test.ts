@@ -33,12 +33,14 @@ describe.each([
   it('insere usando o dono autenticado, não o dono enviado', async () => {
     const service = new Classe(mock.client);
     // A união de construtores exige os campos das duas entidades neste teste parametrizado.
-    await service.inserir({ titulo: 'RAM', categoria: 'RAM', condicao: 'Usado', equipamento_id: 'equipamento-1', ...dados, user_id: 'outro-dono' } as Parameters<typeof service.inserir>[0]);
+    const entrada = { titulo: 'RAM', categoria: 'RAM', condicao: 'Usado', equipamento_id: 'equipamento-1', ...dados, user_id: 'outro-dono' };
+    await service.inserir(entrada);
     expect(mock.query.insert).toHaveBeenCalledWith({ ...dados, user_id: 'dono-1' });
   });
 
   it('atualiza somente campos editáveis e filtra o ID', async () => {
-    await new Classe(mock.client).atualizar('registro-1', { ...alteracao, user_id: 'outro-dono' } as typeof alteracao);
+    const entrada = { ...alteracao, user_id: 'outro-dono' };
+    await new Classe(mock.client).atualizar('registro-1', entrada);
     expect(mock.query.update).toHaveBeenCalledWith(alteracao);
     expect(mock.query.eq).toHaveBeenCalledWith('id', 'registro-1');
   });

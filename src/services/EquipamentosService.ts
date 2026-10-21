@@ -21,7 +21,7 @@ const doacaoCampos = ['equipamento_id', 'status', 'observacoes'] as const;
 
 /** Base compartilhada: a conexão existente conserva a sessão e aplica as regras RLS. */
 class ServicoAutenticado {
-  constructor(protected readonly client: Client = supabase as unknown as Client) {}
+  constructor(protected readonly client: Client = supabase) {}
 
   protected async usuarioAtual(): Promise<string> {
     const { data, error } = await this.client.auth.getUser();

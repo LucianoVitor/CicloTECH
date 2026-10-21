@@ -29,18 +29,5 @@ export type NovaDoacao = Pick<Doacao, 'equipamento_id'> &
   Partial<Pick<Doacao, 'status' | 'observacoes'>>;
 export type AtualizarDoacao = Partial<NovaDoacao>;
 
-// Extensão local dos tipos: não altera os arquivos gerados da conexão.
-type Table<Row, Input> = {
-  Row: Row;
-  Insert: Input & { user_id?: string };
-  Update: Partial<Input>;
-  Relationships: [];
-};
-export type EquipamentosDatabase = Omit<Database, 'public'> & {
-  public: Omit<Database['public'], 'Tables'> & {
-    Tables: Database['public']['Tables'] & {
-      equipamentos: Table<Equipamento, NovoEquipamento>;
-      doacoes: Table<Doacao, NovaDoacao>;
-    };
-  };
-};
+// Usa o esquema regenerado automaticamente após a criação das tabelas.
+export type EquipamentosDatabase = Database;
