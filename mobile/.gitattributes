@@ -1,0 +1,3 @@
+# Scripts do Gradle precisam manter o fim de linha correto em qualquer SO.
+android/gradlew text eol=lf
+*.bat text eol=crlf

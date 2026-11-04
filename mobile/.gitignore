@@ -4,9 +4,8 @@ dist/
 web-build/
 expo-env.d.ts
 
-# Builds nativos (gerados por `expo prebuild`)
+# iOS nativo (gerado por `expo prebuild`). A pasta /android é versionada.
 /ios
-/android
 
 # Variáveis locais — copie .env.example para .env
 .env
