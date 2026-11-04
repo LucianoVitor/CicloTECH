@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "CicloTECH",
+    "slug": "ciclotech",
+    "scheme": "ciclotech",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#000000",
+    "primaryColor": "#FF003C",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ciclotech.app"
+    },
+    "android": {
+      "package": "com.ciclotech.app"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

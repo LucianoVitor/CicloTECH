@@ -1,0 +1,16 @@
+node_modules/
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Builds nativos (gerados por `expo prebuild`)
+/ios
+/android
+
+# Variáveis locais — copie .env.example para .env
+.env
+.env*.local
+
+*.log
+.DS_Store
