@@ -52,25 +52,20 @@ export default function AdminScreen() {
     }, [carregar]),
   );
 
-  async function alternarAdmin(u: Perfil) {
-    const ehAdmin = admins.has(u.id);
+  async function excluirUsuario(u: Perfil) {
     const nome = u.full_name || 'este usuário';
-    const ok = await confirmar(ehAdmin ? 'Remover administrador' : 'Tornar administrador', ehAdmin ? `Remover o acesso de administrador de ${nome}?` : `Tornar ${nome} administrador?`, {
-      textoConfirmar: ehAdmin ? 'Remover' : 'Tornar admin',
-      destrutivo: ehAdmin,
-    });
+    const ok = await confirmar(
+      'Excluir usuário',
+      `Excluir a conta de ${nome}? Os equipamentos, doações, trocas e conversas dessa pessoa também serão apagados. Isso não pode ser desfeito.`,
+      { textoConfirmar: 'Excluir', destrutivo: true },
+    );
     if (!ok) return;
     setOcupado(u.id);
     try {
-      await adminService.definirAdmin(u.id, !ehAdmin);
-      setAdmins((s) => {
-        const n = new Set(s);
-        if (ehAdmin) n.delete(u.id);
-        else n.add(u.id);
-        return n;
-      });
+      await adminService.excluirUsuario(u.id);
+      await carregar();
     } catch (e) {
-      avisar('Erro', mensagemDeErro(e));
+      avisar('Erro ao excluir usuário', mensagemDeErro(e));
     } finally {
       setOcupado(null);
     }
@@ -168,11 +163,12 @@ export default function AdminScreen() {
                 </View>
                 {!souEu && (
                   <Button
-                    title={ehAdmin ? 'Remover admin' : 'Tornar admin'}
+                    title="Excluir"
+                    icon="trash-outline"
                     size="sm"
-                    variant={ehAdmin ? 'danger' : 'outline'}
+                    variant="danger"
                     loading={ocupado === u.id}
-                    onPress={() => alternarAdmin(u)}
+                    onPress={() => excluirUsuario(u)}
                   />
                 )}
               </Card>
@@ -181,7 +177,11 @@ export default function AdminScreen() {
 
         {aba === 'doacoes' &&
           (doacoes.length === 0 ? (
-            <EmptyState icon="heart-outline" title="Nenhuma doação" text="As doações da comunidade aparecem aqui." />
+            <EmptyState
+              icon="heart-outline"
+              title="Nenhuma doação no banco"
+              text="Aparecem aqui as doações registradas no app (Perfil › Meus equipamentos › Registrar doação). Doações cadastradas pelo site ficam salvas só no navegador e não chegam ao banco."
+            />
           ) : (
             doacoes.map((d) => (
               <Card key={d.id} style={styles.linha}>

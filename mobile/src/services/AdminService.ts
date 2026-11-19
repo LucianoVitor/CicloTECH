@@ -25,6 +25,14 @@ export class AdminService extends ServicoAutenticado {
     if (error) throw error;
   }
 
+  /** Exclui a conta e os dados do usuário (função do banco que só admins executam; não exclui a si mesmo). */
+  async excluirUsuario(userId: string): Promise<void> {
+    const meuId = await this.usuarioAtual();
+    if (userId === meuId) throw new Error('Você não pode excluir a sua própria conta.');
+    const { error } = await this.client.rpc('admin_excluir_usuario', { _user_id: userId });
+    if (error) throw error;
+  }
+
   async todasDoacoes(): Promise<DoacaoComEquipamento[]> {
     const { data, error } = await this.client
       .from('doacoes')
