@@ -88,16 +88,21 @@ export default function PerfilScreen() {
     } catch (e) {
       setErro(mensagemDeErro(e, 'Não foi possível carregar seu perfil.'));
     }
-    // Contadores e papel de admin: falhas aqui não devem esconder o perfil.
+    // Papel de admin: consulta própria (user_roles), independente das tabelas novas de trocas/conversas.
+    perfilService
+      .souAdmin()
+      .then(setAdmin)
+      .catch((e) => console.warn('[CicloTECH] Papel de admin indisponível:', mensagemDeErro(e)));
+
+    // Contadores: falhas aqui (ex.: migração ainda não aplicada) não devem esconder o perfil nem o painel.
     const uid = session?.user.id;
-    Promise.all([conversasService.minhas(), trocasService.minhas(), perfilService.souAdmin()])
-      .then(([cs, ts, ehAdmin]) => {
+    Promise.all([conversasService.minhas(), trocasService.minhas()])
+      .then(([cs, ts]) => {
         setContagens({
           conversas: cs.length,
           solicitacoes: cs.filter((c) => c.item_tipo === 'doacao' && c.interessado_id === uid).length,
           trocas: ts.filter((t) => t.status === 'Ativo').length + cs.filter((c) => c.item_tipo === 'troca').length,
         });
-        setAdmin(ehAdmin);
       })
       .catch((e) => console.warn('[CicloTECH] Contadores indisponíveis:', mensagemDeErro(e)));
   }, [session?.user.id]);
