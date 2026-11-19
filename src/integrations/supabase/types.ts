@@ -14,8 +14,51 @@ export type Database = {
   }
   public: {
     Tables: {
+      conversas: {
+        Row: {
+          created_at: string
+          dono_id: string
+          dono_nome: string
+          id: string
+          interessado_id: string
+          interessado_nome: string
+          item_categoria: string
+          item_id: string
+          item_imagem_url: string | null
+          item_tipo: string
+          item_titulo: string
+        }
+        Insert: {
+          created_at?: string
+          dono_id: string
+          dono_nome?: string
+          id?: string
+          interessado_id?: string
+          interessado_nome?: string
+          item_categoria?: string
+          item_id: string
+          item_imagem_url?: string | null
+          item_tipo: string
+          item_titulo: string
+        }
+        Update: {
+          created_at?: string
+          dono_id?: string
+          dono_nome?: string
+          id?: string
+          interessado_id?: string
+          interessado_nome?: string
+          item_categoria?: string
+          item_id?: string
+          item_imagem_url?: string | null
+          item_tipo?: string
+          item_titulo?: string
+        }
+        Relationships: []
+      }
       doacoes: {
         Row: {
+          autor_nome: string
           created_at: string
           equipamento_id: string
           id: string
@@ -25,6 +68,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          autor_nome?: string
           created_at?: string
           equipamento_id: string
           id?: string
@@ -34,6 +78,7 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          autor_nome?: string
           created_at?: string
           equipamento_id?: string
           id?: string
@@ -115,6 +160,38 @@ export type Database = {
         }
         Relationships: []
       }
+      mensagens: {
+        Row: {
+          autor_id: string
+          conversa_id: string
+          created_at: string
+          id: string
+          texto: string
+        }
+        Insert: {
+          autor_id?: string
+          conversa_id: string
+          created_at?: string
+          id?: string
+          texto: string
+        }
+        Update: {
+          autor_id?: string
+          conversa_id?: string
+          created_at?: string
+          id?: string
+          texto?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mensagens_conversa_id_fkey"
+            columns: ["conversa_id"]
+            isOneToOne: false
+            referencedRelation: "conversas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           address: string | null
@@ -145,6 +222,48 @@ export type Database = {
           phone?: string | null
           updated_at?: string
           user_type?: Database["public"]["Enums"]["user_type"] | null
+        }
+        Relationships: []
+      }
+      trocas: {
+        Row: {
+          autor_nome: string
+          categoria: string
+          created_at: string
+          descricao: string
+          id: string
+          imagem_url: string | null
+          quer_trocar_por: string
+          status: string
+          titulo: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          autor_nome?: string
+          categoria: string
+          created_at?: string
+          descricao?: string
+          id?: string
+          imagem_url?: string | null
+          quer_trocar_por: string
+          status?: string
+          titulo: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          autor_nome?: string
+          categoria?: string
+          created_at?: string
+          descricao?: string
+          id?: string
+          imagem_url?: string | null
+          quer_trocar_por?: string
+          status?: string
+          titulo?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
