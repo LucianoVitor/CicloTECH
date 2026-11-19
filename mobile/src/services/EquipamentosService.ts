@@ -3,11 +3,12 @@ import type { AtualizarEquipamento, Equipamento, NovoEquipamento } from './types
 
 const campos = ['titulo', 'categoria', 'condicao', 'descricao', 'imagem_url'] as const;
 
-/** CRUD de equipamentos. A RLS permite acesso apenas aos registros do usuário autenticado. */
+/** CRUD de equipamentos do usuário autenticado (a RLS também libera ver equipamentos em doação de outros). */
 export class EquipamentosService extends ServicoAutenticado {
-  /** Sem ID lista os registros (mais recentes primeiro); com ID filtra um registro. */
+  /** "Meus equipamentos": sem ID lista os do usuário (mais recentes primeiro); com ID filtra um registro. */
   async buscar(id?: string): Promise<Equipamento[]> {
-    let query = this.client.from('equipamentos').select('*');
+    const uid = await this.usuarioAtual();
+    let query = this.client.from('equipamentos').select('*').eq('user_id', uid);
     if (id) query = query.eq('id', id);
     const { data, error } = await query.order('created_at', { ascending: false });
     if (error) throw error;

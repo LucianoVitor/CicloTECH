@@ -6,8 +6,8 @@
     "version": "0.1.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
-    "backgroundColor": "#000000",
-    "primaryColor": "#FF003C",
+    "backgroundColor": "#030712",
+    "primaryColor": "#3B82F6",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.ciclotech.app"
@@ -17,7 +17,22 @@
     },
     "plugins": [
       "expo-router",
-      "expo-status-bar"
+      "expo-status-bar",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#030712"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O CicloTECH usa suas fotos para mostrar o equipamento e a sua foto de perfil.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

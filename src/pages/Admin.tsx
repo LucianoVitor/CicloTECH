@@ -32,7 +32,9 @@ const mockTrades = [
 export default function Admin() {
   const navigate = useNavigate();
   const { user, loading, isAdmin } = useAuth();
-  const { donations, trades, reports, removeDonation, removeTrade, resolveReport } = useAppStore();
+  const { donations, trades, reports, removeDonation, removeTrade, resolveReport, setDonationStatus } = useAppStore();
+  const [adminIds, setAdminIds] = useState<Set<string>>(new Set());
+  const [savingRole, setSavingRole] = useState<string | null>(null);
   const [tab, setTab] = useState<TabId>("overview");
   const [users, setUsers] = useState<any[]>([]);
   const [feedback, setFeedback] = useState<any[]>([]);
@@ -66,13 +68,45 @@ export default function Admin() {
 
   const loadData = async () => {
     setRefreshing(true);
-    const [{ data: profiles }, { data: fb }] = await Promise.all([
+    const [{ data: profiles }, { data: fb }, { data: roles }] = await Promise.all([
       supabase.from("profiles").select("id, full_name, user_type, phone, address, created_at").order("created_at", { ascending: false }),
       supabase.from("feedback").select("id, author_name, rating, message, created_at").order("created_at", { ascending: false }),
+      supabase.from("user_roles").select("user_id, role").eq("role", "admin"),
     ]);
     setUsers(profiles ?? []);
     setFeedback(fb ?? []);
+    setAdminIds(new Set((roles ?? []).map((r) => r.user_id)));
     setRefreshing(false);
+  };
+
+  // Promove/remove administrador (a RLS só permite isso para quem já é admin).
+  const toggleAdmin = async (u: { id: string; full_name: string | null }) => {
+    const nome = u.full_name || "este usuário";
+    const isTargetAdmin = adminIds.has(u.id);
+    if (u.id === user?.id) {
+      toast.error("Você não pode remover o seu próprio acesso de administrador.");
+      return;
+    }
+    const ok = window.confirm(
+      isTargetAdmin ? `Remover o acesso de administrador de ${nome}?` : `Tornar ${nome} administrador?`,
+    );
+    if (!ok) return;
+    setSavingRole(u.id);
+    const { error } = isTargetAdmin
+      ? await supabase.from("user_roles").delete().eq("user_id", u.id).eq("role", "admin")
+      : await supabase.from("user_roles").insert({ user_id: u.id, role: "admin" });
+    setSavingRole(null);
+    if (error) {
+      toast.error(`Não foi possível atualizar o papel: ${error.message}`);
+      return;
+    }
+    setAdminIds((prev) => {
+      const next = new Set(prev);
+      if (isTargetAdmin) next.delete(u.id);
+      else next.add(u.id);
+      return next;
+    });
+    toast.success(isTargetAdmin ? `${nome} não é mais administrador` : `${nome} agora é administrador`);
   };
 
   useEffect(() => { if (isAdmin) loadData(); }, [isAdmin]);
@@ -100,7 +134,16 @@ export default function Admin() {
     if (isLive) removeDonation(id);
     toast.success("Anúncio removido");
   };
-  const editAd = (id: string) => toast.info(`Editar anúncio #${id}`);
+  // Pausa/reativa anúncios reais; os de demonstração não são editáveis.
+  const editAd = (id: string, isLive: boolean, status: string) => {
+    if (!isLive) {
+      toast.info("Anúncio de demonstração: não pode ser editado.");
+      return;
+    }
+    const next = status === "Ativo" ? "Pausado" : "Ativo";
+    setDonationStatus(id, next);
+    toast.success(next === "Pausado" ? "Anúncio pausado" : "Anúncio reativado");
+  };
   const cancelTrade = (id: string, isLive: boolean) => {
     if (isLive) removeTrade(id);
     toast.success("Troca cancelada");
@@ -248,16 +291,24 @@ export default function Admin() {
                           <span className="text-[10px] font-data uppercase px-2 py-0.5 border border-accent/50 text-accent">
                             {u.user_type || "—"}
                           </span>
+                          {adminIds.has(u.id) && (
+                            <span className="ml-2 text-[10px] font-data uppercase px-2 py-0.5 border border-primary text-primary">
+                              admin
+                            </span>
+                          )}
                         </td>
                         <td className="py-3 px-2 text-foreground/80">{u.phone || "—"}</td>
                         <td className="py-3 px-2 text-foreground/60 text-xs">{new Date(u.created_at).toLocaleDateString("pt-BR")}</td>
                         <td className="py-3 px-2 text-right">
                           <button
-                            onClick={() => toast.info(`Gerenciar ${u.full_name || "usuário"} (em breve)`)}
-                            className="p-2 border border-border hover:border-accent text-foreground/70 hover:text-accent transition"
-                            aria-label="Gerenciar usuário"
+                            onClick={() => toggleAdmin(u)}
+                            disabled={savingRole === u.id}
+                            className="inline-flex items-center gap-1.5 px-2 py-1.5 border border-border hover:border-accent text-foreground/70 hover:text-accent transition text-[10px] uppercase disabled:opacity-50"
+                            aria-label={adminIds.has(u.id) ? "Remover administrador" : "Tornar administrador"}
+                            title={adminIds.has(u.id) ? "Remover administrador" : "Tornar administrador"}
                           >
-                            <UserCog className="w-3.5 h-3.5" />
+                            {savingRole === u.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <UserCog className="w-3.5 h-3.5" />}
+                            {adminIds.has(u.id) ? "Remover admin" : "Tornar admin"}
                           </button>
                         </td>
                       </tr>
@@ -282,7 +333,12 @@ export default function Admin() {
                     <span className={`px-2 py-0.5 text-[10px] font-data uppercase border ${
                       ad.status === "Ativo" ? "border-accent/50 text-accent" : "border-foreground/30 text-foreground/60"
                     }`}>{ad.status}{ad.isLive && " ★"}</span>
-                    <button onClick={() => editAd(ad.id)} className="p-2 border border-border hover:border-accent text-foreground/70 hover:text-accent transition">
+                    <button
+                      onClick={() => editAd(ad.id, ad.isLive, ad.status)}
+                      className="p-2 border border-border hover:border-accent text-foreground/70 hover:text-accent transition"
+                      aria-label={ad.status === "Ativo" ? "Pausar anúncio" : "Reativar anúncio"}
+                      title={ad.status === "Ativo" ? "Pausar anúncio" : "Reativar anúncio"}
+                    >
                       <Edit className="w-3.5 h-3.5" />
                     </button>
                     <button onClick={() => deleteAd(ad.id, ad.isLive)} className="p-2 border border-border hover:border-destructive text-foreground/70 hover:text-destructive transition">

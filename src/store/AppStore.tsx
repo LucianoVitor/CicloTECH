@@ -79,6 +79,7 @@ type Ctx = {
   addDonation: (d: Omit<Donation, "id" | "createdAt" | "status">) => Donation;
   addTrade: (t: Omit<Trade, "id" | "createdAt" | "status">) => Trade;
   removeDonation: (id: string) => void;
+  setDonationStatus: (id: string, status: NonNullable<Donation["status"]>) => void;
   removeTrade: (id: string) => void;
   toggleFavorite: (item: FavoriteItem) => void;
   isFavorite: (id: string) => boolean;
@@ -142,6 +143,10 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
 
   const removeDonation = useCallback((id: string) => setDonations((p) => p.filter((d) => d.id !== id)), []);
   const removeTrade = useCallback((id: string) => setTrades((p) => p.filter((t) => t.id !== id)), []);
+  const setDonationStatus: Ctx["setDonationStatus"] = useCallback(
+    (id, status) => setDonations((p) => p.map((d) => (d.id === id ? { ...d, status } : d))),
+    [],
+  );
 
   const toggleFavorite = useCallback((item: FavoriteItem) => {
     setFavorites((p) => (p.some((f) => f.id === item.id) ? p.filter((f) => f.id === item.id ? false : true) : [item, ...p]));
@@ -243,7 +248,7 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     <AppCtx.Provider
       value={{
         donations, trades, favorites, reports, chats, messages,
-        addDonation, addTrade, removeDonation, removeTrade,
+        addDonation, addTrade, removeDonation, removeTrade, setDonationStatus,
         toggleFavorite, isFavorite, reportItem, resolveReport,
         startChat, sendMessage, acceptDeal, getMessages,
       }}

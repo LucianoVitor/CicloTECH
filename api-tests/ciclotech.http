@@ -1,0 +1,310 @@
+###############################################################################
+#  CicloTECH — Testes da API (Supabase: Auth + REST/PostgREST)
+#  Extensão: REST Client (humao.rest-client). Clique em "Send Request" acima de cada bloco.
+#  Variáveis vêm de api-tests/.env (copie de .env.example).
+#  ORDEM: rode a seção 1 (login) antes das demais — as outras usam o token dela.
+###############################################################################
+
+@url = {{$dotenv SUPABASE_URL}}
+@key = {{$dotenv SUPABASE_ANON_KEY}}
+@email = {{$dotenv TEST_EMAIL}}
+@senha = {{$dotenv TEST_PASSWORD}}
+
+# Preenchidos automaticamente depois do login (seção 1.2)
+@token = {{login.response.body.access_token}}
+@userId = {{login.response.body.user.id}}
+
+
+###############################################################################
+# 1. AUTENTICAÇÃO  (POST /auth/v1/...)
+###############################################################################
+
+### 1.1 Cadastro da conta de teste (rode UMA vez; esperado: 200)
+# Se o projeto exige confirmação de e-mail, confirme pelo link recebido antes do login.
+POST {{url}}/auth/v1/signup
+apikey: {{key}}
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{senha}}",
+  "data": { "full_name": "Conta de Teste", "user_type": "student" }
+}
+
+### 1.2 Login — gera o token JWT usado no resto do arquivo (esperado: 200 + access_token)
+# @name login
+POST {{url}}/auth/v1/token?grant_type=password
+apikey: {{key}}
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{senha}}"
+}
+
+### 1.3 Login com senha errada (esperado: 400 "Invalid login credentials")
+POST {{url}}/auth/v1/token?grant_type=password
+apikey: {{key}}
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "senha-errada-123"
+}
+
+### 1.4 Quem sou eu? Dados do usuário do token (esperado: 200)
+GET {{url}}/auth/v1/user
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 1.5 Token inválido (esperado: 401/403 — o servidor recusa JWT adulterado)
+GET {{url}}/auth/v1/user
+apikey: {{key}}
+Authorization: Bearer token.adulterado.invalido
+
+
+###############################################################################
+# 2. EQUIPAMENTOS — CRUD completo  (/rest/v1/equipamentos)
+###############################################################################
+
+### 2.1 CREATE — cadastra um equipamento (esperado: 201 + registro criado)
+# @name criarEquip
+POST {{url}}/rest/v1/equipamentos
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "titulo": "Memória RAM 8GB DDR4 (teste API)",
+  "categoria": "Memória RAM",
+  "condicao": "Bom estado",
+  "descricao": "Criado pelo arquivo de testes da API.",
+  "user_id": "{{userId}}"
+}
+
+### 2.2 READ — lista os MEUS equipamentos, mais recentes primeiro (esperado: 200)
+GET {{url}}/rest/v1/equipamentos?select=*&order=created_at.desc
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 2.3 READ por ID (esperado: 200 + 1 item)
+GET {{url}}/rest/v1/equipamentos?id=eq.{{criarEquip.response.body.$[0].id}}&select=*
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 2.4 READ com filtro — só categoria "Memória RAM" (esperado: 200)
+# "Mem%C3%B3ria%20RAM" = "Memória RAM" codificado para URL (acento e espaço).
+GET {{url}}/rest/v1/equipamentos?categoria=eq.Mem%C3%B3ria%20RAM&select=titulo,categoria,condicao
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 2.5 UPDATE — altera o estado (esperado: 200 + registro com updated_at novo)
+PATCH {{url}}/rest/v1/equipamentos?id=eq.{{criarEquip.response.body.$[0].id}}
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "condicao": "Excelente"
+}
+
+### 2.6 VALIDAÇÃO — sem campo obrigatório "titulo" (esperado: 400, código 23502 not-null)
+POST {{url}}/rest/v1/equipamentos
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "categoria": "Memória RAM",
+  "condicao": "Novo",
+  "user_id": "{{userId}}"
+}
+
+### 2.7 SEGURANÇA — listar SEM login (esperado: 401, código 42501 — visitante não tem acesso à tabela)
+# Banco criado por supabase/recriar-banco.sql. (No banco antigo do Lovable a resposta era 200 com [].)
+GET {{url}}/rest/v1/equipamentos?select=*
+apikey: {{key}}
+
+### 2.8 SEGURANÇA (RLS) — criar SEM login (esperado: 401, código 42501)
+POST {{url}}/rest/v1/equipamentos
+apikey: {{key}}
+Content-Type: application/json
+
+{
+  "titulo": "Tentativa sem login",
+  "categoria": "Periféricos",
+  "condicao": "Novo"
+}
+
+### 2.9 SEGURANÇA (RLS) — criar em nome de OUTRO usuário (esperado: 403/401, código 42501)
+POST {{url}}/rest/v1/equipamentos
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "titulo": "Equipamento de outra pessoa",
+  "categoria": "Periféricos",
+  "condicao": "Novo",
+  "user_id": "00000000-0000-0000-0000-000000000000"
+}
+
+
+###############################################################################
+# 3. DOAÇÕES — relação com equipamentos  (/rest/v1/doacoes)
+###############################################################################
+
+### 3.1 CREATE — doa o equipamento criado em 2.1 (esperado: 201)
+# @name criarDoacao
+POST {{url}}/rest/v1/doacoes
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "equipamento_id": "{{criarEquip.response.body.$[0].id}}",
+  "user_id": "{{userId}}",
+  "observacoes": "Retirada na Fatec ZL"
+}
+
+### 3.2 READ com JOIN — doações + dados do equipamento (esperado: 200)
+GET {{url}}/rest/v1/doacoes?select=id,status,observacoes,created_at,equipamentos(titulo,categoria,condicao)&order=created_at.desc
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 3.3 UPDATE — muda o status (esperado: 200)
+PATCH {{url}}/rest/v1/doacoes?id=eq.{{criarDoacao.response.body.$[0].id}}
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "status": "Em andamento"
+}
+
+### 3.4 INTEGRIDADE — doar equipamento que não existe (esperado: 409, código 23503 foreign key)
+POST {{url}}/rest/v1/doacoes
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "equipamento_id": "{{$guid}}",
+  "user_id": "{{userId}}"
+}
+
+### 3.5 CASCATA (passo 1) — exclui o equipamento de 2.1 (esperado: 204)
+DELETE {{url}}/rest/v1/equipamentos?id=eq.{{criarEquip.response.body.$[0].id}}
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 3.6 CASCATA (passo 2) — a doação dele sumiu junto (esperado: 200 com [])
+GET {{url}}/rest/v1/doacoes?id=eq.{{criarDoacao.response.body.$[0].id}}&select=*
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+
+###############################################################################
+# 4. PERFIL E PAPÉIS  (/rest/v1/profiles, /rest/v1/user_roles, RPC)
+###############################################################################
+
+### 4.1 Meu perfil — criado automaticamente pelo trigger handle_new_user (esperado: 200)
+GET {{url}}/rest/v1/profiles?id=eq.{{userId}}&select=*
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 4.2 Atualiza meu telefone (esperado: 200)
+PATCH {{url}}/rest/v1/profiles?id=eq.{{userId}}
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "phone": "(11) 90000-0000"
+}
+
+### 4.3 Meus papéis (esperado: 200 — [] para usuário comum)
+GET {{url}}/rest/v1/user_roles?select=role&user_id=eq.{{userId}}
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 4.4 RPC — função has_role: sou admin? (esperado: 200 com false)
+# Sem login ela responde 401 (verificado). Se responder 401/404 também COM login, a função não está
+# liberada para usuários (GRANT EXECUTE) — o app Web só a usa dentro das políticas RLS.
+POST {{url}}/rest/v1/rpc/has_role
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "_user_id": "{{userId}}",
+  "_role": "admin"
+}
+
+### 4.5 SEGURANÇA — tentar me promover a admin (esperado: 401/403, código 42501)
+POST {{url}}/rest/v1/user_roles
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "user_id": "{{userId}}",
+  "role": "admin"
+}
+
+
+###############################################################################
+# 5. FEEDBACK / AVALIAÇÕES  (/rest/v1/feedback, view public_feedback)
+###############################################################################
+
+### 5.1 Envia uma avaliação (esperado: 201)
+POST {{url}}/rest/v1/feedback
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+Prefer: return=representation
+
+{
+  "author_name": "Conta de Teste",
+  "rating": 5,
+  "message": "Avaliação enviada pelos testes da API.",
+  "user_id": "{{userId}}"
+}
+
+### 5.2 VALIDAÇÃO — nota fora de 1..5 (esperado: 400, código 23514 check constraint)
+POST {{url}}/rest/v1/feedback
+apikey: {{key}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "author_name": "Conta de Teste",
+  "rating": 10,
+  "message": "Nota inválida",
+  "user_id": "{{userId}}"
+}
+
+### 5.3 View pública de avaliações, logado (esperado: 200)
+GET {{url}}/rest/v1/public_feedback?select=*&order=created_at.desc&limit=5
+apikey: {{key}}
+Authorization: Bearer {{token}}
+
+### 5.4 View pública de avaliações, SEM login (esperado: 200 — só o primeiro nome do autor)
+# No banco antigo do Lovable isto retornava 401 (bug); corrigido em supabase/recriar-banco.sql.
+GET {{url}}/rest/v1/public_feedback?select=*&limit=5
+apikey: {{key}}
+
+
+###############################################################################
+# 6. ENCERRAR SESSÃO
+###############################################################################
+
+### 6.1 Logout — invalida o token (esperado: 204)
+POST {{url}}/auth/v1/logout
+apikey: {{key}}
+Authorization: Bearer {{token}}

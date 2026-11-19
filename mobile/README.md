@@ -20,18 +20,25 @@ mobile/
 ├── app/                      # Rotas (Expo Router, baseado em arquivos)
 │   ├── _layout.tsx           # Tema escuro, AuthProvider, rotas protegidas por sessão
 │   ├── login.tsx             # Login / cadastro (Supabase Auth)
-│   ├── (tabs)/               # Abas visíveis após login
-│   │   ├── index.tsx         # Equipamentos (listar, doar, excluir)
-│   │   ├── doacoes.tsx       # Doações do usuário
-│   │   └── perfil.tsx        # Perfil (tabela profiles) e logout
+│   ├── (tabs)/               # Abas (como no protótipo mobile)
+│   │   ├── index.tsx         # Início: hero/carrossel, categorias, nosso impacto, links institucionais
+│   │   ├── doacoes.tsx       # Vitrine de doações (dados fictícios da Web + suas doações reais)
+│   │   ├── trocas.tsx        # Trocas peer-to-peer (dados fictícios da Web)
+│   │   └── perfil.tsx        # Perfil (tabela profiles), atalhos e logout
+│   ├── meus-equipamentos.tsx # Seus equipamentos no Supabase (listar, doar, excluir)
+│   ├── minhas-doacoes.tsx    # Suas doações no Supabase (status, cancelar)
+│   ├── favoritos.tsx         # Itens marcados com o coração (salvos no aparelho)
+│   ├── como-doar.tsx · impacto.tsx · sobre.tsx · faq.tsx   # Páginas institucionais da Web
 │   └── equipamento/novo.tsx  # Cadastro de equipamento (modal)
 └── src/
+    ├── data/conteudo.ts      # TODO o conteúdo fictício da Web (textos, catálogos, métricas, FAQ)
     ├── lib/supabase.ts       # Cliente único (sessão no AsyncStorage)
     ├── types/database.ts     # Tipos gerados do banco (cópia dos tipos da Web)
     ├── services/             # Serviços CRUD tipados: Equipamentos, Doacoes, Perfil
     ├── hooks/useAuth.tsx     # Contexto de autenticação
-    ├── components/ui.tsx     # Screen, Button, Input, Card...
-    └── theme/colors.ts       # Paleta: fundo #000000, destaque #FF003C
+    ├── components/ui.tsx     # Design system: Screen (grade), Button, Input, Chip, Badge, Card...
+    ├── lib/                  # erros (mensagens legíveis), dialogo (alertas multiplataforma), catalogo
+    └── theme/colors.ts       # Tokens da Web: fundo #030712, azul neon #3B82F6, Space Grotesk + Geist Mono
 ```
 
 ## Supabase
