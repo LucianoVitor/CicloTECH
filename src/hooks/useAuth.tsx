@@ -2,9 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-// Dev-only quick admin credentials
-export const DEV_ADMIN_EMAIL = "admin@ciclotech.com";
-export const DEV_ADMIN_PASSWORD = "Admin@CicloTech2026";
+// E-mails tratados como administradores na interface (o acesso real é controlado pela tabela user_roles no banco).
 export const DEV_ADMIN_EMAILS = ["admin@ciclotech.com", "admin@ciclotech.dev"];
 
 interface AuthCtx {
