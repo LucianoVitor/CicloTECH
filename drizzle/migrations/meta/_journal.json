@@ -15,6 +15,13 @@
       "when": 1795050077208,
       "tag": "0001_ciclotech_trocas_chat",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795052830886,
+      "tag": "0002_admin_excluir_usuario",
+      "breakpoints": true
     }
   ]
 }
