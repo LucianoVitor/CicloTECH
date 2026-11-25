@@ -1,0 +1,28 @@
+# PostgreSQL 16 LOCAL para testes de segurança (pgcrypto, RLS).
+# Credenciais e chave vêm do arquivo .env (não versionado): DB_USER, DB_PASSWORD, DB_NAME, APP_CHAVE_CPF.
+# Subir:  docker compose up -d
+# Conectar: psql "postgresql://$DB_USER:$DB_PASSWORD@localhost:54329/$DB_NAME"
+services:
+  db:
+    image: postgres:16
+    container_name: ciclotech-postgres-local
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:?defina DB_USER no .env}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD no .env}
+      POSTGRES_DB: ${DB_NAME:?defina DB_NAME no .env}
+    # Chave do pgcrypto como configuração do servidor (lida por current_setting('app.chave_cpf')).
+    command: ["postgres", "-c", "app.chave_cpf=${APP_CHAVE_CPF:?defina APP_CHAVE_CPF no .env}"]
+    ports:
+      # Porta alta e só no localhost, para não expor o banco na rede.
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - ciclotech-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  ciclotech-pgdata:
