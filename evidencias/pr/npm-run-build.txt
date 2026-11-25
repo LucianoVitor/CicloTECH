@@ -37,4 +37,4 @@ dist/assets/index-Da6eJH7O.js             1,273.58 kB │ gzip: 372.24 kB
 - Use build.rolldownOptions.output.codeSplitting to improve chunking: 
 https://rolldown.rs/reference/OutputOptions.codeSplitting
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
-✓ built in 3.04s
+✓ built in 3.10s
