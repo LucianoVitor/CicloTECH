@@ -1,0 +1,44 @@
+### comando: wapiti -u http://localhost:8080/ --scope folder --flush-session --max-scan-time 600 -f html -o evidencias\antes\wapiti
+
+     __      __               .__  __  .__________
+    /  \    /  \_____  ______ |__|/  |_|__\_____  \
+    \   \/\/   /\__  \ \____ \|  \   __\  | _(__  <
+     \        /  / __ \|  |_> >  ||  | |  |/       \
+      \__/\  /  (____  /   __/|__||__| |__/______  /
+           \/        \/|__|                      \/
+Wapiti 3.3.5 (wapiti-scanner.github.io)
+[*] You are lucky! Full moon tonight.
+CSP is not set for URL: http://localhost:8080/
+Host localhost:8080 serves HTTP content without redirecting to HTTPS.
+X-Frame-Options is not set on http://localhost:8080/
+X-Content-Type-Options is not set on http://localhost:8080/
+
+[*] Some similar passive alerts were suppressed to keep the report readable:
+    http_headers: 4 similar alert(s) suppressed
+[*] Saving scan state, please wait...
+This scan has been saved in the file <HOME>\.wapiti\scans\localhost_8080_folder_387db443.db
+[*] Wapiti found 3 URLs and forms during the scan
+
+[*] Launching module exec
+
+[*] Launching module file
+
+[*] Launching module redirect
+
+[*] Launching module sql
+
+[*] Launching module ssl
+sslscan is not installed or not found in PATH, module will be skipped
+
+[*] Launching module ssrf
+[*] Asking endpoint URL https://wapiti3.ovh/get_ssrf.php?session_id=o0p6vy for results, please wait...
+
+[*] Launching module upload
+
+[*] Launching module xss
+
+[*] Launching module permanentxss
+
+[*] Generating report...
+A report has been generated in the file evidencias\antes\wapiti
+Open evidencias\antes\wapiti\localhost_8080_11252026_1203.html with a browser to see this report.

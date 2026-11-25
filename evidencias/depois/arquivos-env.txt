@@ -1,0 +1,9 @@
+﻿Arquivos .env* versionados no git (depois):
+  api-tests/.env.example
+  mobile/.env.example
+
+git check-ignore:
+.gitignore:27:.env	.env
+.gitignore:28:.env.*	.env.local
+mobile/.gitignore:11:.env	mobile/.env
+api-tests/.gitignore:1:.env	api-tests/.env

@@ -1,0 +1,35 @@
+# Etapa 5 - pgcrypto (CPF criptografado) e hash de senha
+Gerado em: 2026-11-25T23:34:53.853Z
+Banco: PGlite (PostgreSQL em WebAssembly, local, em memória)
+
+Usuário A = 3e814967… | Usuário B = 8729a3cb… | CPF FICTÍCIO usado: 123.456.789-09
+
+1) select bruto da coluna (o que fica gravado na tabela):
+   select encode(cpf_criptografado,'hex') from public.profiles where id = '<A>';
+   -> c30d040703027b6979329f7a354d67d23c0117139d73941f64b9ba7107e55681692d18e0104437c3eaf68397f5c2cdd5… (77 bytes)
+[PASSOU] Valor gravado é ilegível (não contém os dígitos do CPF)
+
+2) select public.ler_cpf();  -- como o usuário A
+   -> 12345678909
+[PASSOU] ler_cpf() devolve o CPF do próprio usuário (só dígitos)
+[PASSOU] Usuário B chamando ler_cpf() NÃO recebe o CPF de A (recebe o próprio: null)
+         B recebeu: null
+[PASSOU] Com a chave errada não é possível descriptografar
+         erro: Wrong key or corrupt data
+[PASSOU] Sem a chave configurada no banco, ler_cpf() falha (a chave não está no código)
+         erro: Illegal argument to function
+[PASSOU] Visitante sem login (anon) não pode executar ler_cpf()
+         erro: permission denied for function ler_cpf
+[PASSOU] CPF com formato inválido é recusado
+         erro: CPF deve ter 11 dígitos.
+
+3) Hash de senha (bcrypt):
+   select email, left(encrypted_password, 7) as prefixo, length(encrypted_password) from auth.users;
+   -> <oculto>@example.com | $2a$10$ | 60 caracteres
+   -> <oculto>@example.com | $2a$10$ | 60 caracteres
+[PASSOU] Senhas guardadas como bcrypt ($2a$, custo 10), nunca em texto
+   ATENÇÃO: este auth.users é uma réplica mínima criada no PGlite (o Supabase local não pôde rodar
+   sem Docker). O hash foi gerado por crypt(..., gen_salt('bf', 10)) do pgcrypto, que produz o mesmo
+   formato bcrypt $2a$ usado pelo Supabase Auth. Rodar no Supabase local quando houver Docker.
+
+RESULTADO: todas as verificações passaram

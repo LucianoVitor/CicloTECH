@@ -1,0 +1,9 @@
+﻿### CodeQL
+Workflow criado em .github/workflows/codeql.yml (push, pull_request e cron semanal; javascript-typescript; security-extended).
+
+> gh --version
+ERRO: O termo 'gh' não é reconhecido como nome de cmdlet, função, arquivo de script ou programa operável. Verifique a grafia do nome ou, se um caminho tiver sido incluído, veja se o caminho está correto e tente novamente.
+
+Conclusão: o GitHub CLI (gh) não está instalado e o push não foi feito (aguardando autorização).
+Os alertas só existem depois que o workflow roda no GitHub. Depois do push, listar com:
+  gh api repos/LucianoVitor/CicloTECH/code-scanning/alerts --jq '.[] | {number, rule: .rule.id, severity: .rule.security_severity_level, file: .most_recent_instance.location.path, line: .most_recent_instance.location.start_line}'

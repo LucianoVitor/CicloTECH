@@ -1,0 +1,39 @@
+### comando: wapiti -u http://localhost:4173/ --scope folder --flush-session --max-scan-time 600 -f html -o evidencias\depois\wapiti-preview
+
+ ██╗    ██╗ █████╗ ██████╗ ██╗████████╗██╗██████╗
+ ██║    ██║██╔══██╗██╔══██╗██║╚══██╔══╝██║╚════██╗
+ ██║ █╗ ██║███████║██████╔╝██║   ██║   ██║ █████╔╝
+ ██║███╗██║██╔══██║██╔═══╝ ██║   ██║   ██║ ╚═══██╗
+ ╚███╔███╔╝██║  ██║██║     ██║   ██║   ██║██████╔╝
+  ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   ╚═╝╚═════╝  
+Wapiti 3.3.5 (wapiti-scanner.github.io)
+[*] You are lucky! Full moon tonight.
+Host localhost:4173 serves HTTP content without redirecting to HTTPS.
+GET http://localhost:4173/assets/index-FjLWHYaS.js (1) generated an exception: ValueError
+[*] Saving scan state, please wait...
+This scan has been saved in the file <HOME>\.wapiti\scans\localhost_4173_folder_2b02f66e.db
+[*] Wapiti found 1 URLs and forms during the scan
+
+[*] Launching module exec
+
+[*] Launching module file
+
+[*] Launching module redirect
+
+[*] Launching module sql
+
+[*] Launching module ssl
+sslscan is not installed or not found in PATH, module will be skipped
+
+[*] Launching module ssrf
+[*] Asking endpoint URL https://wapiti3.ovh/get_ssrf.php?session_id=qoehja for results, please wait...
+
+[*] Launching module upload
+
+[*] Launching module xss
+
+[*] Launching module permanentxss
+
+[*] Generating report...
+A report has been generated in the file evidencias\depois\wapiti-preview
+Open evidencias\depois\wapiti-preview\localhost_4173_11252026_1243.html with a browser to see this report.

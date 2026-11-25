@@ -1,0 +1,40 @@
+﻿
+> vite_react_shadcn_ts@0.0.0 build
+> vite build
+
+node.exe : (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to 
+become the default in a future major version of Vite:
+No linha:1 caractere:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((!) Your Vite c...ersion of Vite::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  - `__dirname` (vite.config.ts:7:32). Use `import.meta.dirname` instead
+  - import "./securityHeaders" without a file extension (vite.config.ts:5:39). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 2984 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               1.85 kB │ gzip:   0.86 kB
+dist/assets/cat-monitor-CURteouB.png         10.10 kB
+dist/assets/cat-storage-DLt0JmCv.png         14.48 kB
+dist/assets/cat-peripherals-E4dI6zer.png     22.22 kB
+dist/assets/cat-gpu-DuVdEs1L.png             23.71 kB
+dist/assets/cat-cpu-Br95bpRO.png             29.01 kB
+dist/assets/cat-ram-DjO8gaOR.png             32.18 kB
+dist/assets/index-Ca0mt55W.css               72.87 kB │ gzip:  12.88 kB
+dist/assets/datadogProfiler-C0KpUUQL.js       8.68 kB │ gzip:   3.52 kB
+dist/assets/datadogRecorder-BBx0mCnZ.js      34.38 kB │ gzip:  12.34 kB
+dist/assets/esm-aWOKsBrL.js                 161.44 kB │ gzip:  56.11 kB
+dist/assets/index-Da6eJH7O.js             1,273.58 kB │ gzip: 372.24 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: 
+https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.10s

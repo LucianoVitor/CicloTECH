@@ -1,0 +1,11 @@
+﻿Arquivos .env* no disco:
+  .env
+  .\api-tests\.env
+  .\api-tests\.env.example
+  .\mobile\.env
+  .\mobile\.env.example
+
+Arquivos .env* versionados no git:
+  .env
+  api-tests/.env.example
+  mobile/.env.example

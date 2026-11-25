@@ -1,0 +1,39 @@
+### comando: wapiti -u http://localhost:8080/ --scope folder --flush-session --max-scan-time 600 -f html -o evidencias\depois\wapiti
+
+     __      __               .__  __  .__________
+    /  \    /  \_____  ______ |__|/  |_|__\_____  \
+    \   \/\/   /\__  \ \____ \|  \   __\  | _(__  <
+     \        /  / __ \|  |_> >  ||  | |  |/       \
+      \__/\  /  (____  /   __/|__||__| |__/______  /
+           \/        \/|__|                      \/
+Wapiti 3.3.5 (wapiti-scanner.github.io)
+[*] You are lucky! Full moon tonight.
+CSP "script-src" value is not safe for URL: http://localhost:8080/
+Host localhost:8080 serves HTTP content without redirecting to HTTPS.
+[*] Saving scan state, please wait...
+This scan has been saved in the file <HOME>\.wapiti\scans\localhost_8080_folder_387db443.db
+[*] Wapiti found 3 URLs and forms during the scan
+
+[*] Launching module exec
+
+[*] Launching module file
+
+[*] Launching module redirect
+
+[*] Launching module sql
+
+[*] Launching module ssl
+sslscan is not installed or not found in PATH, module will be skipped
+
+[*] Launching module ssrf
+[*] Asking endpoint URL https://wapiti3.ovh/get_ssrf.php?session_id=jwjjcu for results, please wait...
+
+[*] Launching module upload
+
+[*] Launching module xss
+
+[*] Launching module permanentxss
+
+[*] Generating report...
+A report has been generated in the file evidencias\depois\wapiti
+Open evidencias\depois\wapiti\localhost_8080_11252026_1242.html with a browser to see this report.

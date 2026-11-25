@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wapiti scan report</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+    <div id="page">
+        <header style="text-align: center">
+        <h2 class="title" style="text-align: center">Wapiti vulnerability report</h2>
+        <h3>Target: http://localhost:4173/</h3>
+        <p>Date of the scan: Wed, 25 Nov 2026 12:43:35 +0000. Scope of the scan: folder. Crawled pages: 1</p>
+        </header>
+        <hr />
+
+        <h4>Summary</h4>
+        <table class="summary-table" style="background: url('logo_clear.png') no-repeat center;">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Number of vulnerabilities found</th>
+                </tr>
+            </thead>
+            <tbody id="summary">
+                    <tr>
+                        <td class="small">
+                            Backup file
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Cleartext Submission of Password
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Weak credentials
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            CRLF Injection
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Content Security Policy Configuration
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Cross Site Request Forgery
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            CVE-2024-55591
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Potentially dangerous file
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Command execution
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Path Traversal
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Fingerprint web application framework
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Fingerprint web server
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Htaccess Bypass
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            HTML Injection
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Clickjacking Protection
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            HTTP Strict Transport Security (HSTS)
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            MIME Type Confusion
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            HttpOnly Flag cookie
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            <a href="#vuln_type_18">Unencrypted Channels</a>
+                        </td>
+                        <td class="small text-centered">
+                            1
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Inconsistent Redirection
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Information Disclosure - Full Path
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            LDAP Injection
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Log4Shell
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            NS takeover
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Open Redirect
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Reflected Cross Site Scripting
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Secure Flag cookie
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Spring4Shell
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            SQL Injection
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            TLS/SSL misconfigurations
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Server Side Request Forgery
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Stack Trace Disclosure
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Stored HTML Injection
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Stored Cross Site Scripting
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Subdomain takeover
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Blind SQL Injection
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Unrestricted File Upload
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Vulnerable software
+                        </td>
+                        <td class="small text-centered">
+                            0
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Internal Server Error
+                        </td>
+                        <td class="small text-centered">0</td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Resource consumption
+                        </td>
+                        <td class="small text-centered">0</td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Review Webserver Metafiles for Information Leakage
+                        </td>
+                        <td class="small text-centered">0</td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            Fingerprint web technology
+                        </td>
+                        <td class="small text-centered">0</td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            HTTP Methods
+                        </td>
+                        <td class="small text-centered">0</td>
+                    </tr>
+                    <tr>
+                        <td class="small">
+                            TLS/SSL misconfigurations
+                        </td>
+                        <td class="small text-centered">0</td>
+                    </tr>
+            </tbody>
+        </table>
+        <hr />
+        <div id="details">
+                <h3 id="vuln_type_18">Unencrypted Channels</h3>
+                <dl>
+                    <dt>Description</dt>
+                    <dd>Sensitive data must be protected when it is transmitted through the network.</dd>
+                </dl>
+
+                    <div class="tab-container">
+                        <h4><span class="severity severity-low"></span> Vulnerability found in /</h4>
+                        <nav class="tab-nav">
+                            <a href="#tab-vuln-18-0-1" class="tab-link active">Description</a>
+                            <a href="#tab-vuln-18-0-2" class="tab-link">HTTP Request</a>
+                            <a href="#tab-vuln-18-0-4" class="tab-link">cURL command line</a>
+                            <a href="#tab-vuln-18-0-5" class="tab-link">WSTG Code</a>
+                        </nav>
+                        <section id="tab-vuln-18-0-1" class="tab-content" style="min-height: 124px;">
+                            <pre>No HTTPS redirection for this host. All HTTP requests are served in clear text.</pre>
+                        </section>
+                        <section id="tab-vuln-18-0-2" class="tab-content" style="min-height: 124px; display: none;">
+                            <pre style="white-space: normal;">
+                                    GET / HTTP/1.1
+                                    <br>
+                                    host: localhost:4173
+                                    <br>
+                                    connection: keep-alive
+                                    <br>
+                                    user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0
+                                    <br>
+                                    accept-language: en-US
+                                    <br>
+                                    accept-encoding: gzip, deflate, br
+                                    <br>
+                                    accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+                                    <br>
+                            </pre>
+                        </section>
+                        <section id="tab-vuln-18-0-4" class="tab-content" style="min-height: 124px; display: none;">
+                            <pre>curl &#34;http://localhost:4173/&#34;</pre>
+                        </section>
+                        <section id="tab-vuln-18-0-5" class="tab-content" style="min-height: 124px; display: none;">
+                            <pre>[&#39;WSTG-CRYP-03&#39;]</pre>
+                        </section>
+                    </div>
+
+                <dl><dt>Solutions</dt><dd>Use HTTPS for the whole web site and redirect any HTTP requests to HTTPS.</dd></dl>
+                <h5>References</h5>
+                <ul>
+                    <li><a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/03-Testing_for_Sensitive_Information_Sent_via_Unencrypted_Channels">Testing for Sensitive Information Sent via Unencrypted Channels</a></li>
+                    <li><a href="https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_Transport_Layer_Security">Testing for Weak Transport Layer Security</a></li>
+                </ul>
+                <br />
+                <hr>
+        </div>
+        <footer class="small" id="footer"><a href="https://wapiti-scanner.github.io/" id="wapiti_link">Wapiti 3.3.5</a> &copy; Nicolas SURRIBAS 2006-2026</footer>
+	</div>
+    <script type="text/javascript" src="js/app.js"></script>
+</body>
+</html>
