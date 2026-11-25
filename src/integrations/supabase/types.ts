@@ -196,6 +196,7 @@ export type Database = {
         Row: {
           address: string | null
           avatar_url: string | null
+          cpf_criptografado: string | null
           created_at: string
           full_name: string | null
           id: string
@@ -206,6 +207,7 @@ export type Database = {
         Insert: {
           address?: string | null
           avatar_url?: string | null
+          cpf_criptografado?: string | null
           created_at?: string
           full_name?: string | null
           id: string
@@ -216,6 +218,7 @@ export type Database = {
         Update: {
           address?: string | null
           avatar_url?: string | null
+          cpf_criptografado?: string | null
           created_at?: string
           full_name?: string | null
           id?: string
@@ -324,6 +327,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      ler_cpf: { Args: never; Returns: string }
+      salvar_cpf: { Args: { _cpf: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
