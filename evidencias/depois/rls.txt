@@ -1,0 +1,25 @@
+# Etapa 5 - RLS: usuário A tentando ler/alterar dados do usuário B
+Gerado em: 2026-11-25T12:39:17.727Z
+Banco: PGlite (PostgreSQL em WebAssembly, local, em memória)
+
+Usuário A = 96b8dc01… | Usuário B = a71e8ba7…
+
+[PASSOU] A lê o perfil de B -> 0 linhas
+         linhas: 0
+[PASSOU] A altera o perfil de B -> 0 linhas alteradas
+         linhas: 0
+[PASSOU] A lê o CPF criptografado de B -> 0 linhas
+[PASSOU] A altera o equipamento de B -> 0 linhas alteradas
+         linhas: 0
+[PASSOU] A exclui o equipamento de B -> 0 linhas excluídas
+         linhas: 0
+[PASSOU] A exclui a doação de B -> 0 linhas excluídas
+         linhas: 0
+[PASSOU] A cria equipamento em nome de B -> recusado pelo RLS
+         erro: new row violates row-level security policy for table "equipamentos"
+[PASSOU] A tenta se promover a admin (insert em user_roles) -> recusado
+         erro: new row violates row-level security policy for table "user_roles"
+[PASSOU] Conferência como superusuário: equipamento de B continua intacto
+[PASSOU] B continua vendo e com o próprio nome intacto
+
+RESULTADO: todas as verificações passaram
