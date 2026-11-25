@@ -1,0 +1,103 @@
+
+> vite_react_shadcn_ts@0.0.0 lint
+> eslint .
+
+
+<HOME>\CicloTECH\mobile\.expo\types\router.d.ts
+  1:1  warning  Unused eslint-disable directive (no problems were reported)
+
+<HOME>\CicloTECH\mobile\src\components\SeletorFoto.tsx
+  10:23  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\mobile\src\data\conteudo.ts
+  10:46  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+<HOME>\CicloTECH\mobile\src\hooks\useAuth.tsx
+  99:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\mobile\src\hooks\useCicloStore.tsx
+  262:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\mobile\src\hooks\useFavoritos.tsx
+  63:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\mobile\src\lib\catalogo.ts
+  42:8   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  43:8   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  44:12  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  45:8   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  46:12  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  47:16  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+<HOME>\CicloTECH\src\components\Layout.tsx
+  244:35  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  245:53  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  246:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+<HOME>\CicloTECH\src\components\ui\badge.tsx
+  29:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\components\ui\button.tsx
+  47:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\components\ui\chart.tsx
+   96:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   97:13  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  237:15  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+<HOME>\CicloTECH\src\components\ui\command.tsx
+  24:11  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+<HOME>\CicloTECH\src\components\ui\form.tsx
+  129:10  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\components\ui\navigation-menu.tsx
+  111:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\components\ui\sidebar.tsx
+  636:3  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\components\ui\sonner.tsx
+  27:19  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\components\ui\textarea.tsx
+  5:18  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+<HOME>\CicloTECH\src\components\ui\toggle.tsx
+  37:18  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\hooks\useAuth.tsx
+  82:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\hooks\usePasswordExpiry.tsx
+  49:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\hooks\useTheme.tsx
+  23:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\src\pages\Admin.tsx
+   39:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   40:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  178:49  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  443:61  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  473:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+<HOME>\CicloTECH\src\pages\FAQ.tsx
+   65:11  error  'merged' is never reassigned. Use 'const' instead  prefer-const
+   74:37  error  Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+  113:13  error  Empty block statement                              no-empty
+
+<HOME>\CicloTECH\src\pages\Perfil.tsx
+  24:42  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+<HOME>\CicloTECH\src\store\AppStore.tsx
+  114:73  error    Empty block statement                                                                                                           no-empty
+  261:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  267:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+<HOME>\CicloTECH\tailwind.config.ts
+  89:13  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+✖ 43 problems (26 errors, 17 warnings)
+  1 error and 1 warning potentially fixable with the `--fix` option.
+

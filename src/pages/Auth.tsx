@@ -108,8 +108,8 @@ export default function Auth() {
     try {
       emailSchema.parse(email);
       passwordSchema.parse(password);
-    } catch (err: any) {
-      toast.error(err.errors?.[0]?.message ?? "Dados inválidos");
+    } catch (err) {
+      toast.error(err instanceof z.ZodError ? (err.errors[0]?.message ?? "Dados inválidos") : "Dados inválidos");
       return;
     }
     setBusy(true);
