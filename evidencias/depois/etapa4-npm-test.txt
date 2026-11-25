@@ -1,0 +1,13 @@
+
+> vite_react_shadcn_ts@0.0.0 test
+> vitest run
+
+
+ RUN  v4.1.0 <HOME>/CicloTECH
+
+
+ Test Files  7 passed (7)
+      Tests  45 passed (45)
+   Start at  09:37:05
+   Duration  6.35s (transform 1.17s, setup 4.53s, import 4.21s, tests 520ms, environment 19.72s)
+

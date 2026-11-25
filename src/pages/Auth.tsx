@@ -92,7 +92,7 @@ function PasswordInput({
 
 export default function Auth() {
   const navigate = useNavigate();
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
   const [tab, setTab] = useState<"login" | "register">("login");
   const [busy, setBusy] = useState(false);
 
@@ -100,8 +100,8 @@ export default function Auth() {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    if (user) navigate(isAdmin ? "/admin" : "/perfil", { replace: true });
-  }, [user, isAdmin, navigate]);
+    if (user && !loading) navigate(isAdmin ? "/admin" : "/perfil", { replace: true });
+  }, [user, isAdmin, loading, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

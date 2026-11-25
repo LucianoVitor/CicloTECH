@@ -1,0 +1,26 @@
+﻿Achados (commit | arquivo | tipo | linha com valor ocultado):
+120480f | scripts/seguranca/banco-local.mjs | service_role | create role anon nologin; create role authenticated nologin; create role service_role nologin;
+39c80b5 | src/pages/recuperacaoSenha.test.tsx | Senha atribuida no codigo | expect(auth.updateUser).toHaveBeenCalledWith({ password: "<oculto>" });
+4337ebc | mobile/.env.example | service_role | #   - Use apenas a chave pública (publishable/anon). NUNCA coloque a service_role aqui:
+b89a837 | drizzle/migrations/0000_create_equipamentos_doacoes.sql | service_role | GRANT ALL ON public.doacoes TO service_role;
+b89a837 | drizzle/migrations/0000_create_equipamentos_doacoes.sql | service_role | GRANT ALL ON public.equipamentos TO service_role;
+bdfd234 | mobile/.env.example | service_role | # Use apenas a chave pública (publishable/anon): ela vai embutida no app. Nunca use a service_role aqui.
+bdfd234 | mobile/README.md | service_role | - Use apenas a chave **publishable/anon** no app. Nunca coloque a `service_role` em código mobile.
+d199bd6 | src/hooks/useAuth.tsx | Senha atribuida no codigo | export const DEV_ADMIN_PASSWORD = "<oculto>";
+d3d08ba | .env | JWT (chave Supabase anon/service_role) | VITE_SUPABASE_PUBLISHABLE_KEY="<oculto>"
+e7a2b55 | src/lib/passwordPolicy.test.ts | Senha atribuida no codigo | const r = <oculto> senha: "<oculto>", confirmacao: "<oculto>" });
+e7a2b55 | src/lib/passwordPolicy.test.ts | Senha atribuida no codigo | expect(novaSenhaSchema.safeParse({ senha: "<oculto>", confirmacao: "<oculto>" }).success).toBe(true);
+
+Total de linhas suspeitas: 11
+
+Análise (feita sem exibir os valores):
+- .env (commit d3d08ba): a chave é um JWT com role = anon (chave PÚBLICA do Supabase, feita para ir ao navegador;
+  quem protege os dados é o RLS). Não há chave service_role no front-end nem no histórico (os achados de
+  'service_role' são GRANTs de SQL, papéis de teste e avisos em README/.env.example).
+- src/hooks/useAuth.tsx (commit d199bd6): DEV_ADMIN_PASSWORD - senha da conta de admin escrita no código.
+  Foi removida no commit 30f150d, mas CONTINUA NO HISTÓRICO -> trocar essa senha no painel do Supabase/Lovable.
+- Testes (passwordPolicy.test.ts, recuperacaoSenha.test.tsx): senhas fictícias de teste, não são credenciais reais.
+
+Para rotacionar (ação do responsável):
+1. Senha da conta de administrador que estava em useAuth.tsx (commit d199bd6).
+2. Opcional: chave anon/publishable do projeto (é pública por definição, mas ficou versionada no .env).
