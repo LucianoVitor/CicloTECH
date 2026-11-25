@@ -1,8 +1,8 @@
 # Etapa 5 - RLS: usuário A tentando ler/alterar dados do usuário B
-Gerado em: 2026-11-25T12:39:17.727Z
+Gerado em: 2026-11-25T23:34:53.923Z
 Banco: PGlite (PostgreSQL em WebAssembly, local, em memória)
 
-Usuário A = 96b8dc01… | Usuário B = a71e8ba7…
+Usuário A = 3e814967… | Usuário B = 8729a3cb…
 
 [PASSOU] A lê o perfil de B -> 0 linhas
          linhas: 0

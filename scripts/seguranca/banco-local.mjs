@@ -14,8 +14,8 @@ export const MIGRATIONS_ORIGINAIS = [
   "supabase/migrations/20260521185453_6139d763-7208-49ae-9eb5-37ad9576a731.sql",
   "supabase/migrations/20260525193505_a886f75c-69d7-4c28-8d1e-d4ead9e1ce74.sql",
   // Já aplicadas no banco de nuvem pelo Lovable (trocas, conversas, has_role, exclusão pelo admin).
-  "supabase/lovable-atualizacao-compacta.sql",
-  "supabase/lovable-admin-excluir-usuario.sql",
+  "drizzle/migrations/0001_ciclotech_trocas_chat.sql",
+  "drizzle/migrations/0002_admin_excluir_usuario.sql",
 ];
 
 export async function criarBanco(repo, migrationsExtras = []) {

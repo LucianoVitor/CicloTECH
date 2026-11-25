@@ -5,7 +5,7 @@ import { como, criarBanco, criarUsuario, relatorio } from "./banco-local.mjs";
 const repo = process.cwd();
 const r = relatorio("Etapa 3 - troca periódica de senha (password_changed_at)");
 const db = await criarBanco(repo, ["supabase/migrations/20261125120000_password_changed_at.sql"]);
-r.log("Migrations aplicadas: as do repositório + as já aplicadas na nuvem (lovable-*.sql) + 20261125120000_password_changed_at.sql");
+r.log("Migrations aplicadas: as do repositório + as já aplicadas na nuvem (drizzle/migrations 0001 e 0002) + 20261125120000_password_changed_at.sql");
 r.log("");
 
 const col = await db.query(

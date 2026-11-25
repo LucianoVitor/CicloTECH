@@ -1,0 +1,37 @@
+node.exe : npm error code ERESOLVE
+No linha:1 caractere:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm error code ERESOLVE:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+npm error ERESOLVE could not resolve
+npm error
+npm error While resolving: lovable-tagger@1.1.13
+npm error Found: vite@8.0.0
+npm error node_modules/vite
+npm error   dev vite@"^8.0.0" from the root project
+npm error   peer vite@"^8.0.0" from @vitejs/plugin-react@6.0.1
+npm error   node_modules/@vitejs/plugin-react
+npm error     dev @vitejs/plugin-react@"^6.0.0" from the root project
+npm error   4 more (@vitest/mocker, vitest, ...)
+npm error
+npm error Could not resolve dependency:
+npm error peer vite@">=5.0.0 <8.0.0" from lovable-tagger@1.1.13
+npm error node_modules/lovable-tagger
+npm error   dev lovable-tagger@"^1.1.13" from the root project
+npm error
+npm error Conflicting peer dependency: vite@7.3.8
+npm error node_modules/vite
+npm error   peer vite@">=5.0.0 <8.0.0" from lovable-tagger@1.1.13
+npm error   node_modules/lovable-tagger
+npm error     dev lovable-tagger@"^1.1.13" from the root project
+npm error
+npm error Fix the upstream dependency conflict, or retry this command with --force or --legacy-peer-deps to accept an 
+incorrect (and potentially broken) dependency resolution.
+npm error
+npm error
+npm error For a full report see:
+npm error <HOME>\AppData\Local\npm-cache\_logs\2026-11-25T23_31_56_842Z-eresolve-report.txt
+npm error A complete log of this run can be found in: 
+<HOME>\AppData\Local\npm-cache\_logs\2026-11-25T23_31_56_842Z-debug-0.log

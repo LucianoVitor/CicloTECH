@@ -1,12 +1,12 @@
 # Etapa 5 - pgcrypto (CPF criptografado) e hash de senha
-Gerado em: 2026-11-25T12:39:17.650Z
+Gerado em: 2026-11-25T23:34:53.853Z
 Banco: PGlite (PostgreSQL em WebAssembly, local, em memória)
 
-Usuário A = 96b8dc01… | Usuário B = a71e8ba7… | CPF FICTÍCIO usado: 123.456.789-09
+Usuário A = 3e814967… | Usuário B = 8729a3cb… | CPF FICTÍCIO usado: 123.456.789-09
 
 1) select bruto da coluna (o que fica gravado na tabela):
    select encode(cpf_criptografado,'hex') from public.profiles where id = '<A>';
-   -> c30d0407030257bcbc70bfcf601e7fd23c0147495bcdcf1702e749caa07f6d17be0c98a414498ed1c8c5726827b6c1d8… (77 bytes)
+   -> c30d040703027b6979329f7a354d67d23c0117139d73941f64b9ba7107e55681692d18e0104437c3eaf68397f5c2cdd5… (77 bytes)
 [PASSOU] Valor gravado é ilegível (não contém os dígitos do CPF)
 
 2) select public.ler_cpf();  -- como o usuário A

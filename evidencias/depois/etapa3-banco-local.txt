@@ -1,17 +1,17 @@
 ﻿# Etapa 3 - troca periódica de senha (password_changed_at)
-Gerado em: 2026-11-25T12:13:56.590Z
+Gerado em: 2026-11-25T23:34:45.882Z
 Banco: PGlite (PostgreSQL em WebAssembly, local, em memória)
 
-Migrations aplicadas: as do repositório + as já aplicadas na nuvem (lovable-*.sql) + 20261125120000_password_changed_at.sql
+Migrations aplicadas: as do repositório + as já aplicadas na nuvem (drizzle/migrations 0001 e 0002) + 20261125120000_password_changed_at.sql
 
 [PASSOU] Coluna profiles.password_changed_at existe (timestamptz, not null, default now())
          {"data_type":"timestamp with time zone","is_nullable":"NO","column_default":"now()"}
 [PASSOU] Cadastro inicial: perfil nasce com password_changed_at preenchido
-         valor: 2026-11-25T12:13:59.132Z
+         valor: 2026-11-25T23:34:50.226Z
 [PASSOU] Troca de senha (update de auth.users.encrypted_password) atualiza password_changed_at
-         antes: 2026-08-17T12:13:59.215Z | depois: 2026-11-25T12:13:59.220Z
+         antes: 2026-08-17T23:34:50.318Z | depois: 2026-11-25T23:34:50.324Z
 [PASSOU] Usuário NÃO consegue alterar password_changed_at pela API (valor mantido)
-         continua: 2026-08-17T12:13:59.279Z
+         continua: 2026-08-17T23:34:50.389Z
 [PASSOU] Usuário continua podendo editar o próprio nome
 [PASSOU] Usuário lê a própria data (necessário para o hook usePasswordExpiry)
 

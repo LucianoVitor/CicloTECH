@@ -1,0 +1,23 @@
+
+> vite_react_shadcn_ts@0.0.0 test
+> vitest run
+
+node.exe : (!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to 
+become the default in a future major version of Vite:
+No linha:1 caractere:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((!) Your Vite c...ersion of Vite::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  - `__dirname` (vitest.config.ts:14:32). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.12 <HOME>/CicloTECH
+
+
+ Test Files  7 passed (7)
+      Tests  45 passed (45)
+   Start at  20:35:49
+   Duration  7.45s (transform 1.42s, setup 5.20s, import 5.05s, tests 853ms, environment 20.03s)
+
