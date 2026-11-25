@@ -13,7 +13,7 @@ const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 const CLASSE_INPUT =
   "w-full bg-background border border-border py-3 pl-12 pr-4 text-sm font-data text-white placeholder:text-white/50 focus:outline-none focus:border-primary focus:glow-sm";
 
-export default function ResetPassword() {
+export default function RedefinirSenha() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
@@ -31,7 +31,7 @@ export default function ResetPassword() {
       if (session) setReady(true);
       else {
         toast.error("Link de recuperação inválido ou expirado");
-        setTimeout(() => navigate("/auth"), 1500);
+        setTimeout(() => navigate("/esqueci-senha"), 1500);
       }
     });
   }, [navigate]);
@@ -39,13 +39,16 @@ export default function ResetPassword() {
   const onSubmit = async ({ senha: novaSenha }: NovaSenha) => {
     setBusy(true);
     const { error } = await supabase.auth.updateUser({ password: novaSenha });
-    setBusy(false);
     if (error) {
+      setBusy(false);
       toast.error(error.message);
       return;
     }
-    toast.success("Senha atualizada");
-    navigate("/perfil");
+    // Encerra a sessão de recuperação: o usuário entra de novo já com a senha nova.
+    await supabase.auth.signOut();
+    setBusy(false);
+    toast.success("Senha atualizada. Entre com a nova senha.");
+    navigate("/auth", { replace: true });
   };
 
   return (
