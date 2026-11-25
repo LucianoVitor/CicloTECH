@@ -1,0 +1,46 @@
+commit 30f150d9e76a680b5e41e55db7f93dec5d686340
+Author: Luciano Vitor <<email-oculto>.com>
+Date:   Wed Nov 18 22:26:16 2026 -0300
+
+    Remove a senha de administrador escrita no código (useAuth.tsx)
+    
+    As constantes não eram usadas; o acesso de admin vem da tabela user_roles.
+    
+    Co-Authored-By: Claude Opus 5.5 <<email-oculto>>
+
+commit bb1b8aa129c7415c62f8ce97f8f47906268bc51c
+Author: Luciano Vitor <<email-oculto>.com>
+Date:   Wed Nov 18 22:24:53 2026 -0300
+
+    Painel de admin: excluir usuários e remover botão de tornar admin
+    
+    Adiciona a função admin_excluir_usuario (supabase/lovable-admin-excluir-usuario.sql) e explica a lista de doações vazia.
+    
+    Co-Authored-By: Claude Opus 5.5 <<email-oculto>>
+
+commit e6fd35e6c320dd3a2fcd91b8f686130e6ed5f7fb
+Author: Luciano Vitor <<email-oculto>.com>
+Date:   Wed Nov 18 22:13:39 2026 -0300
+
+    Perfil: verifica papel de admin separado dos contadores
+    
+    O atalho Painel de admin não aparecia se as tabelas de trocas/conversas ainda não existissem.
+    
+    Co-Authored-By: Claude Opus 5.5 <<email-oculto>>
+
+commit 22fda8fad2e266e2c889815f0c73c7c2d1bffc76
+Author: Luciano Vitor <<email-oculto>.com>
+Date:   Wed Nov 18 22:03:12 2026 -0300
+
+    Atualiza package-lock.json com os plugins de desenvolvimento do Lovable
+    
+    Mantém npm ci funcionando após o merge das alterações do Lovable na main.
+    
+    Co-Authored-By: Claude Opus 5.5 <<email-oculto>>
+
+commit 8f1dca2b21b79040fc87e217852efb19b57b6b7b
+Merge: 4337ebc da20555
+Author: Luciano Vitor <<email-oculto>.com>
+Date:   Wed Nov 18 22:01:38 2026 -0300
+
+    Merge remote-tracking branch 'origin/main' into feature/mobile-app

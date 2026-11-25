@@ -1,0 +1,36 @@
+﻿.\src\pages\Auth.tsx:13: const passwordSchema = z.string().min(8, "<oculto>").max(72);
+.\src\pages\Auth.tsx:31: function PasswordInput({
+.\src\pages\Auth.tsx:34: placeholder = "<oculto>",
+.\src\pages\Auth.tsx:45: type={show ? "<oculto>" : "<oculto>"}
+.\src\pages\Auth.tsx:55: aria-label={show ? "<oculto>" : "<oculto>"}
+.\src\pages\Auth.tsx:71: const [password, setPassword] = useState("");
+.\src\pages\Auth.tsx:82: passwordSchema.parse(password);
+.\src\pages\Auth.tsx:88: const { error } = await supabase.auth.signInWithPassword({ email, password });
+.\src\pages\Auth.tsx:91: toast.error(error.message === "<oculto>" ? "<oculto>" : error.message);
+.\src\pages\Auth.tsx:103: passwordSchema.parse(password);
+.\src\pages\Auth.tsx:112: password,
+.\src\pages\Auth.tsx:136: const { error } = await supabase.auth.resetPasswordForEmail(email, {
+.\src\pages\Auth.tsx:137: redirectTo: `<oculto>`,
+.\src\pages\Auth.tsx:160: {tab === "<oculto>" ? "<oculto>" : tab === "<oculto>" ? "<oculto>" : "<oculto>"}
+.\src\pages\Auth.tsx:187: <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} />
+.\src\pages\Auth.tsx:198: Esqueceu a senha?
+.\src\pages\Auth.tsx:208: <PasswordInput value={password} onChange={(e) => setPassword(e.target.value)} placeholder="<oculto>" />
+.\src\pages\FAQ.tsx:33: { q: "<oculto>", a: "<oculto>" },
+.\src\pages\ResetPassword.tsx:10: const passwordSchema = z.string().min(8, "<oculto>").max(72);
+.\src\pages\ResetPassword.tsx:12: export default function ResetPassword() {
+.\src\pages\ResetPassword.tsx:14: const [password, setPassword] = useState("");
+.\src\pages\ResetPassword.tsx:33: passwordSchema.parse(password);
+.\src\pages\ResetPassword.tsx:38: if (password !== confirm) {
+.\src\pages\ResetPassword.tsx:39: toast.error("<oculto>");
+.\src\pages\ResetPassword.tsx:43: const { error } = await supabase.auth.updateUser({ password });
+.\src\pages\ResetPassword.tsx:49: toast.success("<oculto>");
+.\src\pages\ResetPassword.tsx:64: Nova Senha
+.\src\pages\ResetPassword.tsx:73: type="<oculto>"
+.\src\pages\ResetPassword.tsx:74: placeholder="<oculto>"
+.\src\pages\ResetPassword.tsx:75: value={password}
+.\src\pages\ResetPassword.tsx:76: onChange={(e) => setPassword(e.target.value)}
+.\src\pages\ResetPassword.tsx:84: type="<oculto>"
+.\src\pages\ResetPassword.tsx:85: placeholder="<oculto>"
+.\src\pages\ResetPassword.tsx:98: Atualizar Senha
+.\src\App.tsx:16: import ResetPassword from "<oculto>";
+.\src\App.tsx:45: <Route path="<oculto>" element={<ResetPassword />} />
