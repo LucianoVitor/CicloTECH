@@ -2,19 +2,28 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Lock, Loader2 } from "lucide-react";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { supabase } from "@/integrations/supabase/client";
+import { PasswordStrength } from "@/components/PasswordStrength";
+import { novaSenhaSchema, type NovaSenha } from "@/lib/passwordPolicy";
 import { toast } from "sonner";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
-const passwordSchema = z.string().min(8, "Mínimo 8 caracteres").max(72);
+const CLASSE_INPUT =
+  "w-full bg-background border border-border py-3 pl-12 pr-4 text-sm font-data text-white placeholder:text-white/50 focus:outline-none focus:border-primary focus:glow-sm";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [ready, setReady] = useState(false);
+  const form = useForm<NovaSenha>({
+    resolver: zodResolver(novaSenhaSchema),
+    mode: "onTouched",
+    defaultValues: { senha: "", confirmacao: "" },
+  });
+  const senha = form.watch("senha");
+  const erros = form.formState.errors;
 
   useEffect(() => {
     // Supabase appends recovery tokens to the URL hash
@@ -27,20 +36,9 @@ export default function ResetPassword() {
     });
   }, [navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      passwordSchema.parse(password);
-    } catch (err: any) {
-      toast.error(err.errors?.[0]?.message);
-      return;
-    }
-    if (password !== confirm) {
-      toast.error("As senhas não coincidem");
-      return;
-    }
+  const onSubmit = async ({ senha: novaSenha }: NovaSenha) => {
     setBusy(true);
-    const { error } = await supabase.auth.updateUser({ password });
+    const { error } = await supabase.auth.updateUser({ password: novaSenha });
     setBusy(false);
     if (error) {
       toast.error(error.message);
@@ -66,28 +64,21 @@ export default function ResetPassword() {
           {!ready ? (
             <p className="text-center text-white/70 font-data text-xs uppercase">Validando link...</p>
           ) : (
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 group-focus-within:text-primary" />
-                <input
-                  type="password"
-                  placeholder="Nova senha"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full bg-background border border-border py-3 pl-12 pr-4 text-sm font-data text-white placeholder:text-white/50 focus:outline-none focus:border-primary focus:glow-sm"
-                />
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)} noValidate>
+              <div className="space-y-2">
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 group-focus-within:text-primary" />
+                  <input type="password" placeholder="Nova senha" aria-label="Nova senha" className={CLASSE_INPUT} {...form.register("senha")} />
+                </div>
+                <PasswordStrength senha={senha} />
+                {erros.senha && <p role="alert" className="text-[11px] text-destructive">{erros.senha.message}</p>}
               </div>
-              <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 group-focus-within:text-primary" />
-                <input
-                  type="password"
-                  placeholder="Confirmar senha"
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
-                  required
-                  className="w-full bg-background border border-border py-3 pl-12 pr-4 text-sm font-data text-white placeholder:text-white/50 focus:outline-none focus:border-primary focus:glow-sm"
-                />
+              <div className="space-y-1">
+                <div className="relative group">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60 group-focus-within:text-primary" />
+                  <input type="password" placeholder="Confirmar senha" aria-label="Confirmar senha" className={CLASSE_INPUT} {...form.register("confirmacao")} />
+                </div>
+                {erros.confirmacao && <p role="alert" className="text-[11px] text-destructive">{erros.confirmacao.message}</p>}
               </div>
               <button
                 type="submit"
