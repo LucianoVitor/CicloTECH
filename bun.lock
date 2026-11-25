@@ -5,6 +5,7 @@
     "": {
       "name": "vite_react_shadcn_ts",
       "dependencies": {
+        "@datadog/browser-rum": "^7.19.0",
         "@hookform/resolvers": "^3.10.0",
         "@radix-ui/react-accordion": "^1.2.11",
         "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -95,6 +96,14 @@
     "@alloc/quick-lru": ["@alloc/quick-lru@5.2.0", "", {}, "sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw=="],
 
     "@babel/runtime": ["@babel/runtime@7.28.6", "", {}, "sha512-05WQkdpL9COIMz4LjTxGpPNCdlpyimKppYNoJ5Di5EUObifl8t4tuLuUBBZEpoLYOmfvIWrsp9fCl0HoPRVTdA=="],
+
+    "@datadog/browser-core": ["@datadog/browser-core@7.19.0", "", { "dependencies": { "@datadog/js-core": "0.0.23" } }, "sha512-Ubxx8kg1eH892fE/skMUD9AAzlyjs6MsGOzewVdATbU44IXIJuIFufCsm+bY7a2+nB0zX85g8u26LW1T2YIvqQ=="],
+
+    "@datadog/browser-rum": ["@datadog/browser-rum@7.19.0", "", { "dependencies": { "@datadog/browser-core": "7.19.0", "@datadog/browser-rum-core": "7.19.0", "@datadog/js-core": "0.0.23" }, "peerDependencies": { "@datadog/browser-logs": "7.19.0" }, "optionalPeers": ["@datadog/browser-logs"] }, "sha512-bM7uezxt89EPbItIxwUNIf44vF0sJ3tInky3ftJkZlqNDbu9LLq4BVkxcn4bUoEmRBQWTDgRSnRvAZMPgobkIQ=="],
+
+    "@datadog/browser-rum-core": ["@datadog/browser-rum-core@7.19.0", "", { "dependencies": { "@datadog/browser-core": "7.19.0", "@datadog/js-core": "0.0.23" } }, "sha512-knyAaaiQpibS7rDDh1kTT7s2beP1xML5svHa9aGCNDWlP3Qsb+YYpFWKjSBdk4bKS53vf12/ZGN81I900htzpQ=="],
+
+    "@datadog/js-core": ["@datadog/js-core@0.0.23", "", {}, "sha512-AaDluda54W3mCsRGkjUEO2LjQQP3iwQKi5Lei1WDmGGV7kSb46GnAi6kEUN5PsgOZcQfdDIXEi3Qv27eMJoEDw=="],
 
     "@drizzle-team/brocli": ["@drizzle-team/brocli@0.10.2", "https://europe-west1-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@drizzle-team/brocli/-/brocli-0.10.2.tgz", {}, "sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w=="],
 
