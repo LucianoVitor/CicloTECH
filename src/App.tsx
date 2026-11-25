@@ -13,7 +13,9 @@ import SolicitarHardware from "./pages/SolicitarHardware";
 import ImpactoODS from "./pages/ImpactoODS";
 import SobreNos from "./pages/SobreNos";
 import Auth from "./pages/Auth";
-import ResetPassword from "./pages/ResetPassword";
+import EsqueciSenha from "./pages/EsqueciSenha";
+import RedefinirSenha from "./pages/RedefinirSenha";
+import RedirecionarComHash from "./components/RedirecionarComHash";
 import DoarEquipamento from "./pages/DoarEquipamento";
 import Perfil from "./pages/Perfil";
 import Admin from "./pages/Admin";
@@ -42,7 +44,10 @@ const App = () => (
                   <Route path="/sobre" element={<SobreNos />} />
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/auth" element={<Auth />} />
-                  <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+                  <Route path="/redefinir-senha" element={<RedefinirSenha />} />
+                  {/* Links de e-mail antigos apontavam para /reset-password. */}
+                  <Route path="/reset-password" element={<RedirecionarComHash para="/redefinir-senha" />} />
                   <Route path="/doar" element={<DoarEquipamento />} />
                   <Route path="/perfil" element={<Perfil />} />
                   <Route path="/admin" element={<Admin />} />

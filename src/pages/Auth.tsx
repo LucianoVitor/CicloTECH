@@ -1,5 +1,5 @@
 import { forwardRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, User, Loader2, Eye, EyeOff } from "lucide-react";
 import { z } from "zod";
@@ -93,7 +93,7 @@ function PasswordInput({
 export default function Auth() {
   const navigate = useNavigate();
   const { user, isAdmin } = useAuth();
-  const [tab, setTab] = useState<"login" | "register" | "forgot">("login");
+  const [tab, setTab] = useState<"login" | "register">("login");
   const [busy, setBusy] = useState(false);
 
   const [email, setEmail] = useState("");
@@ -151,27 +151,6 @@ export default function Auth() {
     setTab("login");
   };
 
-  const handleForgot = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      emailSchema.parse(email);
-    } catch (err: any) {
-      toast.error(err.errors?.[0]?.message ?? "Email inválido");
-      return;
-    }
-    setBusy(true);
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    setBusy(false);
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    toast.success("Link de recuperação enviado para seu email");
-    setTab("login");
-  };
-
   return (
     <section className="py-24 px-6 flex items-center justify-center min-h-[80vh]">
       <motion.div
@@ -184,10 +163,10 @@ export default function Auth() {
           <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-60 h-40 bg-primary/15 blur-[60px] rounded-full pointer-events-none" />
 
           <h1 className="text-2xl font-bold font-data text-primary-foreground tracking-tighter uppercase text-center mb-8 relative">
-            {tab === "login" ? "Entrar" : tab === "register" ? "Criar Conta" : "Recuperar Senha"}
+            {tab === "login" ? "Entrar" : "Criar Conta"}
           </h1>
 
-          {tab !== "forgot" && (
+          {(
             <div className="flex mb-8 border border-border relative">
               <button
                 onClick={() => setTab("login")}
@@ -221,9 +200,9 @@ export default function Auth() {
                 Entrar
               </button>
               <p className="text-center text-[10px] font-data text-foreground/70 uppercase">
-                <button type="button" onClick={() => setTab("forgot")} className="text-accent hover:underline">
-                  Esqueceu a senha?
-                </button>
+                <Link to="/esqueci-senha" className="text-accent hover:underline">
+                  Esqueci minha senha
+                </Link>
               </p>
             </form>
           )}
@@ -271,29 +250,6 @@ export default function Auth() {
             </form>
           )}
 
-          {tab === "forgot" && (
-            <form className="space-y-4" onSubmit={handleForgot}>
-              <p className="text-xs text-foreground/80 font-data uppercase tracking-wider mb-4">
-                Informe seu email para receber o link de recuperação
-              </p>
-              <GlowInput icon={Mail} type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-              <button
-                type="submit"
-                disabled={busy}
-                className="w-full py-3 bg-primary text-primary-foreground font-data text-sm uppercase tracking-widest border border-accent glow-md hover:glow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-60"
-              >
-                {busy && <Loader2 className="w-4 h-4 animate-spin" />}
-                Enviar Link
-              </button>
-              <button
-                type="button"
-                onClick={() => setTab("login")}
-                className="w-full text-center text-[10px] font-data text-accent hover:underline uppercase"
-              >
-                ← Voltar ao login
-              </button>
-            </form>
-          )}
         </div>
       </motion.div>
     </section>
