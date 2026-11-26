@@ -30,11 +30,16 @@ export function PasswordExpiryProvider({ children }: { children: ReactNode }) {
       return;
     }
     setEstado((e) => ({ ...e, carregando: true }));
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("password_changed_at")
-      .eq("id", user.id)
-      .maybeSingle();
+    let data: { password_changed_at: string | null } | null = null;
+    let error: { message: string } | null = null;
+    try {
+      const r = await supabase.from("profiles").select("password_changed_at").eq("id", user.id).maybeSingle();
+      data = r.data;
+      error = r.error;
+    } catch (e) {
+      // Falha inesperada (rede, coluna ausente...): libera o acesso em vez de travar a tela.
+      error = { message: e instanceof Error ? e.message : String(e) };
+    }
     if (error || !data) {
       // Sem a data não dá para afirmar que venceu: não bloqueia o usuário, mas registra o motivo.
       setEstado({ carregando: false, vencida: false, trocadaEm: null, erro: error?.message ?? "Perfil não encontrado" });

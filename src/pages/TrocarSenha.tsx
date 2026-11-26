@@ -34,8 +34,13 @@ export default function TrocarSenha() {
       return;
     }
     // Registra no servidor a data da troca (o cliente não informa a data).
-    const { error: rpcErro } = await supabase.rpc("registrar_troca_de_senha");
-    if (rpcErro) console.error("registrar_troca_de_senha:", rpcErro.message);
+    // Se o registro falhar, a troca de senha já valeu: segue sem travar a tela.
+    try {
+      const { error: rpcErro } = await supabase.rpc("registrar_troca_de_senha");
+      if (rpcErro) console.error("registrar_troca_de_senha:", rpcErro.message);
+    } catch (e) {
+      console.error("registrar_troca_de_senha:", e);
+    }
     await recarregar();
     setBusy(false);
     toast.success("Senha trocada com sucesso");
