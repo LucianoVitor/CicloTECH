@@ -44,6 +44,9 @@ export default function RedefinirSenha() {
       toast.error(error.message);
       return;
     }
+    // Registra no servidor a data da troca (o cliente não informa a data).
+    const { error: rpcErro } = await supabase.rpc("registrar_troca_de_senha");
+    if (rpcErro) console.error("registrar_troca_de_senha:", rpcErro.message);
     // Encerra a sessão de recuperação: o usuário entra de novo já com a senha nova.
     await supabase.auth.signOut();
     setBusy(false);

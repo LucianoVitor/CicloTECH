@@ -33,7 +33,9 @@ export default function TrocarSenha() {
       toast.error(error.message.includes("different") ? "A nova senha precisa ser diferente da atual" : error.message);
       return;
     }
-    // O gatilho do banco grava password_changed_at; recarrega para liberar as outras telas.
+    // Registra no servidor a data da troca (o cliente não informa a data).
+    const { error: rpcErro } = await supabase.rpc("registrar_troca_de_senha");
+    if (rpcErro) console.error("registrar_troca_de_senha:", rpcErro.message);
     await recarregar();
     setBusy(false);
     toast.success("Senha trocada com sucesso");

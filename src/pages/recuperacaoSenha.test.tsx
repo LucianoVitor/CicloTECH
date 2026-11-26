@@ -8,7 +8,7 @@ const auth = vi.hoisted(() => ({
   updateUser: vi.fn(),
   signOut: vi.fn(),
 }));
-vi.mock("@/integrations/supabase/client", () => ({ supabase: { auth } }));
+vi.mock("@/integrations/supabase/client", () => ({ supabase: { auth, rpc: vi.fn().mockResolvedValue({ error: null }) } }));
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), error: vi.fn() } }));
 
 import EsqueciSenha, { MENSAGEM_ENVIO } from "./EsqueciSenha";
