@@ -34,7 +34,7 @@ export function PasswordExpiryProvider({ children }: { children: ReactNode }) {
       .from("profiles")
       .select("password_changed_at")
       .eq("id", user.id)
-      .maybeSingle());
+      .maybeSingle();
     if (error || !data) {
       // Sem a data não dá para afirmar que venceu: não bloqueia o usuário, mas registra o motivo.
       setEstado({ carregando: false, vencida: false, trocadaEm: null, erro: error?.message ?? "Perfil não encontrado" });
