@@ -1,0 +1,42 @@
+
+ RUN  v4.1.12 <HOME>/CicloTECH
+
+ ✓ src/lib/previewImagem.test.ts > validarImagem > aceita image/jpeg 2ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > aceita image/png 0ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > aceita image/webp 0ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > recusa o tipo 'image/svg+xml' com mensagem em português 1ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > recusa o tipo 'text/html' com mensagem em português 0ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > recusa o tipo 'image/gif' com mensagem em português 0ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > recusa o tipo 'application/pdf' com mensagem em português 0ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > recusa o tipo '' com mensagem em português 0ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > recusa arquivo maior que 5 MB 1ms
+ ✓ src/lib/previewImagem.test.ts > validarImagem > aceita exatamente 5 MB 0ms
+ ✓ src/lib/previewImagem.test.ts > criarUrlPreview > devolve a URL quando começa com blob: 1ms
+ ✓ src/lib/previewImagem.test.ts > criarUrlPreview > não cria URL para tipo inválido nem para arquivo grande 1ms
+ ✓ src/lib/previewImagem.test.ts > criarUrlPreview > recusa (e libera) uma URL que não começa com blob: 1ms
+ ✓ src/lib/previewImagem.test.ts > revogarUrlPreview > revoga URLs blob: 0ms
+ ✓ src/lib/previewImagem.test.ts > revogarUrlPreview > ignora null, vazio e URLs que não são blob: 0ms
+node.exe : stderr | src/pages/DoarEquipamento.test.tsx > DoarEquipamento - pré-visualização das fotos > mostra a 
+miniatura com URL blob: criada uma única vez por arquivo
+No linha:1 caractere:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (stderr | src/pa...vez por arquivo:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. 
+You can use the `v7_startTransition` future flag to opt-in early. For more information, see 
+https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the 
+`v7_relativeSplatPath` future flag to opt-in early. For more information, see 
+https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+ ✓ src/pages/DoarEquipamento.test.tsx > DoarEquipamento - pré-visualização das fotos > mostra a miniatura com URL blob: criada uma única vez por arquivo 70ms
+ ✓ src/pages/DoarEquipamento.test.tsx > DoarEquipamento - pré-visualização das fotos > recusa tipo não permitido com mensagem e sem criar URL 14ms
+ ✓ src/pages/DoarEquipamento.test.tsx > DoarEquipamento - pré-visualização das fotos > revoga a URL ao remover a foto e as restantes ao desmontar 19ms
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  00:16:42
+   Duration  2.51s (transform 163ms, setup 406ms, import 1.04s, tests 116ms, environment 1.83s)
+
