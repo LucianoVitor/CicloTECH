@@ -1,10 +1,11 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Upload, Package, FileText, Image as ImageIcon, X, CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAppStore, fileToDataURL } from "@/store/AppStore";
 import { useAuth } from "@/hooks/useAuth";
+import { criarUrlPreview, revogarUrlPreview, validarImagem } from "@/lib/previewImagem";
 
 const BEZIER: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
@@ -19,6 +20,11 @@ const categoryOptions = [
 
 const conditions = ["Novo", "Excelente", "Bom estado", "Funcional", "Para peças"];
 
+const MAX_FOTOS = 6;
+
+/** Foto escolhida + URL "blob:" da miniatura, criada uma única vez quando o arquivo entra. */
+type Foto = { arquivo: File; url: string };
+
 export default function DoarEquipamento() {
   const navigate = useNavigate();
   const { addDonation } = useAppStore();
@@ -28,19 +34,34 @@ export default function DoarEquipamento() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [condition, setCondition] = useState("");
-  const [files, setFiles] = useState<File[]>([]);
+  const [fotos, setFotos] = useState<Foto[]>([]);
+  const files = fotos.map((f) => f.arquivo);
+  // Guarda a lista atual para revogar as URLs quando o componente desmontar.
+  const fotosRef = useRef<Foto[]>([]);
+  fotosRef.current = fotos;
+  useEffect(() => () => fotosRef.current.forEach((f) => revogarUrlPreview(f.url)), []);
   const [dragOver, setDragOver] = useState(false);
   const [busy, setBusy] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const addFiles = (incoming: FileList | null) => {
     if (!incoming) return;
-    const imgs = Array.from(incoming).filter((f) => f.type.startsWith("image/") && f.size <= 5 * 1024 * 1024);
-    if (imgs.length === 0) {
-      toast.error("Selecione imagens (PNG/JPG) de até 5MB");
-      return;
+    const vagas = MAX_FOTOS - fotos.length;
+    const novas: Foto[] = [];
+    for (const arquivo of Array.from(incoming)) {
+      const validacao = validarImagem(arquivo);
+      if (!validacao.ok) {
+        toast.error(validacao.erro);
+        continue;
+      }
+      if (novas.length >= vagas) {
+        toast.error(`Máximo de ${MAX_FOTOS} fotos por doação.`);
+        break;
+      }
+      const url = criarUrlPreview(arquivo);
+      if (url) novas.push({ arquivo, url });
     }
-    setFiles((prev) => [...prev, ...imgs].slice(0, 6));
+    if (novas.length > 0) setFotos((prev) => [...prev, ...novas]);
   };
 
   const onDrop = (e: React.DragEvent) => {
@@ -49,7 +70,10 @@ export default function DoarEquipamento() {
     addFiles(e.dataTransfer.files);
   };
 
-  const removeFile = (idx: number) => setFiles((prev) => prev.filter((_, i) => i !== idx));
+  const removeFile = (idx: number) => {
+    revogarUrlPreview(fotos[idx]?.url);
+    setFotos((prev) => prev.filter((_, i) => i !== idx));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +108,8 @@ export default function DoarEquipamento() {
     setCategory("");
     setDescription("");
     setCondition("");
-    setFiles([]);
+    fotos.forEach((f) => revogarUrlPreview(f.url));
+    setFotos([]);
     setSuccess(false);
   };
 
@@ -204,7 +229,7 @@ export default function DoarEquipamento() {
             <input
               ref={fileInput}
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               multiple
               hidden
               onChange={(e) => addFiles(e.target.files)}
@@ -223,15 +248,15 @@ export default function DoarEquipamento() {
                 Clique ou arraste imagens aqui
               </p>
               <p className="text-[10px] font-data text-muted-foreground/60 mt-1">
-                PNG, JPG até 5MB · máx. 6 fotos
+                PNG, JPG ou WEBP até 5MB · máx. 6 fotos
               </p>
             </div>
 
-            {files.length > 0 && (
+            {fotos.length > 0 && (
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mt-3">
-                {files.map((f, i) => (
-                  <div key={i} className="relative aspect-square bg-background border border-border overflow-hidden group">
-                    <img src={URL.createObjectURL(f)} alt={f.name} className="w-full h-full object-cover" />
+                {fotos.map((foto, i) => (
+                  <div key={foto.url} className="relative aspect-square bg-background border border-border overflow-hidden group">
+                    <img src={foto.url} alt={foto.arquivo.name} className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={() => removeFile(i)}

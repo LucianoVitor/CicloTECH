@@ -1,0 +1,35 @@
+﻿
+> vite_react_shadcn_ts@0.0.0 build
+> vite build
+
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 2985 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               1.85 kB │ gzip:   0.86 kB
+dist/assets/cat-monitor-CURteouB.png         10.10 kB
+dist/assets/cat-storage-DLt0JmCv.png         14.48 kB
+dist/assets/cat-peripherals-E4dI6zer.png     22.22 kB
+dist/assets/cat-gpu-DuVdEs1L.png             23.71 kB
+dist/assets/cat-cpu-Br95bpRO.png             29.01 kB
+dist/assets/cat-ram-DjO8gaOR.png             32.18 kB
+dist/assets/index-Dm3HoSvS.css               73.02 kB │ gzip:  12.94 kB
+dist/assets/datadogProfiler-C0KpUUQL.js       8.68 kB │ gzip:   3.52 kB
+dist/assets/datadogRecorder-PLihJwla.js      34.38 kB │ gzip:  12.34 kB
+dist/assets/esm-aWOKsBrL.js                 161.44 kB │ gzip:  56.11 kB
+dist/assets/index-AbrvUJ0j.js             1,274.62 kB │ gzip: 372.43 kB
+
+✓ built in 3.06s
+node.exe : [plugin builtin:vite-reporter] 
+No linha:1 caractere:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([plugin builtin:vite-reporter] :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: 
+https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
